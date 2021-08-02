@@ -5,6 +5,9 @@ export default {
   // Target: https://go.nuxtjs.dev/config-target
   target: 'static',
 
+  // ソースディレクトリをROOT/src/配下に変更する
+  srcDir: 'src/',
+
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     titleTemplate: `%s`,
@@ -53,6 +56,9 @@ export default {
       dark: false,
     },
   },
+
+  // サーバーミドルウェア（Expressサーバー）の設定
+  serverMiddleware: [{ path: '/server', handler: '~/functions/app.ts' }],
 
   // サーバーの設定
   server: {

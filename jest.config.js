@@ -1,8 +1,8 @@
 module.exports = {
   preset: 'ts-jest',
   moduleNameMapper: {
-    '^@/(.*)$': '<rootDir>/$1',
-    '^~/(.*)$': '<rootDir>/$1',
+    '^@/(.*)$': '<rootDir>/src/$1',
+    '^~/(.*)$': '<rootDir>/src/$1',
     '^vue$': 'vue/dist/vue.common.js',
   },
   moduleFileExtensions: ['ts', 'js', 'vue', 'json'],
@@ -21,7 +21,7 @@ module.exports = {
   collectCoverageFrom: [
     '<rootDir>/src/components/**/*.vue',
     '<rootDir>/src/pages/**/*.vue',
-    '<rootDir>/store/**/*.ts',
+    '<rootDir>/src/store/**/*.ts',
   ],
   coverageDirectory: '<rootDir>/test/unit/coverage',
   coverageReporters: ['html', 'text-summary'],

@@ -1,4 +1,4 @@
-# ローカル開発環境のHTTPS化対応
+# ローカル開発環境の HTTPS 化対応
 
 ## 証明書を作成する
 
@@ -19,7 +19,7 @@ root/cert/ 配下に作成した cert と key を設置する
 
 ## 設定ファイルに証明書を設定する
 
-root/nuxt.config.js に以下の記載を追加する
+root/nuxt.config.ts に以下の記載を追加する
 
 ```js
 import path from 'path'
