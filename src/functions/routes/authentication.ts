@@ -25,6 +25,7 @@ router.get('/logout', (request: Request, response: Response) => {
       response.json({
         result: 'success',
       })
+      return
     }
 
     // エラーが発生している場合、エラー情報を送信する
