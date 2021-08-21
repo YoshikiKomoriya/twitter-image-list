@@ -26,10 +26,6 @@ const requestApi = async (
   }
 }
 
-router.get('/', (_request, response) => {
-  response.send('/')
-})
-
 router.get('/lists/list', async (request, response) => {
   const path = 'lists/list'
   await requestApi(request, response, path)
