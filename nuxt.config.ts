@@ -42,9 +42,17 @@ export default {
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
+    // https://go.nuxtjs.dev/axios
+    '@nuxtjs/axios',
     // https://go.nuxtjs.dev/content
     '@nuxt/content',
   ],
+
+  /**
+   * Axiosの設定
+   * https://go.nuxtjs.dev/config-axios
+   */
+  axios: {},
 
   // Content module configuration: https://go.nuxtjs.dev/config-content
   content: {},
@@ -58,7 +66,7 @@ export default {
   },
 
   // サーバーミドルウェア（Expressサーバー）の設定
-  serverMiddleware: [{ path: '/server', handler: '~/functions/app.ts' }],
+  serverMiddleware: ['~/functions'],
 
   // サーバーの設定
   server: {
