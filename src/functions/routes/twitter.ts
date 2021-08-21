@@ -11,7 +11,14 @@ const router = Router()
 router.use(verifyAuthentication)
 router.use(createClient)
 
-// APIのリクエスト処理に関する共通処理
+/**
+ * APIのリクエスト処理に関する共通処理
+ * @param request リクエスト情報
+ * @param response レスポンス情報
+ * @param endpoint Twitter APIのエンドポイント
+ * @param parameters APIのリクエストに付与するパラメータ
+ * @returns Twitter APIの通信結果をレスポンスとして出力する。エラーの場合にも出力のみ行われる点に注意する
+ */
 const requestApi = async (
   request: Request,
   response: Response,

@@ -10,7 +10,6 @@ import dotenv from 'dotenv'
  * 以下の処理を行う
  * - dotenvの初期設定
  * - 未定義の環境変数がないか検証する
- *
  * @throws {@link TypeError} dotenvの初期設定に失敗した場合
  * @throws {@link TypeError} 未定義の環境変数が存在する場合
  */
@@ -48,7 +47,6 @@ ${targetKey}
 
 /**
  * 指定された環境変数の値を取得する
- *
  * @param name 環境変数のキー名
  * @returns 指定指定された環境変数の値
  * @throws {@link TypeError} 指定の環境変数が未定義だった場合

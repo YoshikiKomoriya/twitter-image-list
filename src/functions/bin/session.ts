@@ -9,6 +9,7 @@ import { env } from '~/functions/bin/dotenv'
 /**
  * express-sessionの初期化処理に関するヘルパー関数
  * 環境変数から規定値を読み込んで、セッションの設定を行う
+ * @returns セッションの初期設定を行う関数を実行する
  */
 export const session = () => {
   const maxAge = parseInt(env.get('SESSION_COOKIE_MAX_AGE_BY_HOUR'))

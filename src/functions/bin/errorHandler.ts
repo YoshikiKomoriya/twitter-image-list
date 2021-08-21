@@ -6,6 +6,11 @@ import { Request, Response, NextFunction } from 'express'
 
 /**
  * エラーハンドリングの処理
+ * @param error エラー情報を示す何らかのオブジェクト
+ * @param _request リクエスト情報
+ * @param response レスポンス情報
+ * @param next Express上で次の処理へ移るための関数
+ * @returns ヘッダーが送信済みの場合はデフォルトのエラーハンドリングを続行する、それ以外はエラー情報をレスポンスに出力して処理を終了する
  */
 const errorHandler = (
   /**

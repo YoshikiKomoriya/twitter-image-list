@@ -11,6 +11,16 @@ const option: IStrategyOptionWithRequest = {
   callbackURL: callbackUrl,
   passReqToCallback: true,
 }
+
+/**
+ * 認証後の処理
+ * @param request リクエスト情報
+ * @param accessToken アクセストークン
+ * @param refreshToken アクセストークンシークレット
+ * @param profile 認証によって得られるユーザー情報
+ * @param done 処理が完了した際に実行される関数
+ * @returns 引数done()が実行される
+ */
 const verify: Verify = (request, accessToken, refreshToken, profile, done) => {
   /**
    * 認証によって得られたトークン情報はセッション情報に格納する
