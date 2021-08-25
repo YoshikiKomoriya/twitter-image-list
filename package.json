@@ -10,7 +10,9 @@
     "lint:js": "eslint --ext \".js,.ts,.vue\" --ignore-path .gitignore .",
     "lint:css": "stylelint \"**/*.{css,scss,sass,js,ts,vue}\" --ignore-path .gitignore",
     "lint": "yarn lint:js && yarn lint:css",
-    "test": "jest --passWithNoTests"
+    "mock": "./src/functions/mock/node_modules/nodemon/bin/nodemon.js --ext ts --watch './src/functions/mock/**/*' --exec './src/functions/mock/node_modules/.bin/ts-node' ./src/functions/mock/index.ts",
+    "jest": "jest --passWithNoTests",
+    "test": "yarn mock & sleep 3 && yarn jest ; kill -9 `pgrep -f 'yarn|mock'`"
   },
   "dependencies": {
     "@nuxt/content": "^1.14.0",
