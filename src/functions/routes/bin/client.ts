@@ -1,42 +1,50 @@
 /**
- * TwitterとのAPI通信用クライアントクラスを生成するミドルウェア
+ * TwitterとのAPI通信用クライアントクラスを生成する
  */
-import { Request, Response, NextFunction } from 'express'
-import Twitter from 'twitter-lite'
-import Boom from 'boom'
-import { env } from '~/functions/bin/dotenv'
+import Twitter, { TwitterOptions } from 'twitter-lite'
 
 /**
- * 通信用クライアントクラスを生成して、セッション情報に格納する
+ * コンシューマーキーを使用したAPI通信用クライアントクラスを生成する
+ * @param consumerKey コンシューマーキー
+ * @param consumerSecret コンシューマーシークレット
+ * @returns 通信用クライアントクラス
  */
-const createClient = (
-  request: Request,
-  _response: Response,
-  next: NextFunction,
+const createApplicationClient = (
+  consumerKey: string,
+  consumerSecret: string,
 ) => {
-  // セッション情報内に通信用クライアントクラスが既に存在する場合、何もせず次の処理へ
-  if (request.session.client !== undefined) {
-    return next()
+  const option: TwitterOptions = {
+    consumer_key: consumerKey,
+    consumer_secret: consumerSecret,
   }
+  const client = new Twitter(option)
 
-  // セッション情報内の認証情報を取得する
-  const pair = request.session.accessTokenPair
-
-  // 認証情報が取得できなかった場合、その旨のエラーを返却する
-  if (pair === undefined) {
-    return next(Boom.forbidden('not loading authentication'))
-  }
-
-  // 通信用のクライアントクラスを生成して、セッション情報に格納する
-  const client = new Twitter({
-    consumer_key: env.get('CONSUMER_KEY'),
-    consumer_secret: env.get('CONSUMER_SECRET'),
-    access_token_key: pair.accessToken,
-    access_token_secret: pair.accessTokenSecret,
-  })
-  request.session.client = client
-
-  return next()
+  return client
 }
 
-export { createClient }
+/**
+ * アクセストークンを使用したAPI通信用クライアントクラスを生成する
+ * @param consumerKey コンシューマーキー
+ * @param consumerSecret コンシューマーシークレット
+ * @param accessToken アクセストークン
+ * @param accessTokenSecret アクセストークンシークレット
+ * @returns 通信用クライアントクラス
+ */
+const createUserClient = (
+  consumerKey: string,
+  consumerSecret: string,
+  accessToken: string,
+  accessTokenSecret: string,
+) => {
+  const option: TwitterOptions = {
+    consumer_key: consumerKey,
+    consumer_secret: consumerSecret,
+    access_token_key: accessToken,
+    access_token_secret: accessTokenSecret,
+  }
+  const client = new Twitter(option)
+
+  return client
+}
+
+export { createApplicationClient, createUserClient }

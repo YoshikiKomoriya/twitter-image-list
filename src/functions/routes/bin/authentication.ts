@@ -1,45 +1,80 @@
 /**
- * Twitterの認証情報を検証するミドルウェア
+ * Twitter認証に関する専門の処理
  */
-import { Request, Response, NextFunction } from 'express'
+import { URL } from 'url'
 import Boom from 'boom'
+import Twitter from 'twitter-lite'
+import { env } from '~/functions/bin/dotenv'
 
 /**
- * Twitterの認証が済んでいるか検証する
- * @param request リクエスト情報
- * @returns 認証が済んでいるか否か
+ * Twitterに認証用トークンを発行するように依頼する
+ * @param client 通信用クライアントクラス
+ * @param callbackUrl 許可されているコールバックURL
+ * @returns 認証用トークンの情報
+ * @throws {@link Error} 通信中にエラーが発生した場合
+ * @throws {@link Boom.badRequest} 通信には成功したが、コールバックURLが許可されていなかった場合
  */
-const isAuthenticated = (request: Request) => {
-  // セッション情報内の認証情報を検証する
-  const pair = request.session.accessTokenPair
+const requestToken = async (client: Twitter, callbackUrl: string) => {
+  // Twitterに認証用トークン情報を発行するよう依頼する
+  const requestToken = await client
+    .getRequestToken(callbackUrl)
+    .catch((error) => {
+      throw error
+    })
 
-  // 連携が済んでいる（認証情報が存在する）場合、認証が済んでいる
-  return pair !== undefined
-}
-
-/**
- * Twitterの認証が済んでいるかどうか検証する
- * 認証が済んでいない場合、エラー情報を出力する
- * @param request リクエスト情報
- * @param response レスポンス情報
- * @param next Express上で次の処理へ移るための関数
- * @returns 処理が済んでいる場合は何もせず次の処理へ移行する。処理が済んでいない場合はエラーオブジェクトを渡して次の処理へ移行する
- */
-const verifyAuthentication = (
-  request: Request,
-  _response: Response,
-  next: NextFunction,
-) => {
-  // 認証が済んでいるか検証する
-  const authenticated = isAuthenticated(request)
-
-  // 認証が済んでいる場合、何もせず次の処理へ
-  if (authenticated) {
-    return next()
+  // リクエストが確認されたかどうか検証する
+  // 比較対象が**文字列である**点に注意すること
+  if (requestToken.oauth_callback_confirmed === 'false') {
+    throw Boom.badRequest('OAuth callback is not confirmed')
   }
 
-  // 認証が済んでいない場合、未認証orセッション切れが想定される。その旨のエラーを返却する
-  next(Boom.forbidden('not authenticated'))
+  return requestToken
 }
 
-export { verifyAuthentication }
+/**
+ * Twitterの認証画面のURLを生成する
+ * @param oauthToken 認証用トークン
+ * @returns 認証画面のURL
+ */
+const createAuthenticationUrl = (oauthToken: string) => {
+  // 設定されたTwitterの認証用エンドポイントに、リクエストパラメータを追加する
+  const baseUrl = env.get('AUTHENTICATION_URL')
+  const parsedUrl = new URL(baseUrl)
+  parsedUrl.searchParams.append('oauth_token', oauthToken)
+
+  return parsedUrl.toString()
+}
+
+/**
+ * 認証用トークンを用いて、ユーザーのアクセストークンを取得する
+ * @param client 通信用クライアントクラス
+ * @param oauthVerifier 認証済みであることを示すトークン
+ * @param oauthToken 認証用トークン
+ * @returns アクセストークン
+ * @throws {@link Error} 通信中にエラーが発生した場合
+ */
+const getAccessToken = async (
+  client: Twitter,
+  oauthVerifier: string,
+  oauthToken: string,
+) => {
+  const accessTokenOptions = {
+    oauth_verifier: oauthVerifier,
+    oauth_token: oauthToken,
+  }
+  const accessToken = await client
+    .getAccessToken(accessTokenOptions)
+    .catch((error) => {
+      throw error
+    })
+
+  return accessToken
+}
+
+const authentication = {
+  requestToken,
+  createAuthenticationUrl,
+  getAccessToken,
+}
+
+export { authentication }
