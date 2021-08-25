@@ -6,7 +6,10 @@ module.exports = {
     '^vue$': 'vue/dist/vue.common.js',
   },
   moduleFileExtensions: ['ts', 'js', 'vue', 'json'],
-  testMatch: ['<rootDir>/test/**/*.ts'],
+  testMatch: [
+    '<rootDir>/test/**/(*.)+(spec|test).[jt]s?(x)',
+    '<rootDir>/src/functions/test/**/(*.)+(spec|test).[jt]s?(x)',
+  ],
   transform: {
     '^.+\\.js$': 'babel-jest',
     '.*\\.(vue)$': 'vue-jest',
@@ -22,6 +25,7 @@ module.exports = {
     '<rootDir>/src/components/**/*.vue',
     '<rootDir>/src/pages/**/*.vue',
     '<rootDir>/src/store/**/*.ts',
+    '<rootDir>/src/functions/**/*.ts',
   ],
   coverageDirectory: '<rootDir>/test/unit/coverage',
   coverageReporters: ['html', 'text-summary'],

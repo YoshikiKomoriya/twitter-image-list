@@ -1,5 +1,5 @@
 <template>
-  <p><a href="https://localhost:3000/server/authentication"> login </a></p>
+  <p>home</p>
 </template>
 
 <script lang="ts">
