@@ -5,6 +5,9 @@ import { authentication } from '~/functions/routes/bin/authentication'
 import { env } from '~/functions/bin/dotenv'
 
 describe('認証用トークン', () => {
+  // すべてのテストで利用する変数
+  const mockServerOrigin = 'http://localhost:3000'
+
   test('トークンの発行を依頼する', async () => {
     const options = {
       consumer_key: 'test',
@@ -17,7 +20,7 @@ describe('認証用トークン', () => {
 
     // Twitter APIのモックサーバーから情報を取得して、関数の戻り値とする
     const response: TokenResponse = (
-      await axios.get('http://localhost:3000/oauth/request_token')
+      await axios.get(`${mockServerOrigin}/oauth/request_token`)
     ).data
     mockGetRequestToken.mockResolvedValue(response)
 
@@ -43,7 +46,7 @@ describe('認証用トークン', () => {
 
     // Twitter APIのモックサーバーから情報を取得して、関数の戻り値とする
     const response: TokenResponse = (
-      await axios.get('http://localhost:3000/oauth/request_token/failed')
+      await axios.get(`${mockServerOrigin}/oauth/request_token/failed`)
     ).data
     mockGetRequestToken.mockResolvedValue(response)
 
@@ -55,7 +58,7 @@ describe('認証用トークン', () => {
 
   test('認証用トークンを用いて認証画面のURLを生成する', () => {
     // URLの設定
-    process.env.AUTHENTICATION_URL = 'http://localhost:3000/oauth/authenticate'
+    process.env.AUTHENTICATION_URL = `${mockServerOrigin}/oauth/authenticate`
     const baseUrl = env.get('AUTHENTICATION_URL')
     const token = 'testToken'
 
@@ -78,7 +81,7 @@ describe('認証用トークン', () => {
 
     // Twitter APIのモックサーバーから情報を取得して、関数の戻り値とする
     const response: AccessTokenResponse = (
-      await axios.get('http://localhost:3000/oauth/access_token')
+      await axios.get(`${mockServerOrigin}/oauth/access_token`)
     ).data
     mockGetAccessToken.mockResolvedValue(response)
 
