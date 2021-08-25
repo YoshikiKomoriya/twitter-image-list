@@ -2,14 +2,12 @@
  * TwitterとのAPI通信に関する設定
  */
 import { Request, Response, Router } from 'express'
-import { createClient } from '~/functions/routes/bin/client'
-import { verifyAuthentication } from '~/functions/routes/bin/authentication'
+import { verifyAuthentication } from '~/functions/routes/middleware/authenticated'
 
 const router = Router()
 
 // 認証情報の検証を行う
 router.use(verifyAuthentication)
-router.use(createClient)
 
 /**
  * APIのリクエスト処理に関する共通処理

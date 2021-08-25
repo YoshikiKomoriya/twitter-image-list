@@ -4,7 +4,7 @@ import { Response } from 'jest-express/lib/response'
 import { next } from 'jest-express/lib/next'
 import { errorHandler } from '~/functions/bin/errorHandler'
 
-describe('errorHandler', () => {
+describe('エラーハンドリング', () => {
   // 値の変動がない共通のパラメータ
   let request: any
   let response: any

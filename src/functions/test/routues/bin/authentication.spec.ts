@@ -1,43 +1,101 @@
+import Twitter, { AccessTokenResponse, TokenResponse } from 'twitter-lite'
+import axios from 'axios'
 import Boom from 'boom'
-import { Response } from 'jest-express/lib/response'
-import { next } from 'jest-express/lib/next'
-import { RequestWithSession } from '~/functions/test/util/jest-express'
-import { verifyAuthentication } from '~/functions/routes/bin/authentication'
+import { authentication } from '~/functions/routes/bin/authentication'
+import { env } from '~/functions/bin/dotenv'
 
-describe('authentication', () => {
-  // 値の変動がない共通のパラメータ
-  let response: any
-  beforeEach(() => {
-    /**
-     * ExpressのRequest/Responseについて、モック用ライブラリを適用するだけではTypeScriptdeで引数の型に関するエラーが発生するため、暫定的にany型を指定している
-     * 型安全が確保されていない・補完が効かない等のデメリットがあるため、時間がある時に改善する
-     * @todo Express関係のクラスについて問題を調査して、モック上でも型安全を確保する
-     */
-    response = new Response()
-  })
+describe('認証用トークン', () => {
+  // すべてのテストで利用する変数
+  const mockServerOrigin = 'http://localhost:3000'
 
-  test('セッション内に認証情報が存在する場合、何もせず次の処理へ', () => {
-    const request = new RequestWithSession('/') as any
-    request.session = {
-      accessTokenPair: {
-        accessToken: 'testToken',
-        accessTokenSecret: 'testTokenSecret',
-      },
+  test('トークンの発行を依頼する', async () => {
+    const options = {
+      consumer_key: 'test',
+      consumer_secret: 'test',
     }
+    const twitter = new Twitter(options)
 
-    verifyAuthentication(request, response, next)
+    // リクエスト送信に関する関数をモック化して、実行状況を検証する
+    const mockGetRequestToken = jest.spyOn(twitter, 'getRequestToken')
 
-    // 「引数が渡されていない」ことをテストするため、引数を含めてチェックする関数を使用する
-    expect(next).toHaveBeenCalledWith()
+    // Twitter APIのモックサーバーから情報を取得して、関数の戻り値とする
+    const response: TokenResponse = (
+      await axios.get(`${mockServerOrigin}/oauth/request_token`)
+    ).data
+    mockGetRequestToken.mockResolvedValue(response)
+
+    // リクエストの実行
+    const callbackUrl = 'https://example.com'
+    const token = await authentication.requestToken(twitter, callbackUrl)
+
+    expect(typeof token.oauth_token).toBe('string')
+    expect(typeof token.oauth_token_secret).toBe('string')
+    expect(token.oauth_callback_confirmed).toMatch('true')
   })
 
-  test('セッション内に認証情報が存在しない（未認証orセッション切れ）場合、エラーが返却される', () => {
-    const request = new RequestWithSession('/') as any
-    request.session = {}
+  test('トークンの発行を依頼するが、Twitterから許可されていないため不正なリクエストだとエラーが発生する', async () => {
+    const options = {
+      consumer_key: 'test',
+      consumer_secret: 'test',
+    }
+    const twitter = new Twitter(options)
+    const callbackUrl = 'https://example.com'
 
-    verifyAuthentication(request, response, next)
+    // リクエスト送信に関する関数をモック化して、実行状況を検証する
+    const mockGetRequestToken = jest.spyOn(twitter, 'getRequestToken')
 
-    // エラーメッセージが異なる場合にもテストが失敗するので、修正時には注意する
-    expect(next).toHaveBeenCalledWith(Boom.forbidden('not authenticated'))
+    // Twitter APIのモックサーバーから情報を取得して、関数の戻り値とする
+    const response: TokenResponse = (
+      await axios.get(`${mockServerOrigin}/oauth/request_token/failed`)
+    ).data
+    mockGetRequestToken.mockResolvedValue(response)
+
+    // リクエストの実行と検証
+    expect(authentication.requestToken(twitter, callbackUrl)).rejects.toThrow(
+      Boom.badRequest('OAuth callback is not confirmed'),
+    )
+  })
+
+  test('認証用トークンを用いて認証画面のURLを生成する', () => {
+    // URLの設定
+    process.env.AUTHENTICATION_URL = `${mockServerOrigin}/oauth/authenticate`
+    const baseUrl = env.get('AUTHENTICATION_URL')
+    const token = 'testToken'
+
+    // URLの組み立て
+    const validUrl = `${baseUrl}?oauth_token=${token}`
+    const createdUrl = authentication.createAuthenticationUrl(token)
+
+    expect(createdUrl).toMatch(validUrl)
+  })
+
+  test('認証用トークンを用いて、ユーザーのアクセストークンを取得する', async () => {
+    const options = {
+      consumer_key: 'test',
+      consumer_secret: 'test',
+    }
+    const twitter = new Twitter(options)
+
+    // リクエスト送信に関する関数をモック化して、実行状況を検証する
+    const mockGetAccessToken = jest.spyOn(twitter, 'getAccessToken')
+
+    // Twitter APIのモックサーバーから情報を取得して、関数の戻り値とする
+    const response: AccessTokenResponse = (
+      await axios.get(`${mockServerOrigin}/oauth/access_token`)
+    ).data
+    mockGetAccessToken.mockResolvedValue(response)
+
+    // リクエストの実行
+    const oauthVerifier = 'oauthVerifier'
+    const oauthToken = 'oauthToken'
+    const accessToken = await authentication.getAccessToken(
+      twitter,
+      oauthVerifier,
+      oauthToken,
+    )
+
+    // TypeScriptによってレスポンスの型検証は行われているはずなので、明示的に検証する要素は通信用クライアントの生成に必要なもののみとしている
+    expect(typeof accessToken.oauth_token).toBe('string')
+    expect(typeof accessToken.oauth_token_secret).toBe('string')
   })
 })

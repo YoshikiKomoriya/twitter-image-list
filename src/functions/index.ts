@@ -4,16 +4,14 @@
  */
 
 // サーバー系ライブラリの読み込み
-import express, { Express } from 'express'
+import express from 'express'
 
 // 各種設定の読み込み
 import './bin/moduleAlias'
 import helmet from 'helmet'
-import passport from 'passport'
 import { errorHandler } from '~/functions/bin/errorHandler'
 import { env } from '~/functions/bin/dotenv'
 import { session } from '~/functions/bin/session'
-import { strategy } from '~/functions/bin/passportTwitter'
 import { router } from '~/functions/routes'
 
 // 環境変数の読み込み
@@ -33,23 +31,6 @@ app.use(express.json())
 
 // セッションの設定
 app.use(session())
-
-// passportの設定
-app.use(passport.initialize())
-app.use(passport.session())
-passport.use(strategy)
-
-// 認証成功後にユーザー情報をセッションに格納する
-passport.serializeUser((user, done) => {
-  done(null, user)
-})
-
-// リクエスト時、セッション内のユーザー情報をリクエスト情報に加える
-passport.deserializeUser(
-  (user: false | Express.User | null | undefined, done) => {
-    done(null, user)
-  },
-)
 
 // ルーティングの設定
 app.use(router)

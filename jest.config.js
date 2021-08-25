@@ -7,7 +7,7 @@ module.exports = {
   },
   moduleFileExtensions: ['ts', 'js', 'vue', 'json'],
   testMatch: [
-    '<rootDir>/test/**/(*.)+(spec|test).[jt]s?(x)',
+    '<rootDir>/src/test/**/(*.)+(spec|test).[jt]s?(x)',
     '<rootDir>/src/functions/test/**/(*.)+(spec|test).[jt]s?(x)',
   ],
   transform: {
@@ -22,10 +22,13 @@ module.exports = {
   },
   collectCoverage: true,
   collectCoverageFrom: [
+    // Nuxtアプリケーションで使用するもの
     '<rootDir>/src/components/**/*.vue',
     '<rootDir>/src/pages/**/*.vue',
     '<rootDir>/src/store/**/*.ts',
-    '<rootDir>/src/functions/**/*.ts',
+    // サーバーミドルウェアで使用するもの
+    '<rootDir>/src/functions/bin/**/*.ts',
+    '<rootDir>/src/functions/routes/**/*.ts',
   ],
   coverageDirectory: '<rootDir>/test/unit/coverage',
   coverageReporters: ['html', 'text-summary'],
