@@ -1,8 +1,9 @@
 import path from 'path'
 import fs from 'fs'
 import colors from 'vuetify/es5/util/colors'
+import { NuxtConfig } from '@nuxt/types'
 
-export default {
+const config: NuxtConfig = {
   // Target: https://go.nuxtjs.dev/config-target
   target: 'static',
 
@@ -63,8 +64,20 @@ export default {
     customVariables: ['~/assets/variables.scss'],
     theme: {
       dark: false,
+      default: false,
+      disable: false,
+      options: {},
       themes: {
         dark: {
+          primary: colors.blue.darken2,
+          accent: colors.grey.darken3,
+          secondary: colors.amber.darken3,
+          info: colors.teal.lighten1,
+          warning: colors.amber.base,
+          error: colors.deepOrange.accent4,
+          success: colors.green.accent3,
+        },
+        light: {
           primary: colors.blue.darken2,
           accent: colors.grey.darken3,
           secondary: colors.amber.darken3,
@@ -92,5 +105,17 @@ export default {
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
-  build: {},
+  build: {
+    extend(config, ctx) {
+      if (ctx.isDev && ctx.isClient) {
+        /**
+         * デバッグ環境向けにソースマップを設定する
+         * @see https://webpack.js.org/configuration/devtool/
+         */
+        config.devtool = 'eval-source-map'
+      }
+    },
+  },
 }
+
+export default config

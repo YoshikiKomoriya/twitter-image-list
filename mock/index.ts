@@ -39,5 +39,7 @@ app.use(jsonServer.rewriter(customRoute))
 app.use(router)
 
 app.listen(port, () => {
+  // Linterで警告が発生するが、サーバー内部のログ出力であるため問題はないと考えている
+  // eslint-disable-next-line no-console
   console.log('JSON Server is running.')
 })

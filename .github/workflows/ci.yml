@@ -1,0 +1,58 @@
+name: ci
+
+on:
+  pull_request:
+    branches:
+      - main
+      - development
+
+jobs:
+  ci:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        node: [15]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@master
+
+      - name: Setup node
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node }}
+          cache: 'yarn'
+          cache-dependency-path: '**/yarn.lock'
+
+      - name: Install front dependencies
+        run: yarn
+
+      - name: Install backend dependencies
+        run: yarn
+        working-directory: ./functions
+
+      - name: Install mock dependencies
+        run: yarn
+        working-directory: ./mock
+
+      - name: Create .env file
+        run: |
+          touch .env
+          echo "MOCK_SERVER_URL=${{ secrets.MOCK_SERVER_URL }}" >> .env
+          echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> .env
+          echo "SESSION_COOKIE_MAX_AGE_BY_HOUR=${{ secrets.SESSION_COOKIE_MAX_AGE_BY_HOUR }}" >> .env
+          echo "CONSUMER_KEY=${{ secrets.CONSUMER_KEY }}" >> .env
+          echo "CONSUMER_SECRET=${{ secrets.CONSUMER_SECRET }}" >> .env
+          echo "BEARER_TOKEN=${{ secrets.BEARER_TOKEN }}" >> .env
+          echo "AUTHENTICATION_URL=${{ secrets.AUTHENTICATION_URL }}" >> .env
+          echo "CALLBACK_URL=${{ secrets.CALLBACK_URL }}" >> .env
+          echo "APP_TITLE=${{ secrets.APP_TITLE }}" >> .env
+          echo "APP_HOST=${{ secrets.APP_HOST }}" >> .env
+
+      - name: Run linter
+        run: yarn lint
+
+      - name: Run tests
+        run: yarn test:ci

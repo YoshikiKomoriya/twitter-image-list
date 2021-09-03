@@ -1,0 +1,14 @@
+# @see https://qiita.com/hkusu/items/39eb92dbd4d6db8a14d8
+name: assign actor
+
+on:
+  pull_request:
+    types: [opened, ready_for_review]
+
+jobs:
+  assign:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: hkusu/review-assign-action@v0.1.0
+        with:
+          assignees: ${{ github.actor }}
