@@ -6,7 +6,7 @@
     "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": true,
     "lib": ["ESNext", "ESNext.AsyncIterable", "DOM"],
-    "module": "umd",
+    "module": "ESNext",
     "moduleResolution": "Node",
     "paths": {
       "~/*": ["./src/*"],
