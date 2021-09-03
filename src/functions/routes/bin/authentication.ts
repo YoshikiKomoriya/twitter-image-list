@@ -14,7 +14,7 @@ import { env } from '~/functions/bin/dotenv'
  * @throws {@link Error} 通信中にエラーが発生した場合
  * @throws {@link Boom.badRequest} 通信には成功したが、コールバックURLが許可されていなかった場合
  */
-const requestToken = async (client: Twitter, callbackUrl: string) => {
+const getRequestToken = async (client: Twitter, callbackUrl: string) => {
   // Twitterに認証用トークン情報を発行するよう依頼する
   const requestToken = await client
     .getRequestToken(callbackUrl)
@@ -72,7 +72,7 @@ const getAccessToken = async (
 }
 
 const authentication = {
-  requestToken,
+  getRequestToken,
   createAuthenticationUrl,
   getAccessToken,
 }
