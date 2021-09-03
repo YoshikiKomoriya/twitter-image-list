@@ -2,7 +2,7 @@
  * 環境変数に関する設定
  * dotenvは標準の初期化処理では値が未定義であるかどうかを判別しないため、追加で処理を実施している
  */
-
+import path from 'path'
 import dotenv from 'dotenv'
 
 /**
@@ -15,7 +15,10 @@ import dotenv from 'dotenv'
  */
 const config = () => {
   // .envファイルを読み込む
-  const parsedConfig = dotenv.config().parsed
+  const option = {
+    path: path.resolve(__dirname, '../../../.env'),
+  }
+  const parsedConfig = dotenv.config(option).parsed
   // ファイルが読み込めなかった場合、エラーを発生させる
   if (parsedConfig === undefined) {
     throw new TypeError('.envファイルの値が取得できませんでした')

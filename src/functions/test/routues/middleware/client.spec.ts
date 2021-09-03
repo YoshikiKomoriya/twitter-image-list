@@ -1,11 +1,11 @@
 import { Response } from 'jest-express/lib/response'
 import { next } from 'jest-express/lib/next'
-import { AccessTokenResponse } from 'twitter-lite'
+import Twitter, { AccessTokenResponse } from 'twitter-lite'
 import Boom from 'boom'
-import { verifyAuthentication } from '~/functions/routes/middleware/authenticated'
+import { createClient } from '~/functions/routes/middleware/client'
 import { RequestWithSession } from '~/functions/test/util/jest-express'
 
-describe('認証済みであるかどうか', () => {
+describe('API通信用クライアントクラスの生成', () => {
   /**
    * ExpressのRequest・Responseついて、モック用ライブラリを適用するだけではTypeScriptdeで引数の型に関するエラーが発生するため、暫定的にany型を指定している
    * 型安全が確保されていない・補完が効かない等のデメリットがあるため、時間がある時に改善する
@@ -16,7 +16,7 @@ describe('認証済みであるかどうか', () => {
     response = new Response()
   })
 
-  test('認証済みである場合、次の処理へ移る', () => {
+  test('認証済みの場合、クライアントクラスを生成する', () => {
     const request = new RequestWithSession() as any
     const user: AccessTokenResponse = {
       oauth_token: 'test_oauth_token',
@@ -26,8 +26,9 @@ describe('認証済みであるかどうか', () => {
     }
     request.session.user = user
 
-    verifyAuthentication(request, response, next)
+    createClient(request, response, next)
 
+    expect(request.client).toBeInstanceOf(Twitter)
     // 「引数が渡されていない」ことをテストするため、引数を含めてチェックする関数を使用する
     expect(next).toHaveBeenCalledWith()
   })
@@ -35,7 +36,7 @@ describe('認証済みであるかどうか', () => {
   test('認証済みでない（未認証orセッション切れ）場合、エラーが返却される', () => {
     const request = new RequestWithSession() as any
 
-    verifyAuthentication(request, response, next)
+    createClient(request, response, next)
 
     // エラーメッセージが異なる場合にもテストが失敗するので、修正時には注意する
     expect(next).toHaveBeenCalledWith(Boom.forbidden('not authenticated'))

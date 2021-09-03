@@ -3,33 +3,29 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "ts-node-dev --files server.ts"
   },
   "dependencies": {
     "axios": "^0.21.1",
     "boom": "^7.3.0",
     "cookie-parser": "~1.4.4",
-    "cors": "^2.8.5",
     "debug": "~2.6.9",
     "dotenv": "^10.0.0",
-    "ejs": "~2.6.1",
     "express": "~4.16.1",
     "express-session": "^1.17.2",
     "helmet": "^4.6.0",
-    "http-errors": "~1.6.3",
-    "passport": "^0.4.1",
-    "passport-twitter": "^1.0.4",
+    "module-alias": "^2.2.2",
     "twitter-lite": "^1.1.0"
   },
   "devDependencies": {
     "@types/axios": "^0.14.0",
     "@types/boom": "^7.3.1",
-    "@types/cors": "^2.8.12",
     "@types/express-session": "^1.17.4",
     "@types/module-alias": "^2.0.1",
-    "@types/passport": "^1.0.7",
-    "@types/passport-twitter": "^1.0.37",
-    "module-alias": "^2.2.2",
-    "ts-node-dev": "^1.1.8"
+    "@types/supertest": "^2.0.11",
+    "supertest": "^6.1.6",
+    "supertest-session": "^4.1.0",
+    "ts-node-dev": "^1.1.8",
+    "typescript": "^4.4.2"
   }
 }

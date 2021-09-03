@@ -5,7 +5,9 @@
 const route = {
   '/oauth/request_token': '/oauth_request_token',
   '/oauth/request_token/failed': '/oauth_request_token_failed',
+  '/oauth/authenticate': '/oauth_authenticate',
   '/oauth/access_token': '/oauth_access_token',
+  '/lists/ownerships': '/lists_ownerships',
 }
 
 export { route }

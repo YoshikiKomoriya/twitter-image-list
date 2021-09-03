@@ -2,7 +2,7 @@
  * ライブラリ'jest-express'の定義ファイルを拡張したもの
  */
 import { Express } from 'jest-express/lib/express'
-import Twitter from 'twitter-lite'
+import Twitter, { AccessTokenResponse } from 'twitter-lite'
 
 declare module 'jest-express/lib/request' {
   /**
@@ -30,10 +30,11 @@ declare module 'jest-express/lib/request' {
    * - コンストラクタがプライベートメソッドとして定義されているため、外部からインスタンスを生成できない
    */
   interface Session {
-    client?: Twitter
+    user?: AccessTokenResponse
   }
 
   interface IRequest {
     session: Session
+    client?: Twitter
   }
 }

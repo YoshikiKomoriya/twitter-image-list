@@ -4,6 +4,11 @@
 import Boom from 'boom'
 import { Request, Response, NextFunction } from 'express'
 
+interface ExtendedPayload extends Boom.Payload {
+  data?: any
+  additionalMessage?: string
+}
+
 /**
  * エラーハンドリングの処理
  * @param error エラー情報を示す何らかのオブジェクト
@@ -31,7 +36,12 @@ const errorHandler = (
   // エラーがBoomの形式である場合、専用の処理を実施してエラーを出力する
   if (error instanceof Boom && error.isBoom) {
     response.status(error.output.statusCode)
-    response.json(error.output.payload)
+
+    // 独自のデータが設定されている場合、それも出力対象とする
+    const output: ExtendedPayload = error.output.payload
+    output.data = error.data ? error.data : undefined
+
+    response.json(output)
     return
   }
 

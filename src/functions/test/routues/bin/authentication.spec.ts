@@ -6,7 +6,7 @@ import { env } from '~/functions/bin/dotenv'
 
 describe('認証用トークン', () => {
   // すべてのテストで利用する変数
-  const mockServerOrigin = 'http://localhost:3000'
+  const mockServerOrigin = env.get('MOCK_SERVER_URL')
 
   test('トークンの発行を依頼する', async () => {
     const options = {
@@ -26,7 +26,7 @@ describe('認証用トークン', () => {
 
     // リクエストの実行
     const callbackUrl = 'https://example.com'
-    const token = await authentication.requestToken(twitter, callbackUrl)
+    const token = await authentication.getRequestToken(twitter, callbackUrl)
 
     expect(typeof token.oauth_token).toBe('string')
     expect(typeof token.oauth_token_secret).toBe('string')
@@ -51,14 +51,16 @@ describe('認証用トークン', () => {
     mockGetRequestToken.mockResolvedValue(response)
 
     // リクエストの実行と検証
-    expect(authentication.requestToken(twitter, callbackUrl)).rejects.toThrow(
-      Boom.badRequest('OAuth callback is not confirmed'),
-    )
+    expect(
+      authentication.getRequestToken(twitter, callbackUrl),
+    ).rejects.toThrow(Boom.badRequest('OAuth callback is not confirmed'))
   })
 
   test('認証用トークンを用いて認証画面のURLを生成する', () => {
-    // URLの設定
+    // なるべくソースと同じ形（環境変数から認証用URL取得→パラメータ組み立て→リクエスト実行）で処理ができるように、先に認証用URLをテスト用のものに上書きする
     process.env.AUTHENTICATION_URL = `${mockServerOrigin}/oauth/authenticate`
+
+    // URLとトークン情報の取得
     const baseUrl = env.get('AUTHENTICATION_URL')
     const token = 'testToken'
 
