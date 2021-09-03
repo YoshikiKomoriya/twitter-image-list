@@ -10,8 +10,8 @@ import Boom from 'boom'
  * @returns 認証が済んでいるか否か
  */
 const isAuthenticated = (request: Request) => {
-  // セッション情報内にクライアントクラスが存在する場合、認証が済んでいる
-  return request.session.client !== undefined
+  // セッション情報内にユーザー情報が存在する場合、認証が済んでいる
+  return request.session.user !== undefined
 }
 
 /**
@@ -30,13 +30,13 @@ const verifyAuthentication = (
   // 認証が済んでいるか検証する
   const authenticated = isAuthenticated(request)
 
-  // 認証が済んでいる場合、何もせず次の処理へ
-  if (authenticated) {
-    return next()
+  // 認証が済んでいない場合、未認証orセッション切れが想定される。その旨のエラーを返却する
+  if (authenticated === false) {
+    return next(Boom.forbidden('not authenticated'))
   }
 
-  // 認証が済んでいない場合、未認証orセッション切れが想定される。その旨のエラーを返却する
-  next(Boom.forbidden('not authenticated'))
+  // 認証が済んでいる場合、何もせず次の処理へ
+  return next()
 }
 
 export { verifyAuthentication }

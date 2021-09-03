@@ -1,16 +1,13 @@
 import { Router, Request, Response } from 'express'
 import Boom from 'boom'
-import {
-  createApplicationClient,
-  createUserClient,
-} from '~/functions/routes/bin/client'
+import { createApplicationClient } from '~/functions/routes/bin/client'
 import { authentication } from '~/functions/routes/bin/authentication'
-import { env } from '~/functions//bin/dotenv'
+import { env } from '~/functions/bin/dotenv'
 
 const router = Router()
 
 // Twitterの認証画面へ遷移する
-router.get('/', async (_request: Request, response: Response) => {
+router.get('/', async (_request, response, next) => {
   // Twitter通信用のクライアントを生成する
   const client = createApplicationClient(
     env.get('CONSUMER_KEY'),
@@ -20,8 +17,9 @@ router.get('/', async (_request: Request, response: Response) => {
   // Twitterにリクエスト用トークン情報を発行するよう依頼する
   const callbackUrl = env.get('CALLBACK_URL')
   const requestToken = await authentication
-    .requestToken(client, callbackUrl)
+    .getRequestToken(client, callbackUrl)
     .catch((error) => {
+      next(error)
       throw error
     })
 
@@ -31,7 +29,7 @@ router.get('/', async (_request: Request, response: Response) => {
 })
 
 // Twitterの認証画面から遷移した後の処理
-router.get('/callback', async (request: Request, response: Response) => {
+router.get('/callback', async (request: Request, response: Response, next) => {
   // Twitter通信用のクライアントを生成する
   const client = createApplicationClient(
     env.get('CONSUMER_KEY'),
@@ -45,45 +43,37 @@ router.get('/callback', async (request: Request, response: Response) => {
 
   // クエリに文字列以外の情報が渡ってきている場合、形式が不正またはパースエラーの可能性がある
   if (typeof oauthVerifier !== 'string' || typeof oauthToken !== 'string') {
-    throw Boom.badRequest('OAuth token is not parsed')
+    return next(Boom.badRequest('OAuth token is not parsed'))
   }
 
   // 認証情報を用いて、アクセストークンを取得する
   const accessToken = await authentication
     .getAccessToken(client, oauthVerifier, oauthToken)
     .catch((error) => {
+      next(Boom.badRequest(error))
       throw error
     })
 
-  // セッション情報内にユーザー用クライアントクラスを格納して、いつでも利用できるようにする
-  const userClient = createUserClient(
-    env.get('CONSUMER_KEY'),
-    env.get('CONSUMER_SECRET'),
-    accessToken.oauth_token,
-    accessToken.oauth_token_secret,
-  )
-  request.session.client = userClient
+  // セッション情報内にユーザー情報を格納して、いつでも利用できるようにする
+  request.session.user = accessToken
 
   response.redirect('/home')
 })
 
 // ログアウト処理
-router.get('/logout', (request: Request, response: Response) => {
+router.get('/logout', (request: Request, response: Response, next) => {
   // セッション情報を破棄する
   request.session.destroy((error) => {
-    // セッションの破棄が正常に完了した場合、passportのログアウト処理を実施して、成功した旨を送信する
-    if (error === undefined) {
-      response.json({
-        result: 'success',
-      })
-      return
+    // エラーが発生している場合、エラー情報を送信する
+    if (error) {
+      return next(Boom.internal(error))
     }
 
-    // エラーが発生している場合、エラー情報を送信する
+    // セッションの破棄が正常に完了した場合、成功した旨を送信する
     response.json({
-      result: 'failed',
-      error,
+      result: 'success',
     })
+    return next()
   })
 })
 

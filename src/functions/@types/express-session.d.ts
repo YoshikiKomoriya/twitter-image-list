@@ -1,15 +1,15 @@
 /**
  * ライブラリ'express-session'の定義ファイルを拡張したもの
  */
-import Twitter from 'twitter-lite'
+import { AccessTokenResponse } from 'twitter-lite'
 
 declare module 'express-session' {
   /**
-   * リクエスト情報の拡張
+   * セッション情報の拡張
    * 以下の情報を格納するようにしている
-   * - Twitterとの通信用クライアントクラス
+   * - Twitterの認証によって得られたユーザー情報
    */
   interface Session {
-    client?: Twitter
+    user?: AccessTokenResponse
   }
 }
