@@ -1,14 +1,22 @@
 module.exports = {
   preset: 'ts-jest',
   moduleNameMapper: {
-    '^@/(.*)$': '<rootDir>/src/$1',
-    '^~/(.*)$': '<rootDir>/src/$1',
+    '^@/(.*)$': [
+      '<rootDir>/src/$1',
+      '<rootDir>/functions/$1',
+      '<rootDir>/mock/$1',
+    ],
+    '^~/(.*)$': [
+      '<rootDir>/src/$1',
+      '<rootDir>/functions/$1',
+      '<rootDir>/mock/$1',
+    ],
     '^vue$': 'vue/dist/vue.common.js',
   },
   moduleFileExtensions: ['ts', 'js', 'vue', 'json'],
   testMatch: [
     '<rootDir>/src/test/**/(*.)+(spec|test).[jt]s?(x)',
-    '<rootDir>/src/functions/test/**/(*.)+(spec|test).[jt]s?(x)',
+    '<rootDir>/functions/test/**/(*.)+(spec|test).[jt]s?(x)',
   ],
   transform: {
     '^.+\\.js$': 'babel-jest',
@@ -27,8 +35,8 @@ module.exports = {
     '<rootDir>/src/pages/**/*.vue',
     '<rootDir>/src/store/**/*.ts',
     // サーバーミドルウェアで使用するもの
-    '<rootDir>/src/functions/bin/**/*.ts',
-    '<rootDir>/src/functions/routes/**/*.ts',
+    '<rootDir>/functions/bin/**/*.ts',
+    '<rootDir>/functions/routes/**/*.ts',
   ],
   coverageDirectory: '<rootDir>/test/unit/coverage',
   coverageReporters: ['html', 'text-summary'],

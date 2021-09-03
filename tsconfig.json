@@ -9,8 +9,8 @@
     "module": "ESNext",
     "moduleResolution": "Node",
     "paths": {
-      "~/*": ["./src/*"],
-      "@/*": ["./src/*"]
+      "~/*": ["./src/*", "./functions/*", "./mock/*"],
+      "@/*": ["./src/*", "./functions/*", "./mock/*"]
     },
     "sourceMap": true,
     "strict": true,
