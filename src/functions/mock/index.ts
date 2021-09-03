@@ -1,12 +1,13 @@
+import './moduleAlias'
 import { NextFunction, Request, Response } from 'express'
 import jsonServer from 'json-server'
-import { route as customRoute } from './route'
-import { db } from './db'
+import { route as customRoute } from '~/functions/mock/route'
+import { db } from '~/functions/mock/db'
 
 const app = jsonServer.create()
 const middlewares = jsonServer.defaults()
 const router = jsonServer.router(db)
-const port = 3000
+const port = 5000
 
 app.use(middlewares)
 
@@ -32,9 +33,8 @@ app.use((request: Request, _response: Response, next: NextFunction) => {
 // ルーティング処理
 /**
  * json-serverのデフォルトではルーティングのパスに'/'の文字が扱えない
- * Twitter APIのエンドポイントと同様のルーティングにしたいため、パス情報の書き換えを行う
+ * Twitter APIのエンドポイントと同様のルーティングにしたいため、パス情報の書き換えを行う点に注意する
  */
-// 点に注意する
 app.use(jsonServer.rewriter(customRoute))
 app.use(router)
 
