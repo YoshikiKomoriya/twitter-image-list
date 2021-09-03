@@ -17,5 +17,7 @@ app.handler.use('/server', app.handler._router)
 
 const server = https.createServer(options, app.handler)
 server.listen(port, () => {
+  // Linterで警告が発生するが、サーバー内部のログ出力であるため問題はないと考えている
+  // eslint-disable-next-line no-console
   console.log('Express Server is running.')
 })
