@@ -32,4 +32,7 @@ module.exports = {
   ],
   coverageDirectory: '<rootDir>/test/unit/coverage',
   coverageReporters: ['html', 'text-summary'],
+
+  // dotenvを利用して、.envファイルを事前に読み込む
+  setupFiles: ['dotenv/config'],
 }
