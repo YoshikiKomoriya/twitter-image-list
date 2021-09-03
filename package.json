@@ -13,6 +13,7 @@
     "lint": "yarn lint:js && yarn lint:css",
     "mock": "'./mock/node_modules/ts-node-dev/lib/bin.js' --project './mock/tsconfig.json' './mock/index.ts'",
     "jest": "jest --passWithNoTests",
+    "test:ci": "yarn mock & sleep 5 && yarn jest",
     "test": "yarn mock & sleep 3 && yarn jest ; kill -9 `pgrep -f 'yarn|mock'`"
   },
   "dependencies": {
