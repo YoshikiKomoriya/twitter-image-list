@@ -1,0 +1,60 @@
+{
+  // IntelliSense を使用して利用可能な属性を学べます。
+  // 既存の属性の説明をホバーして表示します。
+  // 詳細情報は次を確認してください: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    // Firefox向けのデバッガーの設定（サーバー側）
+    // @see https://qiita.com/mamo3gr/items/57e243df0f2e34709856
+    {
+      "type": "node",
+      "name": "Launch Nuxt",
+      "request": "launch",
+      "runtimeExecutable": "yarn",
+      "runtimeArgs": ["run", "debug"],
+      "cwd": "${workspaceFolder}",
+      "port": 9229,
+      "sourceMaps": true,
+      "console": "internalConsole",
+      "internalConsoleOptions": "openOnFirstSessionStart"
+    },
+    // Firefox向けのデバッガーの設定（ブラウザ側）
+    // @see https://qiita.com/mamo3gr/items/57e243df0f2e34709856
+    {
+      "type": "firefox",
+      "name": "Launch Firefox",
+      "request": "launch",
+      "reAttach": true,
+      "profile": "default",
+      "keepProfileChanges": true,
+      "url": "https://localhost:3000",
+      "webRoot": "${workspaceFolder}",
+      "pathMappings": [
+        {
+          "url": "webpack:///app",
+          "path": "${workspaceFolder}/app"
+        }
+      ]
+    },
+    // Jest向けのデバッガーの設定
+    {
+      "type": "node",
+      "name": "Launch Jest",
+      "request": "launch",
+      "runtimeExecutable": "yarn",
+      "args": ["jest", "--runInBand", "--watchAll=false"],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "openOnFirstSessionStart",
+      "disableOptimisticBPs": true,
+      "cwd": "${workspaceFolder}"
+    }
+  ],
+  "compounds": [
+    // Firefox向けのデバッガーの設定
+    // @see https://qiita.com/mamo3gr/items/57e243df0f2e34709856
+    {
+      "name": "Browser Debug",
+      "configurations": ["Launch via yarn", "Launch Firefox"]
+    }
+  ]
+}
