@@ -55,6 +55,6 @@
     "stylelint-scss": "^3.19.0",
     "ts-jest": "^26.5.3",
     "vue-jest": "^3.0.4",
-    "vue-loader": "^15.9.6"
+    "vue-loader": "^15.9.8"
   }
 }
