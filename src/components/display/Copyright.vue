@@ -5,11 +5,10 @@
 <script lang="ts">
 import Vue from 'vue'
 export default Vue.extend({
-  computed: {
-    year: () => {
-      const date = new Date()
-      return date.getFullYear()
-    },
+  data() {
+    return {
+      year: new Date().getFullYear(),
+    }
   },
 })
 </script>

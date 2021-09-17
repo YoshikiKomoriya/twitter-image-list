@@ -3,7 +3,6 @@
     <v-img
       src="/logo.svg"
       :width="width"
-      :max-width="maxWidth"
       contain
       class="d-inline-block"
       alt="Twistter（Twitter Image List）"
@@ -17,11 +16,6 @@ export default Vue.extend({
   props: {
     width: {
       default: '15rem',
-      type: String,
-      required: false,
-    },
-    maxWidth: {
-      default: '50rem',
       type: String,
       required: false,
     },

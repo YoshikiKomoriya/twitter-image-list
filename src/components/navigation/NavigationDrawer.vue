@@ -5,72 +5,56 @@
     temporary
     @input="dispatchInputEvent"
   >
-    <links>
-      <template #default="slotProps">
-        <v-list>
-          <!-- リンク先が内部/外部によって使用する属性が異なるため注意する（内部リンクは'to', 外部リンクは'href'を用いる） -->
-          <v-list-item
-            v-for="(link, index) in slotProps.links"
-            :key="index"
-            :to="isInternalLink(link.to) ? link.to : ''"
-            :href="isInternalLink(link.to) ? '' : link.to"
-          >
-            <v-list-item-icon>
-              <v-icon>{{ link.icon }}</v-icon>
-            </v-list-item-icon>
-            <v-list-item-title>
-              {{ link.title }}
-            </v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </template>
-    </links>
+    <!-- linksはルートの要素にdivタグを持つため、v-list系のコンポーネントに影響が出ないよう外側で展開する -->
+    <v-list nav>
+      <v-list-item-group color="primary">
+        <v-list-item
+          v-for="(link, index) in links"
+          :key="index"
+          :to="link.path"
+          nuxt
+          link
+        >
+          <v-list-item-icon>
+            <v-icon>{{ link.icon }}</v-icon>
+          </v-list-item-icon>
+          <v-list-item-title v-text="link.title"> </v-list-item-title>
+        </v-list-item>
+      </v-list-item-group>
+    </v-list>
   </v-navigation-drawer>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
-import Links from '~/components/navigation/Links.vue'
+import { links } from '~/components/navigation/links'
 
 /**
  * メニュー向けのドロワー
  */
 export default Vue.extend({
-  components: { Links },
   props: {
     /**
      * ドロワー表示用のモデル
      */
-    value: {
+    drawer: {
       type: Boolean,
       default: false,
     },
   },
-  computed: {
-    /**
-     * ドロワー表示用のモデル
-     */
-    drawer: {
-      get(): boolean {
-        return this.value
-      },
-      set() {},
-    },
+  data() {
+    return {
+      links,
+    }
   },
+
   methods: {
     /**
      * ドロワーの開閉時に実行される関数
      * 親コンポーネントに対してイベントを発生させる
      */
     dispatchInputEvent(value: boolean) {
-      this.$emit('input', value)
-    },
-    /**
-     * 指定のリンク先が内部リンクであるかどうかを調べる
-     */
-    isInternalLink(path: string) {
-      const isExternalLink = /^https?:\/\//.test(path)
-      return !isExternalLink
+      this.$emit('update:drawer', value)
     },
   },
 })

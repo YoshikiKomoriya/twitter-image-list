@@ -1,10 +1,7 @@
 <template>
   <v-app>
     <!-- ナビゲーションの実際の表示領域 -->
-    <navigation-drawer
-      :value="navigationDrawer"
-      @input="setNavigationDrawer"
-    ></navigation-drawer>
+    <navigation-drawer :drawer.sync="navigationDrawer"></navigation-drawer>
 
     <header-component @input="setNavigationDrawer(true)"></header-component>
 
