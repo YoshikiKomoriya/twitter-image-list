@@ -39,7 +39,7 @@
     // Jest向けのデバッガーの設定
     {
       "type": "node",
-      "name": "Launch Jest",
+      "name": "vscode-jest-tests",
       "request": "launch",
       "runtimeExecutable": "yarn",
       "args": ["jest", "--runInBand", "--watchAll=false"],
