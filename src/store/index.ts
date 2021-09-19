@@ -4,11 +4,11 @@
  * @see https://typed-vuex.roe.dev/getting-started-nuxt
  */
 import {
-  getAccessorType,
   actionTree,
   getterTree,
   mutationTree,
-} from 'nuxt-typed-vuex'
+  getAccessorType,
+} from 'typed-vuex'
 
 // Import all your submodules
 // Storeを新規作成するたびに、インポートするモジュールを追加する
