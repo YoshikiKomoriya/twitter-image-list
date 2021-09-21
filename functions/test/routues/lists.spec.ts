@@ -3,7 +3,7 @@ import axios from 'axios'
 import { env } from '~/bin/dotenv'
 import { authenticatedRequest } from '~/test/util/supertest'
 
-describe('/twitter', () => {
+describe('/list', () => {
   // すべてのテストで利用する変数
   const mockServerOrigin = env.get('MOCK_SERVER_URL')
 
@@ -18,7 +18,7 @@ describe('/twitter', () => {
     const value = await axios.get(`${mockServerOrigin}/lists/ownerships`)
     mockGet.mockResolvedValue(value)
 
-    const response = await authenticatedRequest.get('/twitter/lists/ownerships')
+    const response = await authenticatedRequest.get('/lists/ownerships')
 
     expect(response.statusCode).toEqual(200)
   })
