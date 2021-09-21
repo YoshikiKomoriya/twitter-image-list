@@ -9,6 +9,7 @@ on:
 jobs:
   ci:
     runs-on: ${{ matrix.os }}
+    # dependabotによる実行の場合、Linterが失敗してしまう（secretsの値が読み込めない）ため操作しない
     if: contains(github.actor, 'dependabot') == false
 
     strategy:
