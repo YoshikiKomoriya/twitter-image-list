@@ -1,6 +1,7 @@
 import { Router } from 'express'
 import { router as authentication } from '~/routes/authentication'
-import { router as twitter } from '~/routes/twitter'
+import { router as lists } from '~/routes/lists'
+import { router as search } from '~/routes/search'
 
 const router = Router()
 
@@ -8,6 +9,7 @@ const router = Router()
 router.use('/authentication', authentication)
 
 // Twitter APIへのリクエストを行うルーティング
-router.use('/twitter', twitter)
+router.use('/lists', lists)
+router.use('/search', search)
 
 export { router }

@@ -12,6 +12,7 @@ router.get('/', async (_request, response, next) => {
   const client = createApplicationClient(
     env.get('CONSUMER_KEY'),
     env.get('CONSUMER_SECRET'),
+    env.get('BEARER_TOKEN'),
   )
 
   // Twitterにリクエスト用トークン情報を発行するよう依頼する
@@ -34,6 +35,7 @@ router.get('/callback', async (request: Request, response: Response, next) => {
   const client = createApplicationClient(
     env.get('CONSUMER_KEY'),
     env.get('CONSUMER_SECRET'),
+    env.get('BEARER_TOKEN'),
   )
 
   // レスポンスに含まれる認証情報を解析する

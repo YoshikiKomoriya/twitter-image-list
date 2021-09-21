@@ -1,8 +1,8 @@
 /**
  * TwitterとのAPI通信に関する設定
  */
-import { Router, Request, Response } from 'express'
-import { createClient } from '~/routes/middleware/client'
+import { Router } from 'express'
+import { addUserClient } from '~/routes/middleware/client'
 import { verifyAuthentication } from '~/routes/middleware/authenticated'
 
 const router = Router()
@@ -11,21 +11,7 @@ const router = Router()
 router.use(verifyAuthentication)
 
 // API通信用クライアントクラスの生成を行う
-router.use(createClient)
-
-router.get(
-  '/lists/ownerships',
-  async (request: Request, response: Response, next) => {
-    const path = '/lists/ownerships'
-
-    const result = await request.client?.get(path).catch((error) => {
-      next(error)
-      throw error
-    })
-
-    response.json(result)
-  },
-)
+router.use(addUserClient)
 
 /**
  * 実装のアイデアに関するメモ
