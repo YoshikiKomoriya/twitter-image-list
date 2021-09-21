@@ -2,7 +2,7 @@ import { Response } from 'jest-express/lib/response'
 import { next } from 'jest-express/lib/next'
 import Twitter, { AccessTokenResponse } from 'twitter-lite'
 import Boom from 'boom'
-import { createClient } from '~/routes/middleware/client'
+import { addApplicationClient, addUserClient } from '~/routes/middleware/client'
 import { RequestWithSession } from '~/test/util/jest-express'
 
 describe('API通信用クライアントクラスの生成', () => {
@@ -16,7 +16,17 @@ describe('API通信用クライアントクラスの生成', () => {
     response = new Response()
   })
 
-  test('認証済みの場合、クライアントクラスを生成する', () => {
+  test('アプリケーション向けクライアントクラスを生成する', () => {
+    const request = new RequestWithSession() as any
+    addApplicationClient(request, response, next)
+
+    expect(request.client).toBeInstanceOf(Twitter)
+
+    // 「引数が渡されていない」ことをテストするため、引数を含めてチェックする関数を使用する
+    expect(next).toHaveBeenCalledWith()
+  })
+
+  test('認証済みの場合、ユーザー向けクライアントクラスを生成する', () => {
     const request = new RequestWithSession() as any
     const user: AccessTokenResponse = {
       oauth_token: 'test_oauth_token',
@@ -26,17 +36,18 @@ describe('API通信用クライアントクラスの生成', () => {
     }
     request.session.user = user
 
-    createClient(request, response, next)
+    addUserClient(request, response, next)
 
     expect(request.client).toBeInstanceOf(Twitter)
+
     // 「引数が渡されていない」ことをテストするため、引数を含めてチェックする関数を使用する
     expect(next).toHaveBeenCalledWith()
   })
 
-  test('認証済みでない（未認証orセッション切れ）場合、エラーが返却される', () => {
+  test('ユーザー向けクライアントクラス生成時に、認証済みでない（未認証orセッション切れ）場合、エラーが返却される', () => {
     const request = new RequestWithSession() as any
 
-    createClient(request, response, next)
+    addUserClient(request, response, next)
 
     // エラーメッセージが異なる場合にもテストが失敗するので、修正時には注意する
     expect(next).toHaveBeenCalledWith(Boom.forbidden('not authenticated'))

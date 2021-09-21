@@ -5,8 +5,9 @@ describe('コンシューマーキーを使用したアプリケーション用�
   test('クライアントクラスが生成される', () => {
     const key = 'testKey'
     const secret = 'testSecret'
+    const bearerToken = 'testToken'
 
-    const client = createApplicationClient(key, secret)
+    const client = createApplicationClient(key, secret, bearerToken)
 
     expect(client).toBeInstanceOf(Twitter)
   })

@@ -3,17 +3,39 @@
  */
 import { Request, Response, NextFunction } from 'express'
 import Boom from 'boom'
-import { createUserClient } from '../bin/client'
+import { createApplicationClient, createUserClient } from '~/routes/bin/client'
 import { env } from '~/bin/dotenv'
 
 /**
- * TwitterとのAPI通信を行うクライアントクラスを生成して、リクエスト情報に付与する
+ * TwitterとのAPI通信を行うアプリケーション向けクライアントクラスを生成して、リクエスト情報に付与する
  * @param request リクエスト情報
  * @param _response レスポンス情報
  * @param next Express上で次の処理へ移るための関数
  * @returns リクエスト情報にクライアントクラスを付与して次の処理へ移行する。未認証の場合はエラーオブジェクトを渡して次の処理へ移行する
  */
-const createClient = (
+const addApplicationClient = (
+  request: Request,
+  _response: Response,
+  next: NextFunction,
+) => {
+  // クライアントクラスを生成して、リクエスト情報に付与する
+  request.client = createApplicationClient(
+    env.get('CONSUMER_KEY'),
+    env.get('CONSUMER_SECRET'),
+    env.get('BEARER_TOKEN'),
+  )
+
+  return next()
+}
+
+/**
+ * TwitterとのAPI通信を行うユーザー向けクライアントクラスを生成して、リクエスト情報に付与する
+ * @param request リクエスト情報
+ * @param _response レスポンス情報
+ * @param next Express上で次の処理へ移るための関数
+ * @returns リクエスト情報にクライアントクラスを付与して次の処理へ移行する。未認証の場合はエラーオブジェクトを渡して次の処理へ移行する
+ */
+const addUserClient = (
   request: Request,
   _response: Response,
   next: NextFunction,
@@ -37,4 +59,4 @@ const createClient = (
   return next()
 }
 
-export { createClient }
+export { addApplicationClient, addUserClient }

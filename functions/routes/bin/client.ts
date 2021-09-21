@@ -12,10 +12,21 @@ import Twitter, { TwitterOptions } from 'twitter-lite'
 const createApplicationClient = (
   consumerKey: string,
   consumerSecret: string,
+  bearerToken: string,
 ) => {
+  /**
+   * Twitterの仕様上、ベアラートークンを使用したアプリケーション認証において、コンシューマーキー・シークレットの入力は不要である
+   * しかし、'twitter-lite'上では必須項目となっている（ライブラリ上の不具合）
+   * 動作上に大きな問題はないため、問題が解決するまで、コンシューマーキー・シークレットの入力を行なった上でアプリケーション認証を行う
+   * （Issueが挙げられてプルリクエストも作成されているため、近いうちに修正されると思われる）
+   *
+   * @todo バージョンアップによる修正を確認できたら、コンシューマーキー・シークレットに関する処理を削除する
+   * @see https://github.com/draftbit/twitter-lite/issues/171
+   */
   const option: TwitterOptions = {
     consumer_key: consumerKey,
     consumer_secret: consumerSecret,
+    bearer_token: bearerToken,
   }
   const client = new Twitter(option)
 

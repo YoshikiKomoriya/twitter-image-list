@@ -8,6 +8,7 @@ const route = {
   '/oauth/authenticate': '/oauth_authenticate',
   '/oauth/access_token': '/oauth_access_token',
   '/lists/ownerships': '/lists_ownerships',
+  '/search/tweets': '/search_tweets',
 }
 
 export { route }
