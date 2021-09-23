@@ -25,6 +25,7 @@ const config: NuxtConfig = {
   // フロントエンドに公開される環境変数
   publicRuntimeConfig: {
     appTitle: process.env.APP_TITLE,
+    apiServerUrl: process.env.API_SERVER_URL,
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css

@@ -1,4 +1,6 @@
-# components
+# test
+
+ユニットテスト
 
 ## ディレクトリの構成
 
@@ -13,6 +15,8 @@
   - （線引きが難しいものもあるが）以下のようなテストは行わない方針
     - Vuetify によって提供されている機能
       - `v-img`の**画像の表示**は確認せず、**画像パスが正確に指定されているかどうか**のみテストする
+    - Nuxt Content によって表示される文章
+      - **文章の表示や内容**は確認せず、モックによって**表示する領域が描画されているかどうか**のみテストする
 
 - Vuetify のコンポーネントは`<v-*-stub>`となる
 
@@ -32,16 +36,14 @@
 import { shallowMount } from '~/test/util/mount'
 import HogeComponent from '~/components/HogeComponent.vue'
 
+describe('コンポーネント名等、コンポーネントの代表的な情報', () => {
   let wrapper: Wrapper<Vue>
 
   beforeEach(() => {
-    wrapper = shallowMount(Header)
+    wrapper = shallowMount(HogeComponent)
   })
 
-describe('コンポーネント名等、コンポーネントの代表的な情報', () => {
   test('テスト名、具体的な情報', () => {
-    const wrapper = shallowMount(HogeComponent)
-
     expect(wrapper.exists()).toBe(true)
   })
 })
