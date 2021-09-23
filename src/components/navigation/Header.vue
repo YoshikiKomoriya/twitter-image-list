@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar flat color="gray_light" app absolute>
+  <v-app-bar flat color="gray" app absolute>
     <v-container>
       <v-row align="center">
         <!-- 左側 -->

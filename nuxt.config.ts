@@ -22,6 +22,11 @@ const config: NuxtConfig = {
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
   },
 
+  // フロントエンドに公開される環境変数
+  publicRuntimeConfig: {
+    appTitle: process.env.APP_TITLE,
+  },
+
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [],
 
@@ -57,34 +62,37 @@ const config: NuxtConfig = {
   axios: {},
 
   // Content module configuration: https://go.nuxtjs.dev/config-content
-  content: {},
+  content: {
+    liveEdit: false,
+  },
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
   vuetify: {
-    customVariables: ['~/assets/variables.scss'],
     theme: {
       dark: false,
       default: false,
       disable: false,
       options: {},
       themes: {
-        dark: {
-          primary: colors.blue.darken2,
-          accent: colors.grey.darken3,
-          secondary: colors.amber.darken3,
-          info: colors.teal.lighten1,
-          warning: colors.amber.base,
-          error: colors.deepOrange.accent4,
-          success: colors.green.accent3,
-        },
         light: {
-          primary: colors.blue.darken2,
-          accent: colors.grey.darken3,
-          secondary: colors.amber.darken3,
-          info: colors.teal.lighten1,
+          primary: '#00bcd4',
+          secondary: '#00a0d4',
+          accent: '#d45100',
+          gray: '#ebeeef',
+          info: colors.teal.base,
           warning: colors.amber.base,
-          error: colors.deepOrange.accent4,
-          success: colors.green.accent3,
+          error: colors.deepOrange.base,
+          success: colors.green.base,
+        },
+        dark: {
+          primary: '#00262a',
+          secondary: '#00ACC1',
+          accent: '#FFA726',
+          gray: '#70878f',
+          info: colors.teal.base,
+          warning: colors.amber.base,
+          error: colors.deepOrange.base,
+          success: colors.green.base,
         },
       },
     },
