@@ -39,7 +39,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import Copyright from '~/components/display/Copyright.vue'
-import { links } from '~/components/navigation/links'
+import { links } from '~/models/links'
 
 export default Vue.extend({
   components: { Copyright },

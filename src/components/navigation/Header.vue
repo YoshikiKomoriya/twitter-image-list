@@ -43,7 +43,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import Logo from '~/components/display/Logo.vue'
-import { links } from '~/components/navigation/links'
+import { links } from '~/models/links'
 
 /**
  * ヘッダー向けのツールバー
