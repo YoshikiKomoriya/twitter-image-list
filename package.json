@@ -54,7 +54,6 @@
     "stylelint-prettier": "^1.2.0",
     "stylelint-scss": "^3.21.0",
     "ts-jest": "^26.5.3",
-    "vue-jest": "^3.0.4",
-    "vue-loader": "^16.7.0"
+    "vue-jest": "^3.0.4"
   }
 }

@@ -13,6 +13,7 @@ import {
 } from '@vue/test-utils'
 import Vue from 'vue'
 import Vuetify from 'vuetify'
+import NuxtContentMock from '~/test/util/__mocks__/NuxtContentMock.vue'
 
 /**
  * 指定のオプションに'vuetify'が存在するか調べて、ない場合は追加する
@@ -43,8 +44,10 @@ const mount = (
   const wrapper = utilsMount(component, {
     localVue,
     stubs: {
-      // リンク系のモジュールはJestの標準機能で読み込めないため、テスト用モジュールで代替する
+      // リンク系のモジュールをテスト用モジュールで代替する
       NuxtLink: RouterLinkStub,
+      // Nuxt Contentのモジュールについて、独自にスタブ化する
+      NuxtContent: NuxtContentMock,
     },
     ...options,
   })
@@ -69,8 +72,10 @@ const shallowMount = (
   const wrapper = utilsShallowMount(component, {
     localVue,
     stubs: {
-      // リンク系のモジュールはJestの標準機能で読み込めないため、テスト用モジュールで代替する
+      // リンク系のモジュールをテスト用モジュールで代替する
       NuxtLink: RouterLinkStub,
+      // Nuxt Contentのモジュールについて、独自にスタブ化する
+      NuxtContent: NuxtContentMock,
     },
     ...options,
   })

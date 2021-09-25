@@ -1,5 +1,5 @@
 <template>
-  <v-footer color="gray_light" app absolute>
+  <v-footer color="gray" app absolute>
     <v-container>
       <nav>
         <v-row justify="center">
