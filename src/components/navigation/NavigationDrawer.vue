@@ -27,7 +27,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { links } from '~/components/navigation/links'
+import { links } from '~/models/links'
 
 /**
  * メニュー向けのドロワー

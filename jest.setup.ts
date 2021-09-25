@@ -5,6 +5,14 @@ import Vue from 'vue'
 import Vuetify from 'vuetify'
 
 /**
+ * Vueの環境変数・開発者ツールに関する警告を抑制する
+ * 主にjest.mock()やjest.spyOn()を使用している際に発生する警告を抑制する
+ * @see https://stackoverflow.com/questions/61469650/vue-unit-testing-you-are-running-vue-in-development-mode
+ */
+Vue.config.productionTip = false
+Vue.config.devtools = false
+
+/**
  * Vuetifyの登録
  * Vueコンポーネントのテスト向けに、Vuetifyを登録する
  *

@@ -2,7 +2,7 @@
 import { Wrapper } from '@vue/test-utils'
 import Vuetify from 'vuetify'
 import Header from '~/components/navigation/Header.vue'
-import { links } from '~/components/navigation/links'
+import { links } from '~/models/links'
 import { shallowMount } from '~/test/util/mount'
 
 describe('ヘッダー（PC表示）', () => {

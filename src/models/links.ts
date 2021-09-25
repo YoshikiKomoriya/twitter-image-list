@@ -1,7 +1,11 @@
 /**
  * メニューに表示するリンク先一覧
  */
-import { Link } from '~/@types/link'
+type Link = {
+  title: string
+  path: string
+  icon: string
+}
 
 // リンクに設定するページ
 const links: Link[] = [

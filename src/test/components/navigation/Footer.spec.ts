@@ -1,7 +1,7 @@
 import { Wrapper } from '@vue/test-utils'
 import { shallowMount } from '~/test/util/mount'
 import Footer from '~/components/navigation/Footer.vue'
-import { links } from '~/components/navigation/links'
+import { links } from '~/models/links'
 
 describe('フッター', () => {
   let wrapper: Wrapper<Vue>
