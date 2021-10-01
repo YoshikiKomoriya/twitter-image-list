@@ -2,7 +2,7 @@ import './bin/moduleAlias'
 import { NextFunction, Request, Response } from 'express'
 import jsonServer from 'json-server'
 import { route as customRoute } from '~/route'
-import { db } from '~/db'
+import { db } from '~/db/index'
 
 const app = jsonServer.create()
 const middlewares = jsonServer.defaults()
