@@ -10,6 +10,12 @@ const config: NuxtConfig = {
   // ソースディレクトリをROOT/src/配下に変更する
   srcDir: 'src/',
 
+  // エイリアスの設定
+  alias: {
+    '~openapi': path.resolve(__dirname, '/openapi'),
+    '@openapi': path.resolve(__dirname, '/openapi'),
+  },
+
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     titleTemplate: `%s`,
@@ -25,7 +31,6 @@ const config: NuxtConfig = {
   // フロントエンドに公開される環境変数
   publicRuntimeConfig: {
     appTitle: process.env.APP_TITLE,
-    apiServerUrl: process.env.API_SERVER_URL,
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
