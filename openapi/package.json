@@ -1,0 +1,15 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "generate:code": "openapi-generator-cli generate -i ./schema.yml -g typescript-fetch -o ./generated/ -c ./config.json --additional-properties=npmName=api_name,supportsES6=true,typescriptThreePlus=true",
+    "generate:html": "openapi-generator-cli generate -i ./schema.yml -g html -o ./generated/ -c ./config.json --additional-properties=npmName=api_name,supportsES6=true,typescriptThreePlus=true",
+    "generate": "yarn generate:code && yarn generate:html",
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "@openapitools/openapi-generator-cli": "^2.4.5",
+    "typescript": "^4.4.3"
+  }
+}

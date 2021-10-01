@@ -1,0 +1,736 @@
+openapi: 3.0.0
+info:
+  title: sample
+  version: '1.0'
+servers:
+  - url: https://localhost:3000/server
+paths:
+  /authentication/:
+    get:
+      summary: Twitter認証
+      description: Twitterの認証画面へ遷移する
+      operationId: authentication
+      tags:
+        - authentication
+      responses:
+        '302':
+          description: 認証画面へのリダイレクト
+          links:
+            authenticationUrl:
+              operationRef: 'https://api.twitter.com/oauth/authenticate?oauth_token={oauth_token}'
+              parameters:
+                oauth_token: '取得した認証用トークン'
+
+  /authentication/callback:
+    get:
+      summary: Twitter認証後のコールバック
+      description: Twitterの認証結果を検証する
+      operationId: callback
+      tags:
+        - authentication
+      parameters:
+        - name: oauth_token
+          in: query
+          description: OAuthトークン
+          example: test_token
+          schema:
+            type: string
+          required: true
+        - name: oauth_verifier
+          in: query
+          description: OAuthトークンのシークレット
+          example: test_token_verifier
+          schema:
+            type: string
+          required: true
+      responses:
+        '302':
+          description: アカウント用ホーム画面へのリダイレクト
+          links:
+            authenticationUrl:
+              operationRef: 'https://localhost/home'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+
+  /authentication/logout:
+    get:
+      summary: ログアウト
+      description: ログアウト処理を実施する
+      operationId: logout
+      tags:
+        - authentication
+      responses:
+        '200':
+          description: ログアウト成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseAuthenticationLogout'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /search/tweets:
+    get:
+      summary: キーワード検索
+      description: ツイートを単語で検索する
+      operationId: searchTweet
+      tags:
+        - search
+      parameters:
+        - name: q
+          in: query
+          description: 検索キーワード
+          example: cat
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 100
+          required: true
+        - name: count
+          in: query
+          description: 取得件数
+          example: 20
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+          required: false
+        - name: max_id
+          in: query
+          description: 取得対象となる範囲の指定（指定のIDより過去を対象とする）
+          schema:
+            type: string
+          required: false
+      responses:
+        '200':
+          description: 検索結果の取得
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseSearchTweets'
+
+components:
+  schemas:
+    # エラーレスポンスで使用する共通パラメータ
+    Error:
+      type: object
+      required:
+        - statusCode
+        - error
+        - message
+      properties:
+        statusCode:
+          type: number
+          description: HTTPステータスコード
+        error:
+          type: string
+          description: エラー形式
+        message:
+          type: string
+          description: エラーメッセージ
+        data:
+          type: object
+          description: 追加データ
+
+    # 各APIのレスポンス
+    ResponseAuthenticationLogout:
+      type: object
+      required:
+        - result
+      properties:
+        result:
+          type: string
+          description: 処理結果
+
+    ResponseSearchTweets:
+      type: object
+      required:
+        - statuses
+        - search_metadata
+      properties:
+        statuses:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tweet'
+          description: ツイート群
+        search_metadata:
+          $ref: '#/components/schemas/SearchMetadata'
+
+    # Twitter APIの返却値用の型情報
+    Tweet:
+      type: object
+      description: ツイート
+      properties:
+        created_at:
+          type: string
+        id:
+          type: integer
+        id_str:
+          type: string
+        text:
+          type: string
+        truncated:
+          type: boolean
+        entities:
+          $ref: '#/components/schemas/Entities'
+        extended_entities:
+          $ref: '#/components/schemas/ExtendedEntities'
+        source:
+          type: string
+        in_reply_to_status_id:
+          type: integer
+          nullable: true
+        in_reply_to_status_id_str:
+          type: string
+          nullable: true
+        in_reply_to_user_id:
+          type: integer
+          nullable: true
+        in_reply_to_user_id_str:
+          type: string
+          nullable: true
+        in_reply_to_screen_name:
+          type: string
+          nullable: true
+        user:
+          $ref: '#/components/schemas/User'
+        geo:
+          type: string
+          nullable: true
+        coordinates:
+          type: string
+          nullable: true
+        retweeted_status:
+          $ref: '#/components/schemas/Tweet'
+        place:
+          type: string
+          nullable: true
+        contributors:
+          type: string
+          nullable: true
+        is_quote_status:
+          type: boolean
+        quoted_status_id:
+          type: integer
+        quoted_status_id_str:
+          type: string
+        quoted_status:
+          $ref: '#/components/schemas/Tweet'
+        retweet_count:
+          type: integer
+        favorite_count:
+          type: integer
+        favorited:
+          type: boolean
+        retweeted:
+          type: boolean
+        possibly_sensitive:
+          type: boolean
+        possibly_sensitive_appealable:
+          type: boolean
+        lang:
+          type: string
+      required:
+        - created_at
+        - id
+        - id_str
+        - text
+        - truncated
+        - entities
+        - source
+        - in_reply_to_status_id
+        - in_reply_to_status_id_str
+        - in_reply_to_user_id
+        - in_reply_to_user_id_str
+        - in_reply_to_screen_name
+        - geo
+        - coordinates
+        - retweeted_status
+        - place
+        - contributors
+        - is_quote_status
+        - retweet_count
+        - favorite_count
+        - favorited
+        - retweeted
+        - lang
+
+    User:
+      type: object
+      description: ユーザー情報
+      properties:
+        id:
+          type: integer
+        id_str:
+          type: string
+        name:
+          type: string
+        screen_name:
+          type: string
+        location:
+          type: string
+        description:
+          type: string
+        url:
+          type: string
+          nullable: true
+        entities:
+          $ref: '#/components/schemas/UserEntities'
+        protected:
+          type: boolean
+        followers_count:
+          type: integer
+        friends_count:
+          type: integer
+        listed_count:
+          type: integer
+        created_at:
+          type: string
+        favourites_count:
+          type: integer
+        utc_offset:
+          type: integer
+          nullable: true
+        time_zone:
+          type: string
+          nullable: true
+        geo_enabled:
+          type: boolean
+        verified:
+          type: boolean
+        statuses_count:
+          type: integer
+        lang:
+          type: string
+          nullable: true
+        contributors_enabled:
+          type: boolean
+        is_translator:
+          type: boolean
+        is_translation_enabled:
+          type: boolean
+        profile_background_color:
+          type: string
+        profile_background_image_url:
+          type: string
+          nullable: true
+        profile_background_image_url_https:
+          type: string
+          nullable: true
+        profile_background_tile:
+          type: boolean
+        profile_image_url:
+          type: string
+        profile_image_url_https:
+          type: string
+        profile_banner_url:
+          type: string
+        profile_link_color:
+          type: string
+        profile_sidebar_border_color:
+          type: string
+        profile_sidebar_fill_color:
+          type: string
+        profile_text_color:
+          type: string
+        profile_use_background_image:
+          type: boolean
+        has_extended_profile:
+          type: boolean
+        default_profile:
+          type: boolean
+        default_profile_image:
+          type: boolean
+        following:
+          type: boolean
+          nullable: true
+        follow_request_sent:
+          type: boolean
+          nullable: true
+        notifications:
+          type: boolean
+          nullable: true
+        translator_type:
+          type: string
+      required:
+        - id
+        - id_str
+        - name
+        - screen_name
+        - location
+        - description
+        - url
+        - entities
+        - protected
+        - followers_count
+        - friends_count
+        - listed_count
+        - created_at
+        - favourites_count
+        - utc_offset
+        - time_zone
+        - geo_enabled
+        - verified
+        - statuses_count
+        - lang
+        - contributors_enabled
+        - is_translator
+        - is_translation_enabled
+        - profile_background_color
+        - profile_background_image_url
+        - profile_background_image_url_https
+        - profile_background_tile
+        - profile_image_url
+        - profile_image_url_https
+        - profile_banner_url
+        - profile_link_color
+        - profile_sidebar_border_color
+        - profile_sidebar_fill_color
+        - profile_text_color
+        - profile_use_background_image
+        - has_extended_profile
+        - default_profile
+        - default_profile_image
+        - following
+        - follow_request_sent
+        - notifications
+        - translator_type
+
+    UserEntities:
+      type: object
+      description: ユーザーが所有するエンティティ
+      properties:
+        url:
+          type: object
+          properties:
+            urls:
+              type: array
+              items:
+                $ref: '#/components/schemas/Url'
+        description:
+          type: object
+          properties:
+            urls:
+              type: array
+              items:
+                $ref: '#/components/schemas/Url'
+      required:
+        - description
+
+    UserMension:
+      type: object
+      description: ユーザーの返信に関する付随情報
+      properties:
+        screen_name:
+          type: string
+        name:
+          type: string
+        id:
+          type: integer
+        id_str:
+          type: string
+        indices:
+          type: array
+          items:
+            type: integer
+      required:
+        - screen_name
+        - name
+        - id
+        - id_str
+        - indices
+
+    Entities:
+      type: object
+      description: ユーザーが所有するエンティティ
+      properties:
+        hashtags:
+          type: array
+          items:
+            $ref: '#/components/schemas/Hashtag'
+        symbols:
+          type: array
+          items:
+            $ref: '#/components/schemas/Symbol'
+        user_mentions:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserMension'
+        urls:
+          type: array
+          items:
+            $ref: '#/components/schemas/Url'
+        media:
+          type: array
+          items:
+            $ref: '#/components/schemas/Media'
+        polls:
+          type: array
+          items:
+            $ref: '#/components/schemas/Poll'
+      required:
+        - hashtags
+        - symbols
+        - user_menstions
+        - urls
+
+    ExtendedEntities:
+      type: object
+      description: ユーザーが所有するエンティティ
+      properties:
+        media:
+          type: array
+          items:
+            $ref: '#/components/schemas/Media'
+      required:
+        - media
+
+    Hashtag:
+      type: object
+      properties:
+        text:
+          type: string
+        indices:
+          type: array
+          items:
+            type: integer
+      required:
+        - text
+        - indices
+
+    Symbol:
+      type: object
+      properties:
+        text:
+          type: string
+        indices:
+          type: array
+          items:
+            type: integer
+      required:
+        - text
+        - indices
+
+    Url:
+      type: object
+      properties:
+        url:
+          type: string
+        expanded_url:
+          type: string
+        display_url:
+          type: string
+        indices:
+          type: array
+          items:
+            type: integer
+      required:
+        - url
+        - expanded_url
+        - display_url
+        - indices
+
+    Media:
+      type: object
+      properties:
+        id:
+          type: integer
+        id_str:
+          type: string
+        indices:
+          type: array
+          items:
+            type: integer
+        media_url:
+          type: string
+        media_url_https:
+          type: string
+        url:
+          type: string
+        display_url:
+          type: string
+        expanded_url:
+          type: string
+        type:
+          type: string
+        sizes:
+          $ref: '#/components/schemas/MediaSizes'
+        source_status_id:
+          type: number
+        source_status_id_str:
+          type: string
+        source_user_id:
+          type: number
+        source_user_id_str:
+          type: string
+        video_info:
+          $ref: '#/components/schemas/VideoInfo'
+        additional_media_info:
+          type: object
+          properties:
+            monetizable:
+              type: boolean
+            source_user:
+              $ref: '#/components/schemas/User'
+          required:
+            - monetizable
+      required:
+        - id
+        - id_str
+        - indices
+        - media_url
+        - media_url_https
+        - url
+        - display_url
+        - expanded_url
+        - type
+        - sizes
+
+    MediaSizeResizeType:
+      type: string
+      pattern: ^fit|corp$
+
+    MediaSize:
+      type: object
+      properties:
+        h:
+          type: number
+        w:
+          type: number
+        resize:
+          $ref: '#/components/schemas/MediaSizeResizeType'
+      required:
+        - h
+        - w
+        - resize
+
+    MediaSizes:
+      type: object
+      properties:
+        small:
+          $ref: '#/components/schemas/MediaSize'
+        medium:
+          $ref: '#/components/schemas/MediaSize'
+        large:
+          $ref: '#/components/schemas/MediaSize'
+        thumb:
+          $ref: '#/components/schemas/MediaSize'
+      required:
+        - small
+        - medium
+        - large
+        - thumb
+
+    VideoInfoVariants:
+      type: object
+      properties:
+        bitrate:
+          type: integer
+        contentType:
+          type: string
+        url:
+          type: string
+      required:
+        - contentType
+        - url
+
+    VideoInfo:
+      type: object
+      properties:
+        aspect_ratio:
+          type: array
+          items:
+            type: integer
+            format: float
+        duration_millis:
+          type: integer
+        variants:
+          type: array
+          items:
+            $ref: '#/components/schemas/VideoInfoVariants'
+      required:
+        - aspect_ratio
+        - duration_millis
+        - variants
+
+    PollOption:
+      type: object
+      properties:
+        position:
+          type: number
+        text:
+          type: string
+      required:
+        - position
+        - text
+
+    Poll:
+      type: object
+      properties:
+        options:
+          type: array
+          items:
+            $ref: '#/components/schemas/PollOption'
+        end_datetime:
+          type: string
+        duration_minutes:
+          type: number
+      required:
+        - options
+        - end_datetime
+        - duration_millis
+
+    SearchMetadata:
+      type: object
+      description: 検索用の付随情報
+      properties:
+        completed_in:
+          type: number
+          format: float
+        max_id:
+          type: integer
+        max_id_str:
+          type: string
+        next_results:
+          type: string
+        query:
+          type: string
+        refresh_url:
+          type: string
+        count:
+          type: integer
+        since_id:
+          type: integer
+        since_id_str:
+          type: string
+      required:
+        - completed_in
+        - max_id
+        - max_id_str
+        - query
+        - refresh_url
+        - count
+        - since_id
+        - since_id_str
+
+  responses:
+    BadRequestError:
+      description: 不正なリクエストエラー
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+    ForbiddenError:
+      description: 権限エラー
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+    InternalServerError:
+      description: サーバーエラー
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
