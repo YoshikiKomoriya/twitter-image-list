@@ -3,12 +3,15 @@
  * @see https://expressjs.com/ja/advanced/best-practice-security.html
  */
 
+import path from 'path'
+
 // サーバー系ライブラリの読み込み
 import express from 'express'
 
 // 各種設定の読み込み
 import './bin/moduleAlias'
 import helmet from 'helmet'
+import * as OpenApiValidator from 'express-openapi-validator'
 import { errorHandler } from '~/bin/errorHandler'
 import { env } from '~/bin/dotenv'
 import { session } from '~/bin/session'
@@ -28,6 +31,10 @@ app.use(helmet())
 app.use(express.urlencoded({ extended: true }))
 // JSON文字列が渡ってきた場合に、JSONオブジェクトに変換する
 app.use(express.json())
+
+// リクエストのバリデーション設定
+const schema = path.resolve(__dirname, '../openapi/schema.yml')
+app.use(OpenApiValidator.middleware({ apiSpec: schema }))
 
 // セッションの設定
 app.use(session())

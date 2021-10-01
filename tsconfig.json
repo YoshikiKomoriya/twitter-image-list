@@ -10,7 +10,9 @@
     "moduleResolution": "Node",
     "paths": {
       "~/*": ["./src/*", "./functions/*", "./mock/*"],
-      "@/*": ["./src/*", "./functions/*", "./mock/*"]
+      "@/*": ["./src/*", "./functions/*", "./mock/*"],
+      "~openapi/*": ["./openapi/*"],
+      "@openapi/*": ["./openapi/*"]
     },
     "sourceMap": true,
     "strict": true,

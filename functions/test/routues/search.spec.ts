@@ -103,10 +103,14 @@ describe('/search', () => {
       }
 
       // 最小値・最大値・サンプルとして抽出された値それぞれを用いてテストを行う
+      const rule = {
+        min: 1,
+        max: 100,
+      }
       const counts = [
-        rule.count.min,
-        getRandomIntInclusive(rule.count.min + 1, rule.count.max - 1), // 最小値・最大値を除くランダムな値
-        rule.count.max,
+        rule.min,
+        getRandomIntInclusive(rule.min + 1, rule.max - 1), // 最小値・最大値を除くランダムな値
+        rule.max,
       ]
 
       counts.map(async (count) => {
