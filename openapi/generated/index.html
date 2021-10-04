@@ -200,6 +200,10 @@ font-style: italic;
   <li><a href="#callback"><code><span class="http-method">get</span> /authentication/callback</code></a></li>
   <li><a href="#logout"><code><span class="http-method">get</span> /authentication/logout</code></a></li>
   </ul>
+  <h4><a href="#Lists">Lists</a></h4>
+  <ul>
+  <li><a href="#listsOwnerships"><code><span class="http-method">get</span> /lists/ownerships</code></a></li>
+  </ul>
   <h4><a href="#Search">Search</a></h4>
   <ul>
   <li><a href="#searchTweet"><code><span class="http-method">get</span> /search/tweets</code></a></li>
@@ -311,6 +315,222 @@ font-style: italic;
         <a href="#ResponseAuthenticationLogout">ResponseAuthenticationLogout</a>
     <h4 class="field-label">500</h4>
     サーバーエラー
+        <a href="#Error">Error</a>
+  </div> <!-- method -->
+  <hr/>
+  <h1><a name="Lists">Lists</a></h1>
+  <div class="method"><a name="listsOwnerships"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /lists/ownerships</code></pre></div>
+    <div class="method-summary">リスト一覧 (<span class="nickname">listsOwnerships</span>)</div>
+    <div class="method-notes">自身が所持するリストの一覧</div>
+
+
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#ResponseListsOwnerships">ResponseListsOwnerships</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "previous_cursor" : 6,
+  "next_cursor" : 0,
+  "previous_cursor_str" : "previous_cursor_str",
+  "lists" : [ {
+    "description" : "description",
+    "created_at" : "created_at",
+    "uri" : "uri",
+    "mode" : "mode",
+    "full_name" : "full_name",
+    "subscriber_count" : 5,
+    "id_str" : "id_str",
+    "following" : true,
+    "name" : "name",
+    "id" : 1,
+    "member_count" : 5,
+    "user" : {
+      "utc_offset" : 9,
+      "friends_count" : 1,
+      "profile_image_url_https" : "profile_image_url_https",
+      "listed_count" : 4,
+      "profile_background_image_url" : "profile_background_image_url",
+      "default_profile_image" : true,
+      "favourites_count" : 5,
+      "description" : "description",
+      "created_at" : "created_at",
+      "is_translator" : true,
+      "profile_background_image_url_https" : "profile_background_image_url_https",
+      "protected" : true,
+      "screen_name" : "screen_name",
+      "id_str" : "id_str",
+      "profile_link_color" : "profile_link_color",
+      "is_translation_enabled" : true,
+      "translator_type" : "translator_type",
+      "id" : 6,
+      "geo_enabled" : true,
+      "profile_background_color" : "profile_background_color",
+      "lang" : "lang",
+      "has_extended_profile" : true,
+      "profile_sidebar_border_color" : "profile_sidebar_border_color",
+      "profile_text_color" : "profile_text_color",
+      "verified" : true,
+      "profile_image_url" : "profile_image_url",
+      "time_zone" : "time_zone",
+      "url" : "url",
+      "contributors_enabled" : true,
+      "profile_background_tile" : true,
+      "profile_banner_url" : "profile_banner_url",
+      "entities" : {
+        "description" : {
+          "urls" : [ {
+            "display_url" : "display_url",
+            "indices" : [ 2, 2 ],
+            "expanded_url" : "expanded_url",
+            "url" : "url"
+          }, {
+            "display_url" : "display_url",
+            "indices" : [ 2, 2 ],
+            "expanded_url" : "expanded_url",
+            "url" : "url"
+          } ]
+        },
+        "url" : {
+          "urls" : [ {
+            "display_url" : "display_url",
+            "indices" : [ 2, 2 ],
+            "expanded_url" : "expanded_url",
+            "url" : "url"
+          }, {
+            "display_url" : "display_url",
+            "indices" : [ 2, 2 ],
+            "expanded_url" : "expanded_url",
+            "url" : "url"
+          } ]
+        }
+      },
+      "statuses_count" : 9,
+      "follow_request_sent" : true,
+      "followers_count" : 7,
+      "profile_use_background_image" : true,
+      "default_profile" : true,
+      "following" : true,
+      "name" : "name",
+      "location" : "location",
+      "profile_sidebar_fill_color" : "profile_sidebar_fill_color",
+      "notifications" : true
+    },
+    "slug" : "slug"
+  }, {
+    "description" : "description",
+    "created_at" : "created_at",
+    "uri" : "uri",
+    "mode" : "mode",
+    "full_name" : "full_name",
+    "subscriber_count" : 5,
+    "id_str" : "id_str",
+    "following" : true,
+    "name" : "name",
+    "id" : 1,
+    "member_count" : 5,
+    "user" : {
+      "utc_offset" : 9,
+      "friends_count" : 1,
+      "profile_image_url_https" : "profile_image_url_https",
+      "listed_count" : 4,
+      "profile_background_image_url" : "profile_background_image_url",
+      "default_profile_image" : true,
+      "favourites_count" : 5,
+      "description" : "description",
+      "created_at" : "created_at",
+      "is_translator" : true,
+      "profile_background_image_url_https" : "profile_background_image_url_https",
+      "protected" : true,
+      "screen_name" : "screen_name",
+      "id_str" : "id_str",
+      "profile_link_color" : "profile_link_color",
+      "is_translation_enabled" : true,
+      "translator_type" : "translator_type",
+      "id" : 6,
+      "geo_enabled" : true,
+      "profile_background_color" : "profile_background_color",
+      "lang" : "lang",
+      "has_extended_profile" : true,
+      "profile_sidebar_border_color" : "profile_sidebar_border_color",
+      "profile_text_color" : "profile_text_color",
+      "verified" : true,
+      "profile_image_url" : "profile_image_url",
+      "time_zone" : "time_zone",
+      "url" : "url",
+      "contributors_enabled" : true,
+      "profile_background_tile" : true,
+      "profile_banner_url" : "profile_banner_url",
+      "entities" : {
+        "description" : {
+          "urls" : [ {
+            "display_url" : "display_url",
+            "indices" : [ 2, 2 ],
+            "expanded_url" : "expanded_url",
+            "url" : "url"
+          }, {
+            "display_url" : "display_url",
+            "indices" : [ 2, 2 ],
+            "expanded_url" : "expanded_url",
+            "url" : "url"
+          } ]
+        },
+        "url" : {
+          "urls" : [ {
+            "display_url" : "display_url",
+            "indices" : [ 2, 2 ],
+            "expanded_url" : "expanded_url",
+            "url" : "url"
+          }, {
+            "display_url" : "display_url",
+            "indices" : [ 2, 2 ],
+            "expanded_url" : "expanded_url",
+            "url" : "url"
+          } ]
+        }
+      },
+      "statuses_count" : 9,
+      "follow_request_sent" : true,
+      "followers_count" : 7,
+      "profile_use_background_image" : true,
+      "default_profile" : true,
+      "following" : true,
+      "name" : "name",
+      "location" : "location",
+      "profile_sidebar_fill_color" : "profile_sidebar_fill_color",
+      "notifications" : true
+    },
+    "slug" : "slug"
+  } ],
+  "next_cursor_str" : "next_cursor_str"
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    リスト一覧
+        <a href="#ResponseListsOwnerships">ResponseListsOwnerships</a>
+    <h4 class="field-label">400</h4>
+    不正なリクエストエラー
         <a href="#Error">Error</a>
   </div> <!-- method -->
   <hr/>
@@ -1682,6 +1902,9 @@ font-style: italic;
     <h4 class="field-label">200</h4>
     検索結果の取得
         <a href="#ResponseSearchTweets">ResponseSearchTweets</a>
+    <h4 class="field-label">400</h4>
+    不正なリクエストエラー
+        <a href="#Error">Error</a>
   </div> <!-- method -->
   <hr/>
 
@@ -1694,6 +1917,7 @@ font-style: italic;
     <li><a href="#Error"><code>Error</code> - </a></li>
     <li><a href="#ExtendedEntities"><code>ExtendedEntities</code> - </a></li>
     <li><a href="#Hashtag"><code>Hashtag</code> - </a></li>
+    <li><a href="#List"><code>List</code> - </a></li>
     <li><a href="#Media"><code>Media</code> - </a></li>
     <li><a href="#MediaSize"><code>MediaSize</code> - </a></li>
     <li><a href="#MediaSizes"><code>MediaSizes</code> - </a></li>
@@ -1701,6 +1925,7 @@ font-style: italic;
     <li><a href="#Poll"><code>Poll</code> - </a></li>
     <li><a href="#PollOption"><code>PollOption</code> - </a></li>
     <li><a href="#ResponseAuthenticationLogout"><code>ResponseAuthenticationLogout</code> - </a></li>
+    <li><a href="#ResponseListsOwnerships"><code>ResponseListsOwnerships</code> - </a></li>
     <li><a href="#ResponseSearchTweets"><code>ResponseSearchTweets</code> - </a></li>
     <li><a href="#SearchMetadata"><code>SearchMetadata</code> - </a></li>
     <li><a href="#Symbol"><code>Symbol</code> - </a></li>
@@ -1749,6 +1974,25 @@ font-style: italic;
     <div class="field-items">
       <div class="param">text </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
 <div class="param">indices </div><div class="param-desc"><span class="param-type"><a href="#integer">array[Integer]</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="List"><code>List</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'>リスト</div>
+    <div class="field-items">
+      <div class="param">id </div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  </div>
+<div class="param">id_str </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">name </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">uri </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">subscriber_count </div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  </div>
+<div class="param">member_count </div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  </div>
+<div class="param">mode </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">description </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">slug </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">full_name </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">created_at </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">following </div><div class="param-desc"><span class="param-type"><a href="#boolean">Boolean</a></span>  </div>
+<div class="param">user </div><div class="param-desc"><span class="param-type"><a href="#User">User</a></span>  </div>
     </div>  <!-- field-items -->
   </div>
   <div class="model">
@@ -1822,6 +2066,17 @@ font-style: italic;
     <div class='model-description'></div>
     <div class="field-items">
       <div class="param">result </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> 処理結果 </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="ResponseListsOwnerships"><code>ResponseListsOwnerships</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">next_cursor (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  </div>
+<div class="param">next_cursor_str (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">previous_cursor (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  </div>
+<div class="param">previous_cursor_str (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">lists </div><div class="param-desc"><span class="param-type"><a href="#List">array[List]</a></span>  </div>
     </div>  <!-- field-items -->
   </div>
   <div class="model">

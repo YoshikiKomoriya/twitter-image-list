@@ -3,9 +3,12 @@ info:
   title: sample
   version: '1.0'
 servers:
+  # 本番環境向け
   - url: https://localhost:3000/server
+  # テスト環境向け
+  - url: https://localhost:5000
 paths:
-  /authentication/:
+  /authentication:
     get:
       summary: Twitter認証
       description: Twitterの認証画面へ遷移する
@@ -108,6 +111,25 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ResponseSearchTweets'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+
+  /lists/ownerships:
+    get:
+      summary: リスト一覧
+      description: 自身が所持するリストの一覧
+      operationId: listsOwnerships
+      tags:
+        - lists
+      responses:
+        '200':
+          description: リスト一覧
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseListsOwnerships'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
 
 components:
   schemas:
@@ -155,6 +177,24 @@ components:
           description: ツイート群
         search_metadata:
           $ref: '#/components/schemas/SearchMetadata'
+
+    ResponseListsOwnerships:
+      type: object
+      required:
+        - lists
+      properties:
+        next_cursor:
+          type: integer
+        next_cursor_str:
+          type: string
+        previous_cursor:
+          type: integer
+        previous_cursor_str:
+          type: string
+        lists:
+          type: array
+          items:
+            $ref: '#/components/schemas/List'
 
     # Twitter APIの返却値用の型情報
     Tweet:
@@ -712,6 +752,52 @@ components:
         - count
         - since_id
         - since_id_str
+
+    List:
+      type: object
+      description: リスト
+      properties:
+        id:
+          type: integer
+        id_str:
+          type: string
+        name:
+          type: string
+        uri:
+          type: string
+        subscriber_count:
+          type: integer
+        member_count:
+          type: integer
+        mode:
+          type: string
+          pattern: ^public|private$
+        description:
+          type: string
+        slug:
+          type: string
+        full_name:
+          type: string
+        created_at:
+          type: string
+        following:
+          type: boolean
+        user:
+          $ref: '#/components/schemas/User'
+      required:
+        - id
+        - id_str
+        - name
+        - uri
+        - subscriber_count
+        - member_count
+        - mode
+        - description
+        - slug
+        - full_name
+        - created_at
+        - following
+        - user
 
   responses:
     BadRequestError:
