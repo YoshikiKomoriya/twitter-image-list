@@ -3,7 +3,10 @@ import Boom from 'boom'
 import { createApplicationClient } from '~/routes/bin/client'
 import { authentication } from '~/routes/bin/authentication'
 import { env } from '~/bin/dotenv'
-import * as API from '~openapi/generated/src'
+import {
+  CallbackRequest,
+  ResponseAuthenticationLogout,
+} from '~openapi/generated/src'
 
 const router = Router()
 
@@ -34,7 +37,7 @@ router.get('/', async (_request, response, next) => {
 router.get(
   '/callback',
   async (
-    request: Request<any, any, any, API.CallbackRequest>,
+    request: Request<any, any, any, CallbackRequest>,
     response: Response,
     next,
   ) => {
@@ -75,7 +78,7 @@ router.get(
   '/logout',
   (
     request: Request,
-    response: Response<API.ResponseAuthenticationLogout>,
+    response: Response<ResponseAuthenticationLogout>,
     next,
   ) => {
     // セッション情報を破棄する

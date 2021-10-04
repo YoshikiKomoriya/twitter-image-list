@@ -40,7 +40,7 @@ export class AuthenticationApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         const response = await this.request({
-            path: `/authentication/`,
+            path: `/authentication`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
