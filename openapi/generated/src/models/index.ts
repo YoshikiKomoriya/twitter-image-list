@@ -3,6 +3,7 @@
 export * from './Entities';
 export * from './ExtendedEntities';
 export * from './Hashtag';
+export * from './List';
 export * from './Media';
 export * from './MediaAdditionalMediaInfo';
 export * from './MediaSize';
@@ -11,6 +12,7 @@ export * from './ModelError';
 export * from './Poll';
 export * from './PollOption';
 export * from './ResponseAuthenticationLogout';
+export * from './ResponseListsOwnerships';
 export * from './ResponseSearchTweets';
 export * from './SearchMetadata';
 export * from './Symbol';
