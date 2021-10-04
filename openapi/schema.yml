@@ -3,10 +3,10 @@ info:
   title: sample
   version: '1.0'
 servers:
-  # 本番環境向け
+  # 開発環境向け
   - url: https://localhost:3000/server
-  # テスト環境向け
-  - url: https://localhost:5000
+  # Jest上のSupertest環境向け
+  - url: https://localhost
 paths:
   /authentication:
     get:
