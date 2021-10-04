@@ -2,7 +2,8 @@ import Boom from 'boom'
 import { Request } from 'jest-express/lib/request'
 import { Response } from 'jest-express/lib/response'
 import { next } from 'jest-express/lib/next'
-import { errorHandler } from '~/bin/errorHandler'
+import { HttpError } from 'express-openapi-validator/dist/framework/types'
+import { errorHandler, ErrorResponse } from '~/bin/errorHandler'
 
 describe('エラーハンドリング', () => {
   // 値の変動がない共通のパラメータ
@@ -27,6 +28,30 @@ describe('エラーハンドリング', () => {
     // デフォルト処理の場合、ステータスコードが既存の200のままである（Boom.forbidden()によって403に変更されることがない）
     expect(response.statusCode).toBe(200)
     expect(next).toHaveBeenCalledWith(error)
+  })
+
+  test('エラーの形式がopen-api-generatorのものである場合、専用の処理を実施してエラーが表示される', () => {
+    const error = HttpError.create({
+      status: 400,
+      path: '/server/test',
+      message: '不正なリクエスト形式です',
+    })
+
+    errorHandler(error, request, response, next)
+
+    // ステータスコードが設定されているかどうか
+    expect(response.status).toBeCalledWith(error.status)
+    expect(response.statusCode).toEqual(error.status)
+
+    // レスポンスボディが指定の値になっているかどうか
+    const output: ErrorResponse = {
+      statusCode: error.status,
+      error: error.name,
+      message: error.message,
+      data: error.errors,
+    }
+    expect(response.json).toBeCalledWith(output)
+    expect(response.body).toStrictEqual(output)
   })
 
   test('エラーの形式がBoomである場合、専用の処理を実施してエラーが表示される', () => {

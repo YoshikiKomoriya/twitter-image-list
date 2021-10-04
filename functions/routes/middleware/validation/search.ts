@@ -5,36 +5,25 @@ import { encodeQuery } from '~/routes/bin/query'
 const rule = {
   query: {
     max: 500,
-    errorMessage: 'エンコード後の文字列が多すぎます',
-  },
-  count: {
-    min: 1,
-    max: 100,
-    default: 15,
+    errorMessage: 'エンコード後の文字数が多すぎます',
   },
 }
 
 // 各パラメータのバリデーション処理
 const search = [
-  query('q')
-    .isString()
-    .notEmpty()
-    .custom((value) => {
-      const encodedValue = encodeQuery(value)
-      if (encodedValue.length >= rule.query.max) {
-        throw new Error(
-          `${rule.query.errorMessage} ${encodedValue.length}/${rule.query.max}`,
-        )
-      }
+  query('q').custom((value: string) => {
+    // パーセントエンコードした際に、文字数が規定値を超えないか検証する
+    // valueにはデコード済みの値が渡ってくるため、再度エンコードしてから検証を実施する
+    const encodedValue = encodeQuery(value)
+    if (encodedValue.length >= rule.query.max) {
+      throw new Error(
+        `${rule.query.errorMessage} ${encodedValue.length}/${rule.query.max}`,
+      )
+    }
 
-      // bool値の返却を忘れないこと（意図しない動作となる可能性がある）
-      return true
-    }),
-  query('count')
-    .isInt({ min: rule.count.min, max: rule.count.max })
-    .default(rule.count.default)
-    .optional(),
-  query('max_id').isString().optional(),
+    // bool値の返却を忘れないこと（意図しない動作となる可能性がある）
+    return true
+  }),
 ]
 
 const validator = {

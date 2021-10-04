@@ -4,6 +4,7 @@
 import { Router, Request, Response } from 'express'
 import { addUserClient } from '~/routes/middleware/client'
 import { verifyAuthentication } from '~/routes/middleware/authenticated'
+import { ResponseListsOwnerships } from '~openapi/generated/src'
 
 const router = Router()
 
@@ -18,10 +19,12 @@ router.get(
   async (request: Request, response: Response, next) => {
     const path = '/lists/ownerships'
 
-    const result = await request.client?.get(path).catch((error) => {
-      next(error)
-      throw error
-    })
+    const result: ResponseListsOwnerships = await request.client
+      ?.get(path)
+      .catch((error) => {
+        next(error)
+        throw error
+      })
 
     response.json(result)
   },

@@ -1,0 +1,5 @@
+{
+  "modelPropertyNaming": "snake_case",
+  "paramNaming": "snake_case",
+  "enumPropertyNaming": "snake_case"
+}

@@ -43,17 +43,7 @@ describe('/search', () => {
       const response = await request.get('/search/tweets')
 
       expect(response.statusCode).toEqual(400)
-      expect(response.body.message).toBe('パラメータ形式が不正です')
-      expect(response.body.data.errors[0]).toStrictEqual({
-        msg: 'Invalid value',
-        param: 'q',
-        location: 'query',
-      })
-      expect(response.body.data.errors[1]).toStrictEqual({
-        msg: 'Invalid value',
-        param: 'q',
-        location: 'query',
-      })
+      expect(response.body.error).toBe('Bad Request')
     })
 
     test('キーワードが空文字', async () => {
@@ -62,13 +52,7 @@ describe('/search', () => {
       const response = await request.get(`/search/tweets?${parameter}`)
 
       expect(response.statusCode).toEqual(400)
-      expect(response.body.message).toBe('パラメータ形式が不正です')
-      expect(response.body.data.errors[0]).toStrictEqual({
-        value: '',
-        msg: 'Invalid value',
-        param: 'q',
-        location: 'query',
-      })
+      expect(response.body.error).toBe('Bad Request')
     })
 
     test('キーワードが規定数をオーバーしている', async () => {
@@ -78,14 +62,7 @@ describe('/search', () => {
       const response = await request.get(`/search/tweets?${parameter}`)
 
       expect(response.statusCode).toEqual(400)
-      expect(response.body.message).toBe('パラメータ形式が不正です')
-
-      // エラーオブジェクトが動的に生成されるため（主にエラーメッセージ）、オブジェクトを丸ごと使った比較は行わずに、要素ごとに検証を行う
-      const error = response.body.data.errors[0]
-      expect(error.value).toBe(query)
-      expect(error.msg).toMatch(rule.query.errorMessage)
-      expect(error.param).toBe('q')
-      expect(error.location).toBe('query')
+      expect(response.body.error).toBe('Bad Request')
     })
 
     test('取得数が正常な範囲内（1件〜100件）', () => {
@@ -103,10 +80,14 @@ describe('/search', () => {
       }
 
       // 最小値・最大値・サンプルとして抽出された値それぞれを用いてテストを行う
+      const rule = {
+        min: 1,
+        max: 100,
+      }
       const counts = [
-        rule.count.min,
-        getRandomIntInclusive(rule.count.min + 1, rule.count.max - 1), // 最小値・最大値を除くランダムな値
-        rule.count.max,
+        rule.min,
+        getRandomIntInclusive(rule.min + 1, rule.max - 1), // 最小値・最大値を除くランダムな値
+        rule.max,
       ]
 
       counts.map(async (count) => {
@@ -131,13 +112,7 @@ describe('/search', () => {
       const response = await request.get(`/search/tweets?${parameter}`)
 
       expect(response.statusCode).toEqual(400)
-      expect(response.body.message).toBe('パラメータ形式が不正です')
-      expect(response.body.data.errors[0]).toStrictEqual({
-        value: '0',
-        msg: 'Invalid value',
-        param: 'count',
-        location: 'query',
-      })
+      expect(response.body.error).toBe('Bad Request')
     })
 
     test('取得数が101件以上', async () => {
@@ -150,13 +125,7 @@ describe('/search', () => {
       const response = await request.get(`/search/tweets?${parameter}`)
 
       expect(response.statusCode).toEqual(400)
-      expect(response.body.message).toBe('パラメータ形式が不正です')
-      expect(response.body.data.errors[0]).toStrictEqual({
-        value: '101',
-        msg: 'Invalid value',
-        param: 'count',
-        location: 'query',
-      })
+      expect(response.body.error).toBe('Bad Request')
     })
 
     test('max_idが文字列で指定されている', async () => {
@@ -180,15 +149,7 @@ describe('/search', () => {
       )
 
       expect(response.statusCode).toEqual(400)
-      expect(response.body.data.errors[0]).toStrictEqual({
-        value: {
-          0: '967574182522482687',
-          test: '967574182522482687',
-        },
-        msg: 'Invalid value',
-        param: 'max_id',
-        location: 'query',
-      })
+      expect(response.body.error).toBe('Bad Request')
     })
   })
 })

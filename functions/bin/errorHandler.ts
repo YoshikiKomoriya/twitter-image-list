@@ -3,10 +3,35 @@
  */
 import Boom from 'boom'
 import { Request, Response, NextFunction } from 'express'
+import { HttpError } from 'express-openapi-validator/dist/framework/types'
 
-interface ExtendedPayload extends Boom.Payload {
+/**
+ * レスポンスボディの出力形式
+ */
+interface ErrorResponse {
+  /**
+   * HTTPステータスコード
+   */
+  statusCode: number
+
+  /**
+   * HTTPステータスのメッセージ
+   * e.g. 'Bad Request'
+   */
+  error: string
+
+  /**
+   * エラー詳細が記されたメッセージ
+   */
+  message: string
+
+  /**
+   * エラーに関する補助的なデータ
+   * スタックトレース・生のエラーオブジェクト等
+   */
   data?: any
-  additionalMessage?: string
+
+  [key: string]: any
 }
 
 /**
@@ -33,14 +58,27 @@ const errorHandler = (
     return next(error)
   }
 
+  // エラーがopen-api-validatorのものである場合、専用の処理を実施してエラーを出力する
+  if (error instanceof HttpError) {
+    const output: ErrorResponse = {
+      statusCode: error.status,
+      error: error.name,
+      message: error.message,
+      data: error.errors,
+    }
+
+    response.status(output.statusCode)
+    response.json(output)
+    return
+  }
+
   // エラーがBoomの形式である場合、専用の処理を実施してエラーを出力する
   if (error instanceof Boom && error.isBoom) {
-    response.status(error.output.statusCode)
-
     // 独自のデータが設定されている場合、それも出力対象とする
-    const output: ExtendedPayload = error.output.payload
+    const output: ErrorResponse = error.output.payload
     output.data = error.data ? error.data : undefined
 
+    response.status(error.output.statusCode)
     response.json(output)
     return
   }
@@ -49,4 +87,4 @@ const errorHandler = (
   response.json(error)
 }
 
-export { errorHandler }
+export { errorHandler, ErrorResponse }

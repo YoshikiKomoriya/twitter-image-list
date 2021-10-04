@@ -9,6 +9,7 @@ const route = {
   '/oauth/access_token': '/oauth_access_token',
   '/lists/ownerships': '/lists_ownerships',
   '/search/tweets': '/search_tweets',
+  '/search/tweets*': '/search_tweets',
 }
 
 export { route }
