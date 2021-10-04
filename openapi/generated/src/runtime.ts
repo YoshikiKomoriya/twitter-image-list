@@ -149,7 +149,15 @@ export class Configuration {
     }
 
     get fetchApi(): FetchAPI {
-        return this.configuration.fetchApi;
+        /**
+         * this.configuration.fetchApi が未定義である可能性があり、TypeScript上でエラーが発生する
+         * 暫定的に、'!'を付与して未定義とならない旨をTypeSCriptへ伝えている
+         * この動作はバグとしてIssueとして上がっているため、対応され次第修正する
+         *
+         * @todo 対応され次第、修正を行う
+         * @see https://github.com/OpenAPITools/openapi-generator/issues/10289
+         */
+        return this.configuration.fetchApi!
     }
 
     get middleware(): Middleware[] {
