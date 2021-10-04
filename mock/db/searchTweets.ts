@@ -2,7 +2,13 @@ const db = {
   statuses: [
     {
       created_at: 'Sun Feb 25 18:11:01 +0000 2018',
-      id: 967824267948773377n,
+      /**
+       * IDの取り扱いに関して、Bigintに相当する大きさのものは、JSONとして出力する際にTypeErrorが発生する
+       * 対応策として、予め文字列として定義している
+       *
+       * @see https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/BigInt#json_%E3%81%A7%E3%81%AE%E4%BD%BF%E7%94%A8
+       */
+      id: '967824267948773377',
       id_str: '967824267948773377',
       text: 'From pilot to astronaut, Robert H. Lawrence was the first African-American to be selected as an astronaut by any na… https://t.co/FjPEWnh804',
       truncated: true,
@@ -30,7 +36,7 @@ const db = {
       in_reply_to_user_id_str: null,
       in_reply_to_screen_name: null,
       user: {
-        id: 11348282,
+        id: '11348282',
         id_str: '11348282',
         name: 'NASA',
         screen_name: 'NASA',
@@ -107,7 +113,7 @@ const db = {
     },
     {
       created_at: 'Sun Feb 25 19:31:07 +0000 2018',
-      id: 967844427480911872n,
+      id: '967844427480911872',
       id_str: '967844427480911872',
       text: "A magnetic power struggle of galactic proportions - new research highlights the role of the Sun's magnetic landscap… https://t.co/29dZgga54m",
       truncated: true,
@@ -135,7 +141,7 @@ const db = {
       in_reply_to_user_id_str: null,
       in_reply_to_screen_name: null,
       user: {
-        id: 11348282,
+        id: '11348282',
         id_str: '11348282',
         name: 'NASA',
         screen_name: 'NASA',
@@ -212,7 +218,7 @@ const db = {
     },
     {
       created_at: 'Mon Feb 26 19:21:43 +0000 2018',
-      id: 968204446625869827n,
+      id: '968204446625869827',
       id_str: '968204446625869827',
       text: "Someone's got to be first. In space, the first explorers beyond Mars were Pioneers 10 and 11, twin robots who chart… https://t.co/SUX30Y45mr",
       truncated: true,
@@ -240,7 +246,7 @@ const db = {
       in_reply_to_user_id_str: null,
       in_reply_to_screen_name: null,
       user: {
-        id: 11348282,
+        id: '11348282',
         id_str: '11348282',
         name: 'NASA',
         screen_name: 'NASA',
@@ -317,7 +323,7 @@ const db = {
     },
     {
       created_at: 'Mon Feb 26 06:42:50 +0000 2018',
-      id: 968013469743288321n,
+      id: '968013469743288321',
       id_str: '968013469743288321',
       text: '宇宙ステーションでも、日本と9時間の時差で月曜日が始まりました。n今週は6人から3人にクルーのサイズダウンがありますが、しっかりと任されているタスクをこなしたいと思います。nn写真は、NASAの実験施設「ディスティニー」のグローブ… https://t.co/2CYoPV6Aqx',
       truncated: true,
@@ -346,7 +352,7 @@ const db = {
       in_reply_to_user_id_str: null,
       in_reply_to_screen_name: null,
       user: {
-        id: 842625693733203968n,
+        id: '842625693733203968',
         id_str: '842625693733203968',
         name: '金井 宣茂',
         screen_name: 'Astro_Kanai',
@@ -423,7 +429,7 @@ const db = {
     },
     {
       created_at: 'Mon Feb 26 01:07:05 +0000 2018',
-      id: 967928974960545793n,
+      id: '967928974960545793',
       id_str: '967928974960545793',
       text: 'Congratulations to #Olympics athletes who won gold! Neutron stars like the one at the heart of the Crab Nebula may… https://t.co/vz4SnPupe2',
       truncated: true,
@@ -457,7 +463,7 @@ const db = {
       in_reply_to_user_id_str: null,
       in_reply_to_screen_name: null,
       user: {
-        id: 19802879,
+        id: '19802879',
         id_str: '19802879',
         name: 'NASA JPL',
         screen_name: 'NASAJPL',
