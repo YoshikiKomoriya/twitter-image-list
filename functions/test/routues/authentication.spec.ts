@@ -43,11 +43,8 @@ describe('/authentication', () => {
       const mockServerOrigin = env.get('MOCK_SERVER_URL')
       const token = (await axios.get(`${mockServerOrigin}/oauth/authenticate`))
         .data
-      const recoard = {
-        oauth_verifier: token.oauth_verifier,
-        oauth_token: token.oauth_token,
-      }
-      const parameter = new URLSearchParams(recoard)
+
+      const parameter = new URLSearchParams(token)
 
       // リクエストの実行
       const response = await request.get(
