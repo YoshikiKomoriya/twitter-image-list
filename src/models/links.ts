@@ -16,22 +16,22 @@ const links: Link[] = [
   },
   {
     title: 'ご利用上の注意',
-    path: 'rule',
+    path: '/rule',
     icon: 'mdi-check',
   },
   {
     title: 'キーワード検索',
-    path: 'keyword',
+    path: '/keyword',
     icon: 'mdi-file-search',
   },
   {
     title: 'ユーザー検索',
-    path: 'user',
+    path: '/user',
     icon: 'mdi-account-search',
   },
   {
     title: 'アカウントサービス',
-    path: 'login',
+    path: '/login',
     icon: 'mdi-account',
   },
 ]
