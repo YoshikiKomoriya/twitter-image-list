@@ -14,6 +14,7 @@ import {
 import Vue from 'vue'
 import Vuetify from 'vuetify'
 import NuxtContentMock from '~/test/util/__mocks__/NuxtContentMock.vue'
+import nuxtConfig from '~/../nuxt.config'
 
 /**
  * 指定のオプションに'vuetify'が存在するか調べて、ない場合は追加する
@@ -29,6 +30,22 @@ const addVuetifyOption = (options: FunctionalComponentMountOptions<Vue>) => {
 }
 
 /**
+ * 指定のオプションのプロパティにNuxt向けの設定が存在するか調べて、ない場合は追加する
+ */
+const addNuxtConfigOption = (options: FunctionalComponentMountOptions<Vue>) => {
+  const $config = nuxtConfig.publicRuntimeConfig ?? {}
+
+  // オプションが存在しない場合、プロパティを作成する
+  if (typeof options.mocks !== 'object') {
+    options.mocks = { $config }
+    return
+  }
+
+  // オプションが存在する場合、プロパティを追加する
+  Object.defineProperty(options.mocks, '$config', $config)
+}
+
+/**
  * コンポーネントのマウントを行う
  * @param component コンポーネント
  * @param options オプション
@@ -40,12 +57,14 @@ const mount = (
 ) => {
   const localVue = createLocalVue()
   addVuetifyOption(options)
+  addNuxtConfigOption(options)
 
   const wrapper = utilsMount(component, {
     localVue,
     stubs: {
       // リンク系のモジュールをテスト用モジュールで代替する
       NuxtLink: RouterLinkStub,
+      RouterLink: RouterLinkStub,
       // Nuxt Contentのモジュールについて、独自にスタブ化する
       NuxtContent: NuxtContentMock,
     },
@@ -68,12 +87,14 @@ const shallowMount = (
 ) => {
   const localVue = createLocalVue()
   addVuetifyOption(options)
+  addNuxtConfigOption(options)
 
   const wrapper = utilsShallowMount(component, {
     localVue,
     stubs: {
       // リンク系のモジュールをテスト用モジュールで代替する
       NuxtLink: RouterLinkStub,
+      RouterLink: RouterLinkStub,
       // Nuxt Contentのモジュールについて、独自にスタブ化する
       NuxtContent: NuxtContentMock,
     },
