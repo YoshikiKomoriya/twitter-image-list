@@ -2,7 +2,7 @@
   <section>
     <v-row justify="center">
       <v-col cols="12" class="pt-0">
-        <search-keyword></search-keyword>
+        <search-bar-keyword></search-bar-keyword>
       </v-col>
     </v-row>
   </section>
@@ -10,11 +10,11 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import SearchKeyword from '~/components/form/SearchKeyword.vue'
+import SearchBarKeyword from '~/components/form/SearchBarKeyword.vue'
 
 export default Vue.extend({
   components: {
-    SearchKeyword,
+    SearchBarKeyword,
   },
 })
 </script>

@@ -1,6 +1,6 @@
 import { Wrapper } from '@vue/test-utils'
 import { shallowMount } from '~/test/util/mount'
-import SearchKeyword from '~/components/form/SearchKeyword.vue'
+import SearchBarKeyword from '~/components/form/SearchBarKeyword.vue'
 import { icon, rules } from '~/models/searchBar'
 import { getRandomIntInclusive } from '~/test/util/math'
 
@@ -11,7 +11,7 @@ describe('キーワード検索用の検索バー', () => {
   const limit = rules.keyword.limit
 
   beforeEach(() => {
-    wrapper = shallowMount(SearchKeyword)
+    wrapper = shallowMount(SearchBarKeyword)
   })
 
   describe('コンポーネントの設定', () => {
@@ -27,7 +27,7 @@ describe('キーワード検索用の検索バー', () => {
       }
 
       // propsで指定した場合（最初から表示されている状態）
-      const componentForProps = shallowMount(SearchKeyword, {
+      const componentForProps = shallowMount(SearchBarKeyword, {
         propsData: {
           value: keywords.props,
         },
