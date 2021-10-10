@@ -1,8 +1,8 @@
 <template>
   <v-text-field
     v-model="keyword"
-    append-outer-icon="mdi-magnify"
-    label="検索キーワード"
+    :append-outer-icon="icon"
+    :label="label"
     :rules="[rule.counter]"
     @click:append-outer="submit"
     @keydown.enter="submit"
@@ -12,6 +12,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import { encodeQuery } from '~/plugins/query'
+import { icon, labels, rules, pathPrefixes } from '~/models/searchBar'
 
 export default Vue.extend({
   props: {
@@ -24,21 +25,10 @@ export default Vue.extend({
   data() {
     return {
       keyword: '',
+      label: labels.keyword,
+      icon,
       rule: {
-        counter: (value: string | undefined) => {
-          // 0文字の場合はエラーを発生させない
-          if (value === undefined) {
-            return true
-          }
-
-          // API上では文字列の最大の長さは100文字としているため、そちらに準拠する
-          const limit = 100
-          if (value.length <= limit) {
-            return true
-          }
-
-          return 'キーワードが長すぎます'
-        },
+        counter: rules.keyword.counter,
       },
     }
   },
@@ -52,10 +42,8 @@ export default Vue.extend({
      */
     submit() {
       const encodedKeyword = encodeQuery(this.keyword)
-      this.$router.push(`/keyword/${encodedKeyword}`)
+      this.$router.push(`/${pathPrefixes.keyword}/${encodedKeyword}`)
     },
   },
 })
 </script>
-
-%E3%81%82
