@@ -5,7 +5,7 @@ import { NuxtConfig } from '@nuxt/types'
 
 const config: NuxtConfig = {
   // Target: https://go.nuxtjs.dev/config-target
-  target: 'static',
+  target: 'server',
 
   // ソースディレクトリをROOT/src/配下に変更する
   srcDir: 'src/',
