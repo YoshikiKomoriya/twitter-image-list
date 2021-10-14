@@ -23,6 +23,8 @@ paths:
               operationRef: 'https://api.twitter.com/oauth/authenticate?oauth_token={oauth_token}'
               parameters:
                 oauth_token: '取得した認証用トークン'
+        '429':
+          $ref: '#/components/responses/TooManyRequestError'
 
   /authentication/callback:
     get:
@@ -54,6 +56,8 @@ paths:
               operationRef: 'https://localhost/home'
         '400':
           $ref: '#/components/responses/BadRequestError'
+        '429':
+          $ref: '#/components/responses/TooManyRequestError'
 
   /authentication/logout:
     get:
@@ -69,6 +73,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ResponseAuthenticationLogout'
+        '429':
+          $ref: '#/components/responses/TooManyRequestError'
         '500':
           $ref: '#/components/responses/InternalServerError'
 
@@ -113,6 +119,8 @@ paths:
                 $ref: '#/components/schemas/ResponseSearchTweets'
         '400':
           $ref: '#/components/responses/BadRequestError'
+        '429':
+          $ref: '#/components/responses/TooManyRequestError'
 
   /lists/ownerships:
     get:
@@ -130,6 +138,8 @@ paths:
                 $ref: '#/components/schemas/ResponseListsOwnerships'
         '400':
           $ref: '#/components/responses/BadRequestError'
+        '429':
+          $ref: '#/components/responses/TooManyRequestError'
 
 components:
   schemas:
@@ -593,6 +603,7 @@ components:
           type: string
         type:
           type: string
+          pattern: ^photo|video$
         sizes:
           $ref: '#/components/schemas/MediaSizes'
         source_status_id:
@@ -802,6 +813,13 @@ components:
   responses:
     BadRequestError:
       description: 不正なリクエストエラー
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+    TooManyRequestError:
+      description: リクエスト数エラー
       content:
         application/json:
           schema:
