@@ -33,10 +33,14 @@ const addVuetifyOption = (options: FunctionalComponentMountOptions<Vue>) => {
  * 指定のオプションのプロパティにNuxt向けの設定が存在するか調べて、ない場合は追加する
  */
 const addNuxtConfigOption = (options: FunctionalComponentMountOptions<Vue>) => {
-  const $config = nuxtConfig.publicRuntimeConfig ?? {}
+  const $config = nuxtConfig.publicRuntimeConfig
 
-  // オプションが存在しない場合、プロパティを作成する
+  if ($config === undefined) {
+    throw new Error('Nuxtの設定ファイルが読み込めませんでした')
+  }
+
   if (typeof options.mocks !== 'object') {
+    // オプションが存在しない場合、プロパティを作成する
     options.mocks = { $config }
     return
   }
