@@ -7,7 +7,9 @@ type Link = {
   icon: string
 }
 
-// リンクに設定するページ
+/**
+ * リンクに設定するページの情報
+ */
 const links: Link[] = [
   {
     title: 'ホーム',

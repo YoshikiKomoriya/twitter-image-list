@@ -1,7 +1,7 @@
 import { Wrapper } from '@vue/test-utils'
 import { shallowMount } from '~/test/util/mount'
 import NavigationDrawer from '~/components/navigation/NavigationDrawer.vue'
-import { links } from '~/models/links'
+import { links } from '~/preferences/links'
 
 describe('ナビゲーションドロワー', () => {
   let wrapper: Wrapper<Vue>

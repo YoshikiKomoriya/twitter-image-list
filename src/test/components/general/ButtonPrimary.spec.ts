@@ -1,6 +1,6 @@
 import { shallowMount } from '~/test/util/mount'
 import ButtonPrimary from '~/components/general/ButtonPrimary.vue'
-import { buttonSize } from '~/models/buttonSize'
+import { buttonSize } from '~/preferences/buttonSize'
 
 describe('プライマリー指定のボタン', () => {
   test('スロットを指定', () => {

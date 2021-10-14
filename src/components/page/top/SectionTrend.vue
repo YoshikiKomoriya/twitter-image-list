@@ -19,7 +19,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { encodeQuery } from '~/plugins/query'
+import { encodeQuery } from '~/modules/query'
 
 export default Vue.extend({
   data: () => {

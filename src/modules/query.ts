@@ -2,8 +2,6 @@
  * クエリ文字列に関する処理
  */
 
-import { searchCondition } from '~/models/searchCondition'
-
 /**
  * 特定の文字列に対してURIエンコードを行う
  * @param value エンコードしたい文字列
@@ -36,23 +34,6 @@ const convertPlusToSpace = (value: string) => {
 }
 
 /**
- * 検索キーワードに対して、アプリ向けの条件を指定する
- * 検索条件を以下に指定する
- * - 画像のみ
- * - リツイートを含まない
- * @param keyword 検索キーワード
- * @returns 検索条件を加えたキーワード
- */
-const addSearchCondition = (keyword: string, ...condition: string[]) => {
-  // 配列に検索キーワード・各条件を指定して、仕切り用の文字列で結合する
-  const baseParameter = [keyword]
-  const parameters = baseParameter.concat(condition)
-  const query = parameters.join(searchCondition.separetor)
-
-  return query
-}
-
-/**
  * クエリ文字列を解析して、指定のパラメータを取得する
  * @param query クエリ文字列
  * @param key 取得したいパラメータ
@@ -70,4 +51,20 @@ const getParameter = (parameter: string, key: string) => {
   return gettedParameter
 }
 
-export { encodeQuery, convertPlusToSpace, addSearchCondition, getParameter }
+/**
+ * URLに指定のパラメータを付与する
+ * @param url URL
+ * @param parameter 付与したいパラメータ
+ * @returns パラメータが付与されたURL
+ */
+const addParameter = (url: string, parameter: object) => {
+  const urlObject = new URL(url)
+
+  for (const [key, value] of Object.entries(parameter)) {
+    urlObject.searchParams.append(key, value)
+  }
+
+  return urlObject.toString()
+}
+
+export { encodeQuery, convertPlusToSpace, getParameter, addParameter }

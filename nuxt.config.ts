@@ -5,7 +5,7 @@ import { NuxtConfig } from '@nuxt/types'
 
 const config: NuxtConfig = {
   // Target: https://go.nuxtjs.dev/config-target
-  target: 'static',
+  target: 'server',
 
   // ソースディレクトリをROOT/src/配下に変更する
   srcDir: 'src/',
@@ -50,7 +50,6 @@ const config: NuxtConfig = {
     '@nuxtjs/stylelint-module',
     // https://go.nuxtjs.dev/vuetify
     '@nuxtjs/vuetify',
-    'nuxt-typed-vuex',
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
