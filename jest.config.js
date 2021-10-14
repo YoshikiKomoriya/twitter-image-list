@@ -33,7 +33,9 @@ module.exports = {
     // Nuxtアプリケーションで使用するもの
     '<rootDir>/src/components/**/*.vue',
     '<rootDir>/src/pages/**/*.vue',
-    '<rootDir>/src/store/**/*.ts',
+    '<rootDir>/src/plugins/**/*.ts',
+    '<rootDir>/src/modules/**/*.ts',
+    '<rootDir>/src/preferences/**/*.ts',
     // サーバーミドルウェアで使用するもの
     '<rootDir>/functions/bin/**/*.ts',
     '<rootDir>/functions/routes/**/*.ts',
