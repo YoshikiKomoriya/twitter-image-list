@@ -1,10 +1,8 @@
-import { searchCondition } from '~/models/searchCondition'
 import {
+  searchCondition,
   addSearchCondition,
-  convertPlusToSpace,
-  encodeQuery,
-  getParameter,
-} from '~/plugins/query'
+} from '~/preferences/searchCondition'
+import { convertPlusToSpace, encodeQuery, getParameter } from '~/modules/query'
 
 // テストで使用する関数の定義
 /**
@@ -78,19 +76,6 @@ describe('クエリ文字に関する処理', () => {
     const convertedString = 'hoge fuga'
 
     expect(convertPlusToSpace(string)).toBe(convertedString)
-  })
-
-  test('検索キーワードに、検索条件を追加する', () => {
-    const keyword = 'keyword'
-    const addedString = `${keyword} ${searchCondition.exclude.retweets} ${searchCondition.filter.twimg}`
-
-    expect(
-      addSearchCondition(
-        keyword,
-        searchCondition.exclude.retweets,
-        searchCondition.filter.twimg,
-      ),
-    ).toBe(addedString)
   })
 
   test('クエリ文字から指定のパラメータを取得する', () => {

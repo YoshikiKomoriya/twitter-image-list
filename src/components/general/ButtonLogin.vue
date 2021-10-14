@@ -9,7 +9,7 @@
 import Vue from 'vue'
 import type { PropType } from 'vue'
 import ButtonPrimary from '~/components/general/ButtonPrimary.vue'
-import { ButtonSizeType } from '~/models/buttonSize'
+import { ButtonSizeType } from '~/preferences/buttonSize'
 
 export default Vue.extend({
   components: { ButtonPrimary },

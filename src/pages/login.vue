@@ -34,7 +34,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import ButtonLogin from '~/components/general/ButtonLogin.vue'
-import { buttonSize } from '~/models/buttonSize'
+import { buttonSize } from '~/preferences/buttonSize'
 
 export default Vue.extend({
   components: { ButtonLogin },

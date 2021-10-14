@@ -7,6 +7,7 @@
     :large="isLarge"
     :x-large="isXLarge"
     :block="block"
+    :loading="loading"
     @click="clickEvent"
   >
     <v-icon
@@ -23,7 +24,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import type { PropType } from 'vue'
-import { buttonSize, ButtonSizeType } from '~/models/buttonSize'
+import { buttonSize, ButtonSizeType } from '~/preferences/buttonSize'
 
 export default Vue.extend({
   props: {
@@ -39,6 +40,14 @@ export default Vue.extend({
      * ボタンをブロック全体に広げるか否か
      */
     block: {
+      default: false,
+      type: Boolean,
+      required: false,
+    },
+    /**
+     * ローディング表示
+     */
+    loading: {
       default: false,
       type: Boolean,
       required: false,

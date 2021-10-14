@@ -4,13 +4,23 @@
  * - keyword: キーワード検索向け
  * - user: ユーザー検索向け
  */
+
+/**
+ * 決定ボタンに表示するアイコン
+ */
 const icon = 'mdi-magnify'
 
+/**
+ * バーの上部に表示する文字ラベル
+ */
 const labels = {
   keyword: '検索キーワード',
   user: '検索ユーザー',
 }
 
+/**
+ * バリデーション用関数
+ */
 const rules = {
   keyword: {
     limit: {
@@ -69,6 +79,9 @@ const rules = {
   },
 }
 
+/**
+ * 画面の遷移先に指定するパス情報
+ */
 const pathPrefixes = {
   keyword: 'keyword',
   user: 'user',

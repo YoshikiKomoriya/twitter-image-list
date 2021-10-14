@@ -1,6 +1,6 @@
 import { shallowMount } from '~/test/util/mount'
 import ButtonLogin from '~/components/general/ButtonLogin.vue'
-import { buttonSize } from '~/models/buttonSize'
+import { buttonSize } from '~/preferences/buttonSize'
 
 describe('ログインボタン', () => {
   test('スロットに指定した文字列', () => {

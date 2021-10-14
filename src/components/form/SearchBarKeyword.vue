@@ -11,8 +11,8 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { encodeQuery } from '~/plugins/query'
-import { icon, labels, rules, pathPrefixes } from '~/models/searchBar'
+import { encodeQuery } from '~/modules/query'
+import { icon, labels, rules, pathPrefixes } from '~/preferences/searchBar'
 
 export default Vue.extend({
   props: {

@@ -1,7 +1,7 @@
 import { Wrapper } from '@vue/test-utils'
 import { shallowMount } from '~/test/util/mount'
 import SearchBarKeyword from '~/components/form/SearchBarKeyword.vue'
-import { icon, rules } from '~/models/searchBar'
+import { icon, rules } from '~/preferences/searchBar'
 import { getRandomIntInclusive } from '~/test/util/math'
 
 describe('キーワード検索用の検索バー', () => {
