@@ -1,7 +1,3 @@
-import {
-  searchCondition,
-  addSearchCondition,
-} from '~/preferences/searchCondition'
 import { convertPlusToSpace, encodeQuery, getParameter } from '~/modules/query'
 
 // テストで使用する関数の定義
