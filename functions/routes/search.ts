@@ -3,10 +3,11 @@
  */
 import Boom from 'boom'
 import { Router, Request, Response, NextFunction } from 'express'
-import { validationResult } from 'express-validator'
 import { addApplicationClient } from '~/routes/middleware/client'
-import { validator } from '~/routes/middleware/validation/search'
-import * as API from '~openapi/generated/src'
+import {
+  ResponseSearchTweets,
+  SearchTweetRequest,
+} from '~openapi/generated/src'
 
 const router = Router()
 
@@ -15,23 +16,23 @@ router.use(addApplicationClient)
 
 router.get(
   '/tweets',
-  validator.search,
   async (
-    request: Request<any, any, any, API.SearchTweetRequest>,
-    response: Response<API.ResponseSearchTweets>,
+    request: Request<any, any, any, SearchTweetRequest>,
+    response: Response<ResponseSearchTweets>,
     next: NextFunction,
   ) => {
-    // バリデーション処理
-    const errors = validationResult(request)
-    if (errors.isEmpty() === false) {
-      return next(Boom.badRequest('パラメータ形式が不正です', errors))
-    }
-
+    // APIリクエスト
     const path = 'search/tweets'
-
-    const result: API.ResponseSearchTweets = await request.client
+    const result: ResponseSearchTweets = await request.client
       ?.get(path, request.query)
       .catch((error) => {
+        // レート制限の場合、専用のエラーを出力する
+        if (error.errors[0].code === 88) {
+          const boom = Boom.tooManyRequests(error.errors[0].message, error)
+          next(boom)
+          throw boom
+        }
+
         next(error)
         throw error
       })

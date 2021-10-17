@@ -1,12 +1,22 @@
-import Twitter from 'twitter-lite'
 import axios from 'axios'
+import Twitter from 'twitter-lite'
 import { env } from '~/bin/dotenv'
 import { request } from '~/test/util/supertest'
-import { rule } from '~/routes/middleware/validation/search'
 
 describe('/search', () => {
   // すべてのテストで利用する変数
   const mockServerOrigin = env.get('MOCK_SERVER_URL')
+
+  // クエリパラメータの有効な範囲
+  const rule = {
+    query: {
+      max: 100,
+    },
+    count: {
+      min: 1,
+      max: 100,
+    },
+  }
 
   // テスト向けにモックの初期化を行う
   let mockGet: jest.SpyInstance
@@ -80,14 +90,10 @@ describe('/search', () => {
       }
 
       // 最小値・最大値・サンプルとして抽出された値それぞれを用いてテストを行う
-      const rule = {
-        min: 1,
-        max: 100,
-      }
       const counts = [
-        rule.min,
-        getRandomIntInclusive(rule.min + 1, rule.max - 1), // 最小値・最大値を除くランダムな値
-        rule.max,
+        rule.count.min,
+        getRandomIntInclusive(rule.count.min + 1, rule.count.max - 1), // 最小値・最大値を除くランダムな値
+        rule.count.max,
       ]
 
       counts.map(async (count) => {
@@ -102,8 +108,8 @@ describe('/search', () => {
       })
     })
 
-    test('取得数が1件未満', async () => {
-      const count = 0
+    test('取得数が有効な値未満', async () => {
+      const count = rule.count.min - 1
       const parameter = new URLSearchParams({
         q: 'test',
         count: count.toString(),
@@ -115,8 +121,8 @@ describe('/search', () => {
       expect(response.body.error).toBe('Bad Request')
     })
 
-    test('取得数が101件以上', async () => {
-      const count = 101
+    test('取得数が有効な値以上', async () => {
+      const count = rule.count.max + 1
       const parameter = new URLSearchParams({
         q: 'test',
         count: count.toString(),
