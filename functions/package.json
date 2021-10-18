@@ -6,7 +6,7 @@
     "start": "ts-node-dev --files server.ts"
   },
   "dependencies": {
-    "axios": "^0.22.0",
+    "axios": "^0.23.0",
     "boom": "^7.3.0",
     "cookie-parser": "~1.4.4",
     "debug": "~4.3.2",
