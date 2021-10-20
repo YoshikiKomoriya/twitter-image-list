@@ -19,14 +19,42 @@ const labels = {
 }
 
 /**
+ * 入力する文字数の制限
+ */
+const limit = {
+  keyword: {
+    min: 1,
+    max: 100, // API上では文字列の最大の長さは100文字としているため、そちらに準拠する
+  },
+  /**
+   * ユーザー名（ID）の仕様は以下を参照
+   * @see https://help.twitter.com/ja/managing-your-account/twitter-username-rules
+   */
+  user: {
+    min: 1, // 現在のTwitterの仕様では、新規登録時に4文字以下のIDを登録することはできないが、過去に登録済みのものはそのまま使える様子
+    max: 15,
+  },
+}
+
+/**
+ * バリデーションで表示するエラーメッセージ
+ */
+const errorMessage = {
+  keyword: {
+    min: 'キーワードを入力してください',
+    max: `キーワードが長すぎます。${limit.keyword.max}文字以下で入力してください`,
+  },
+  user: {
+    min: 'ユーザーIDを入力してください',
+    max: `ユーザーIDが長すぎます。${limit.user.max}文字以下で入力してください`,
+  },
+}
+
+/**
  * バリデーション用関数
  */
 const rules = {
   keyword: {
-    limit: {
-      min: 1,
-      max: 100, // API上では文字列の最大の長さは100文字としているため、そちらに準拠する
-    },
     /**
      * 文字数を数えて、規定数以上の場合はエラーを表示する
      * @param value 入力されたキーワード
@@ -38,23 +66,18 @@ const rules = {
         return true
       }
 
-      if (value.length < rules.keyword.limit.min) {
-        return 'キーワードを入力してください'
+      if (value.length < limit.keyword.min) {
+        return errorMessage.keyword.min
       }
 
-      if (value.length > rules.keyword.limit.max) {
-        return 'キーワードが長すぎます'
+      if (value.length > limit.keyword.max) {
+        return errorMessage.keyword.max
       }
 
       return true
     },
   },
   user: {
-    // @see https://help.twitter.com/ja/managing-your-account/twitter-username-rules
-    limit: {
-      min: 1, // 現在のTwitterの仕様では、新規登録時に4文字以下のIDを登録することはできないが、過去に登録済みのものはそのまま使える様子
-      max: 15,
-    },
     /**
      * 文字数を数えて、規定数以上の場合はエラーを表示する
      * @param value 入力されたユーザーID
@@ -66,12 +89,12 @@ const rules = {
         return true
       }
 
-      if (value.length < rules.keyword.limit.min) {
-        return 'ユーザーIDを入力してください'
+      if (value.length < limit.keyword.min) {
+        return errorMessage.user.min
       }
 
-      if (value.length > rules.keyword.limit.max) {
-        return 'ユーザーIDが長すぎます'
+      if (value.length > limit.keyword.max) {
+        return errorMessage.user.max
       }
 
       return true
@@ -87,4 +110,4 @@ const pathPrefixes = {
   user: 'user',
 }
 
-export { icon, labels, rules, pathPrefixes }
+export { icon, labels, limit, errorMessage, rules, pathPrefixes }

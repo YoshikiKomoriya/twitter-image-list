@@ -1,14 +1,11 @@
 import { Wrapper } from '@vue/test-utils'
-import { shallowMount } from '~/test/util/mount'
 import SearchBarKeyword from '~/components/form/SearchBarKeyword.vue'
-import { icon, rules } from '~/preferences/searchBar'
+import { errorMessage, icon, limit, rules } from '~/preferences/searchBar'
 import { getRandomIntInclusive } from '~/test/util/math'
+import { shallowMount } from '~/test/util/mount'
 
 describe('キーワード検索用の検索バー', () => {
   let wrapper: Wrapper<Vue>
-
-  // プロパティにアクセスしようとすると、入れ子が深く見通しが悪くなるため、変数に入れて省略する
-  const limit = rules.keyword.limit
 
   beforeEach(() => {
     wrapper = shallowMount(SearchBarKeyword)
@@ -54,7 +51,7 @@ describe('キーワード検索用の検索バー', () => {
     test.each([
       rules.keyword.counter(undefined), // 未入力
       rules.keyword.counter(
-        'a'.repeat(getRandomIntInclusive(limit.min, limit.max)),
+        'a'.repeat(getRandomIntInclusive(limit.keyword.min, limit.keyword.max)),
       ),
     ])('文字数のカウント（正常時）', (result) => {
       expect(result).toBe(true)
@@ -62,12 +59,12 @@ describe('キーワード検索用の検索バー', () => {
 
     test('文字数のカウント（異常時・0文字）', () => {
       const result = rules.keyword.counter('')
-      expect(result).toBe('キーワードを入力してください')
+      expect(result).toBe(errorMessage.keyword.min)
     })
 
     test('文字数のカウント（異常時・101文字以上）', () => {
-      const result = rules.keyword.counter('a'.repeat(limit.max + 1))
-      expect(result).toBe('キーワードが長すぎます')
+      const result = rules.keyword.counter('a'.repeat(limit.keyword.max + 1))
+      expect(result).toBe(errorMessage.keyword.max)
     })
   })
 })
