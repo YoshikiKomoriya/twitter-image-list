@@ -17,7 +17,7 @@
     "test": "yarn mock & sleep 3 && yarn jest ; kill -9 `pgrep -f 'yarn|mock'`"
   },
   "dependencies": {
-    "@nuxt/content": "^1.14.0",
+    "@nuxt/content": "^1.15.0",
     "@nuxtjs/axios": "^5.13.6",
     "@nuxtjs/pwa": "^3.3.5",
     "firebase": "^9.1.2",
