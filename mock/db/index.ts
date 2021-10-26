@@ -8,6 +8,15 @@
 import { db as searchTweets } from '~/db/searchTweets'
 
 const db = {
+  // レート制限時のエラーレスポンス
+  rate_limit: {
+    errors: [
+      {
+        code: 88,
+        message: 'Rate limit exceeded',
+      },
+    ],
+  },
   oauth_request_token: {
     oauth_token: 'Z6eEdO8MOmk394WozF5oKyuAv855l4Mlqo7hhlSLik',
     oauth_token_secret: 'Kd75W4OQfb2oJTV0vzGzeXftVAwgMnEK9MumzYc',

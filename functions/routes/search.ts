@@ -2,7 +2,9 @@
  * TwitterとのAPI通信に関する設定
  */
 import Boom from 'boom'
-import { Router, Request, Response, NextFunction } from 'express'
+import { Request, Response, Router } from 'express'
+import { assertIsTwitterClient } from '~/routes/bin/assert'
+import { generateBoomError } from '~/routes/bin/generateBoomError'
 import { addApplicationClient } from '~/routes/middleware/client'
 import {
   ResponseSearchTweets,
@@ -19,23 +21,23 @@ router.get(
   async (
     request: Request<any, any, any, SearchTweetRequest>,
     response: Response<ResponseSearchTweets>,
-    next: NextFunction,
+    next,
   ) => {
-    // APIリクエスト
-    const path = 'search/tweets'
-    const result: ResponseSearchTweets = await request.client
-      ?.get(path, request.query)
-      .catch((error) => {
-        // レート制限の場合、専用のエラーを出力する
-        if (error.errors[0].code === 88) {
-          const boom = Boom.tooManyRequests(error.errors[0].message, error)
-          next(boom)
-          throw boom
-        }
+    // ミドルウェアで生成されたクライアントクラスの検証
+    assertIsTwitterClient(request.client)
 
-        next(error)
-        throw error
+    // APIリクエスト
+    const path = '/search/tweets'
+    const result: ResponseSearchTweets = await request.client
+      .get(path, request.query)
+      .catch((error) => {
+        return generateBoomError(error)
       })
+
+    // エラーが出力されている場合、エラーハンドリングへ移行する
+    if (result instanceof Boom) {
+      return next(result)
+    }
 
     response.json(result)
   },

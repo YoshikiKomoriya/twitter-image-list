@@ -2,7 +2,7 @@
  * Expressのエラーハンドリングに関する設定
  */
 import Boom from 'boom'
-import { Request, Response, NextFunction } from 'express'
+import { NextFunction, Request, Response } from 'express'
 import { HttpError } from 'express-openapi-validator/dist/framework/types'
 
 /**
@@ -73,12 +73,16 @@ const errorHandler = (
   }
 
   // エラーがBoomの形式である場合、専用の処理を実施してエラーを出力する
-  if (error instanceof Boom && error.isBoom) {
+  if (error instanceof Boom) {
+    const output: ErrorResponse = {
+      statusCode: error.output.statusCode,
+      error: error.output.payload.error,
+      message: error.message,
+    }
     // 独自のデータが設定されている場合、それも出力対象とする
-    const output: ErrorResponse = error.output.payload
-    output.data = error.data ? error.data : undefined
+    output.data = error.data ? error.data : error.output.payload
 
-    response.status(error.output.statusCode)
+    response.status(output.statusCode)
     response.json(output)
     return
   }

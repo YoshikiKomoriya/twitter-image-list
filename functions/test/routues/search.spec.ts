@@ -24,7 +24,7 @@ describe('/search', () => {
     mockGet = jest.spyOn(Twitter.prototype, 'get')
 
     // モックサーバーに接続して、レスポンス内容を取得するように設定する
-    const value = await axios.get(`${mockServerOrigin}/search/tweets`)
+    const value = (await axios.get(`${mockServerOrigin}/search/tweets`)).data
     mockGet.mockResolvedValue(value)
   })
 
@@ -156,6 +156,34 @@ describe('/search', () => {
 
       expect(response.statusCode).toEqual(400)
       expect(response.body.error).toBe('Bad Request')
+    })
+
+    test('レート制限エラーが返却される', async () => {
+      // エラーのレスポンス内容を設定する
+      const value = (await axios.get(`${mockServerOrigin}/rate_limit`)).data
+      mockGet.mockRejectedValue(value)
+
+      const parameter = new URLSearchParams({ q: 'test' }).toString()
+      const response = await request.get(`/search/tweets?${parameter}`)
+
+      expect(response.statusCode).toEqual(429)
+    })
+
+    test('Twitter APIの通信でエラーが返却される', async () => {
+      // エラーのレスポンス内容を設定する
+      mockGet.mockRejectedValue({
+        errors: [
+          {
+            code: 0,
+            message: 'error',
+          },
+        ],
+      })
+
+      const parameter = new URLSearchParams({ q: 'test' }).toString()
+      const response = await request.get(`/search/tweets?${parameter}`)
+
+      expect(response.statusCode).toEqual(500)
     })
   })
 })

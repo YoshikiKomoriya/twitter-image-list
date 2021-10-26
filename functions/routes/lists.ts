@@ -1,9 +1,12 @@
 /**
  * TwitterとのAPI通信に関する設定
  */
-import { Router, Request, Response } from 'express'
-import { addUserClient } from '~/routes/middleware/client'
+import Boom from 'boom'
+import { Request, Response, Router } from 'express'
+import { assertIsTwitterClient } from '~/routes/bin/assert'
+import { generateBoomError } from '~/routes/bin/generateBoomError'
 import { verifyAuthentication } from '~/routes/middleware/authenticated'
+import { addUserClient } from '~/routes/middleware/client'
 import { ResponseListsOwnerships } from '~openapi/generated/src'
 
 const router = Router()
@@ -17,14 +20,21 @@ router.use(addUserClient)
 router.get(
   '/ownerships',
   async (request: Request, response: Response, next) => {
-    const path = '/lists/ownerships'
+    // ミドルウェアで生成されたクライアントクラスの検証
+    assertIsTwitterClient(request.client)
 
+    // APIリクエスト
+    const path = '/lists/ownerships'
     const result: ResponseListsOwnerships = await request.client
-      ?.get(path)
+      .get(path)
       .catch((error) => {
-        next(error)
-        throw error
+        return generateBoomError(error)
       })
+
+    // エラーが出力されている場合、エラーハンドリングへ移行する
+    if (result instanceof Boom) {
+      return next(result)
+    }
 
     response.json(result)
   },

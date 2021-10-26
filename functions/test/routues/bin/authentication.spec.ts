@@ -1,10 +1,10 @@
-import Twitter, { AccessTokenResponse, TokenResponse } from 'twitter-lite'
 import axios from 'axios'
 import Boom from 'boom'
-import { authentication } from '~/routes/bin/authentication'
+import Twitter, { AccessTokenResponse, TokenResponse } from 'twitter-lite'
 import { env } from '~/bin/dotenv'
+import { authentication } from '~/routes/bin/authentication'
 
-describe('認証用トークン', () => {
+describe('認証用トークンの発行', () => {
   // すべてのテストで利用する変数
   const mockServerOrigin = env.get('MOCK_SERVER_URL')
 
@@ -33,6 +33,24 @@ describe('認証用トークン', () => {
     expect(token.oauth_callback_confirmed).toMatch('true')
   })
 
+  test('通信エラーが発生した場合', () => {
+    const options = {
+      consumer_key: 'test',
+      consumer_secret: 'test',
+    }
+    const twitter = new Twitter(options)
+    const callbackUrl = 'https://example.com'
+
+    // リクエスト送信に関する関数をモック化して、実行状況を検証する
+    const mockGetRequestToken = jest.spyOn(twitter, 'getRequestToken')
+    mockGetRequestToken.mockRejectedValue({ error: 'test' })
+
+    // リクエストの実行と検証
+    expect(
+      authentication.getRequestToken(twitter, callbackUrl),
+    ).rejects.toThrow(Boom.internal('通信エラーが発生しました'))
+  })
+
   test('トークンの発行を依頼するが、Twitterから許可されていないため不正なリクエストだとエラーが発生する', async () => {
     const options = {
       consumer_key: 'test',
@@ -55,6 +73,11 @@ describe('認証用トークン', () => {
       authentication.getRequestToken(twitter, callbackUrl),
     ).rejects.toThrow(Boom.badRequest('OAuth callback is not confirmed'))
   })
+})
+
+describe('認証画面のURLの発行', () => {
+  // すべてのテストで利用する変数
+  const mockServerOrigin = env.get('MOCK_SERVER_URL')
 
   test('認証用トークンを用いて認証画面のURLを生成する', () => {
     // なるべくソースと同じ形（環境変数から認証用URL取得→パラメータ組み立て→リクエスト実行）で処理ができるように、先に認証用URLをテスト用のものに上書きする
@@ -70,6 +93,11 @@ describe('認証用トークン', () => {
 
     expect(createdUrl).toMatch(validUrl)
   })
+})
+
+describe('アクセストークンの取得', () => {
+  // すべてのテストで利用する変数
+  const mockServerOrigin = env.get('MOCK_SERVER_URL')
 
   test('認証用トークンを用いて、ユーザーのアクセストークンを取得する', async () => {
     const options = {
@@ -96,8 +124,27 @@ describe('認証用トークン', () => {
       oauthToken,
     )
 
-    // TypeScriptによってレスポンスの型検証は行われているはずなので、明示的に検証する要素は通信用クライアントの生成に必要なもののみとしている
+    // 通信用クライアントの生成に必要なもののみ検証している
     expect(typeof accessToken.oauth_token).toBe('string')
     expect(typeof accessToken.oauth_token_secret).toBe('string')
+  })
+
+  test('通信エラーが発生した場合', () => {
+    const options = {
+      consumer_key: 'test',
+      consumer_secret: 'test',
+    }
+    const twitter = new Twitter(options)
+
+    // リクエスト送信に関する関数をモック化して、実行状況を検証する
+    const mockGetAccessToken = jest.spyOn(twitter, 'getAccessToken')
+    mockGetAccessToken.mockRejectedValue({ error: 'test' })
+
+    // リクエストの実行と検証
+    const oauthVerifier = 'oauthVerifier'
+    const oauthToken = 'oauthToken'
+    expect(
+      authentication.getAccessToken(twitter, oauthVerifier, oauthToken),
+    ).rejects.toThrow(Boom.internal('通信エラーが発生しました'))
   })
 })
