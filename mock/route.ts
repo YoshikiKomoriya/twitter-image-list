@@ -9,7 +9,9 @@ const route = {
   '/oauth/access_token': '/oauth_access_token',
   '/lists/ownerships': '/lists_ownerships',
   '/search/tweets': '/search_tweets',
-  '/search/tweets*': '/search_tweets',
+  '/search/tweets[0-9a-zA-Z?=]+': '/search_tweets',
+  '/search/tweets/image': '/search_tweets_image',
+  '/search/tweets/video': '/search_tweets_video',
 }
 
 export { route }

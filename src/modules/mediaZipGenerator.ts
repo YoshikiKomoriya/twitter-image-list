@@ -3,7 +3,6 @@
  */
 
 import JSZip from 'jszip'
-import { MediaDownloadError } from '~/modules/customError'
 import { Content } from '~/modules/mediaDownloader'
 
 /**
@@ -61,7 +60,7 @@ class MediaZipGenerator {
     const folder = zip.folder(name)
 
     if (folder === null) {
-      throw new MediaDownloadError('フォルダ展開エラー')
+      throw new TypeError('フォルダの作成に失敗しました')
     }
 
     for (const content of contents) {

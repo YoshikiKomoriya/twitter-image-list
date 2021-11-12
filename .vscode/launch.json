@@ -42,7 +42,7 @@
       "name": "vscode-jest-tests",
       "request": "launch",
       "runtimeExecutable": "yarn",
-      "args": ["jest", "--runInBand", "--watchAll=false"],
+      "args": ["jest", "--runInBand", "--watchAll=false", "--coverage=false"],
       "console": "integratedTerminal",
       "internalConsoleOptions": "openOnFirstSessionStart",
       "disableOptimisticBPs": true,

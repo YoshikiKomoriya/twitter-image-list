@@ -61,7 +61,7 @@ export default Vue.extend({
 
     // 表示用（最低画質）・ダウンロード用（最高画質）のビデオ情報を抽出する
     if (this.media.video_info === undefined) {
-      throw new TypeError('ツイートに動画情報が含まれていません')
+      throw new TypeError('メディアに動画情報が含まれていません')
     }
     const variants = selectHighestAndLowest(this.media.video_info.variants)
 

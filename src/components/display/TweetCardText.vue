@@ -53,6 +53,7 @@ export default Vue.extend({
 a {
   text-decoration: none;
 }
+
 a:hover {
   text-decoration: underline;
 }

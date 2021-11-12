@@ -29,7 +29,7 @@ const sortByQuality = (variants: VideoInfoVariants[]) => {
     },
   )
 
-  if (filteredValiants.length < 1) {
+  if (filteredValiants.length === 0) {
     throw new TypeError('動画情報が存在しません')
   }
 
@@ -43,7 +43,7 @@ const sortByQuality = (variants: VideoInfoVariants[]) => {
 }
 
 /**
- * 動画に関する情報について、品質が最も高いものを選択する
+ * 動画に関する情報について、品質がもっとも高いものを選択する
  * @param variants 動画の情報
  * @returns 動画情報
  */
@@ -59,10 +59,26 @@ const selectHighest = (variants: VideoInfoVariants[]) => {
 }
 
 /**
- * 動画に関する情報について、品質が最も高いもの・最も低いものを選択する
+ * 動画に関する情報について、品質がもっとも低いものを選択する
+ * @param variants 動画の情報
+ * @returns 動画情報
+ */
+const selectLowest = (variants: VideoInfoVariants[]) => {
+  const sorted = sortByQuality(variants)
+  const variant = sorted.pop()
+
+  if (variant === undefined) {
+    throw new TypeError('動画情報が存在しません')
+  }
+
+  return variant
+}
+
+/**
+ * 動画に関する情報について、品質がもっとも高いもの・もっとも低いものを選択する
  * 情報がひとつしかない場合は、出力形式はふたつ以上ある場合と同等だが、中身は同一のものとなる
  * @param variants 動画の情報
- * @returns 動画の情報（品質が最も高いもの・最も低いもの）
+ * @returns 動画の情報（品質がもっとも高いもの・もっとも低いもの）
  */
 const selectHighestAndLowest = (variants: VideoInfoVariants[]) => {
   const sorted = sortByQuality(variants)
@@ -89,4 +105,4 @@ const selectHighestAndLowest = (variants: VideoInfoVariants[]) => {
   }
 }
 
-export { selectHighest, selectHighestAndLowest }
+export { selectHighest, selectLowest, selectHighestAndLowest }

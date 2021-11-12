@@ -2,7 +2,7 @@
   <tweet-card>
     <template #content>
       <v-img
-        :src="media.media_url_https + '?name=small'"
+        :src="smallImageUrl"
         contain
         :aspect-ratio="1"
         :alt="status.text"
@@ -44,8 +44,7 @@ import TweetCard from '~/components/display/TweetCard.vue'
 import TweetCardText from '~/components/display/TweetCardText.vue'
 import TweetCardActions from '~/components/display/TweetCardActions.vue'
 import { Media, Tweet } from '~openapi/generated/src'
-import { addParameter } from '~/modules/query'
-import { originalImageUrlParameter } from '~/preferences/mediaDownload'
+import { getSmall, getOriginal } from '~/modules/imageUrl'
 
 export default Vue.extend({
   components: { TweetCard, TweetCardText, TweetCardActions },
@@ -66,15 +65,19 @@ export default Vue.extend({
   },
   computed: {
     /**
+     * メディアの縮小後の画像
+     */
+    smallImageUrl: {
+      get(): string {
+        return getSmall(this.media.media_url_https)
+      },
+    },
+    /**
      * メディアのオリジナル画像
-     * URLに専用パラメータを付与することで、アクセスが可能となる
      */
     originalImageUrl: {
       get(): string {
-        return addParameter(
-          this.media.media_url_https,
-          originalImageUrlParameter,
-        )
+        return getOriginal(this.media.media_url_https)
       },
     },
   },

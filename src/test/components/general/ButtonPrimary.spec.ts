@@ -1,6 +1,6 @@
-import { shallowMount } from '~/test/util/mount'
 import ButtonPrimary from '~/components/general/ButtonPrimary.vue'
 import { buttonSize } from '~/preferences/buttonSize'
+import { shallowMount } from '~/test/util/mount'
 
 describe('プライマリー指定のボタン', () => {
   test('スロットを指定', () => {
@@ -19,7 +19,7 @@ describe('プライマリー指定のボタン', () => {
     expect(text.text()).toContain(slots.text)
   })
 
-  test.each(Object.values(buttonSize))('ボタンサイズの指定（%p）', (size) => {
+  test.each(Object.values(buttonSize))('ボタンサイズの指定（%s）', (size) => {
     const wrapper = shallowMount(ButtonPrimary, { propsData: { size } })
 
     // HTMLの属性名ではハイフンが省略されるため、置換処理を行う

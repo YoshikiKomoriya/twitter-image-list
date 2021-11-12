@@ -3,19 +3,8 @@
  */
 
 /**
- * 処理の実行間隔に関する設定値
+ * 同時に処理する数
  */
-const processInterval = {
-  count: 15,
-  sleep: 5000,
-}
+const concurrency = 15
 
-/**
- * オリジナル画像を取得するためのURL向けパラメータ
- * Twitterの画像URLに該当パラメータを付与すると、オリジナル画像を取得できる
- */
-const originalImageUrlParameter = {
-  name: 'orig',
-}
-
-export { processInterval, originalImageUrlParameter }
+export { concurrency }

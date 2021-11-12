@@ -1,5 +1,5 @@
-import { mount, shallowMount } from '~/test/util/mount'
 import index from '~/pages/index.vue'
+import { mount, shallowMount } from '~/test/util/mount'
 
 // トップページで参照している各コンポーネントのタグ名
 const sections = [
@@ -11,7 +11,7 @@ const sections = [
 ]
 
 describe('トップページ', () => {
-  test.each(sections)('各セクションの表示(%p)', (section) => {
+  test.each(sections)('各セクションの表示(%s)', (section) => {
     // 参照している各コンポーネントの内容はそれぞれのユニットテストで検証するため、展開しないようにshallowMountを選択している
     const wrapper = shallowMount(index)
 

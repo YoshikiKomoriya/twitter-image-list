@@ -1,19 +1,39 @@
 <template>
   <v-dialog v-model="dialog" @click:outside="cancel">
     <template #activator="{ on }">
-      <v-btn @click="download" v-on="on"> ダウンロード </v-btn>
+      <v-btn
+        @click="
+          toggleDialog()
+          download()
+        "
+        v-on="on"
+      >
+        ダウンロード
+      </v-btn>
     </template>
 
     <v-card>
       <v-card-title> メディアのダウンロード </v-card-title>
       <v-card-text>
-        <progress-linear :counter="process.counter"></progress-linear>
-        <tweet-media-download-alert
-          :errors="downloader.errors"
-        ></tweet-media-download-alert>
+        <v-row>
+          <v-col cols="12">
+            <progress-linear :counter="process.counter"></progress-linear>
+          </v-col>
+          <v-col cols="12">
+            <tweet-media-download-alert
+              :errors.sync="downloader.errors"
+            ></tweet-media-download-alert>
+          </v-col>
+        </v-row>
       </v-card-text>
       <v-card-actions>
-        <v-btn @click="cancel">キャンセル</v-btn>
+        <v-btn
+          @click="
+            toggleDialog()
+            cancel()
+          "
+          >キャンセル</v-btn
+        >
         <v-spacer></v-spacer>
         <v-btn
           :href="file.objectUrl"
@@ -47,7 +67,9 @@ export default Vue.extend({
     },
   },
   data() {
-    const dialog = false
+    const dialog = false // ダイアログの表示・非表示
+
+    // ダウンロード用ZIPファイルの情報
     const file: FileInformation = {
       objectUrl: '',
       name: 'medias',
@@ -96,10 +118,17 @@ export default Vue.extend({
      */
     async download() {
       this.process.processing = true
-      this.toggleDialog()
 
-      await this.downloadMedia()
-      const generatedFile = await this.generateZipFile()
+      await this.downloadMedia().catch((error) => {
+        this.recordError(error)
+        this.cancel()
+        throw error
+      })
+      const generatedFile = await this.generateZipFile().catch((error) => {
+        this.recordError(error)
+        this.cancel()
+        throw error
+      })
       this.file = generatedFile.file
 
       this.process.processing = false
@@ -108,22 +137,20 @@ export default Vue.extend({
      * メディアのダウンロード処理を実施する
      */
     async downloadMedia() {
-      // 初期化処理（メディア一覧の設定）が必要になるため、クラスは毎回インスタンス化する
-      this.downloader.instance = new MediaDownloader(this.medias)
-      await this.downloader.instance
-        .download(this.process.counter)
-        .catch((reason: MediaDownloadError) => {
-          this.errorHandler(reason)
-        })
+      this.downloader.instance.setMedias(this.medias)
+      await this.downloader.instance.download(this.process.counter)
+
+      // エラーが発生している場合、記録する
+      if (this.downloader.instance.errors.length > 0) {
+        this.recordErrors(this.downloader.instance.errors)
+      }
     },
     /**
      * ダウンロード用のZIPファイルを生成する
      */
     async generateZipFile() {
       const generator = new MediaZipGenerator(this.downloader.instance.contents)
-      await generator.generate().catch((reason: MediaDownloadError) => {
-        this.errorHandler(reason)
-      })
+      await generator.generate()
 
       return generator
     },
@@ -137,16 +164,23 @@ export default Vue.extend({
      * キャンセル処理を行う
      */
     cancel() {
-      this.downloader.instance.abort()
+      this.downloader.instance.reset()
       window.URL.revokeObjectURL(this.file.objectUrl)
       this.process.processing = false
-      this.downloader.errors = []
     },
     /**
      * メディアダウンロードに関するエラーハンドリング
+     * エラー情報を記録する
      */
-    errorHandler(error: MediaDownloadError) {
+    recordError(error: MediaDownloadError) {
       this.downloader.errors.push(error)
+    },
+    /**
+     * メディアダウンロードに関するエラーハンドリング
+     * 複数のエラー情報を記録する
+     */
+    recordErrors(errors: MediaDownloadError[]) {
+      this.downloader.errors.push(...errors)
     },
   },
 })

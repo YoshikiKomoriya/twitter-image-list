@@ -1,12 +1,11 @@
 <template>
   <v-row>
     <v-col cols="12" class="text-center">
-      <alert
-        :show.sync="alert.show"
-        :text="alert.text"
-        :type="alert.type"
-        :timeout="alert.timeout"
-      ></alert>
+      <alert v-if="alert.show" :type="alert.type">
+        <template #content>
+          {{ alert.text }}
+        </template>
+      </alert>
       <button-primary
         v-if="moreLoadButton.show"
         block
@@ -80,7 +79,6 @@ export default Vue.extend({
     const alert = {
       show: false,
       text: '読み込みに失敗しました',
-      timeout: 5000,
       type: alertType.error,
     }
 

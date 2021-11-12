@@ -1,13 +1,16 @@
 import { Wrapper } from '@vue/test-utils'
-import { shallowMount } from '~/test/util/mount'
 import NavigationDrawer from '~/components/navigation/NavigationDrawer.vue'
 import { links } from '~/preferences/links'
+import { shallowMount } from '~/test/util/mount'
 
 describe('ナビゲーションドロワー', () => {
   let wrapper: Wrapper<Vue>
+  const props = {
+    drawer: false,
+  }
 
   beforeEach(() => {
-    wrapper = shallowMount(NavigationDrawer)
+    wrapper = shallowMount(NavigationDrawer, { propsData: props })
   })
 
   test('リンク先の検証', () => {
@@ -33,5 +36,28 @@ describe('ナビゲーションドロワー', () => {
 
     await wrapper.setProps({ drawer: false })
     expect(wrapper.attributes('value')).toBeUndefined()
+  })
+
+  test('ドロワー表示用モデルを変更する関数のテスト', () => {
+    expect(wrapper.emitted('update:drawer')).toBeUndefined()
+
+    /**
+     * コンポーネント内の関数にアクセスするために、型定義を行う
+     * '@vue/test-utils'で関数を使う場合に、検証可能な形で処理を実行するために実施している
+     * （trigger()ではemitted()で出力される履歴にデータが追加されない）
+     *
+     * wrapper.vmによってアクセスできるVueインスタンスには、コンポーネント内で定義されたプロパティの型情報が存在しないため、ここで追加している
+     *
+     * @todo より*読みやすい*・*書きやすい（自動化されている）*形を検討して、そちらの方法を採用する
+     * @note https://github.com/vuejs/vue-test-utils/issues/255
+     */
+    type NavigationDrawerType = typeof NavigationDrawer
+    interface ExtendedComponent extends NavigationDrawerType {
+      dispatchInputEvent: Function
+    }
+    const vm = wrapper.vm as unknown as ExtendedComponent
+    vm.dispatchInputEvent(true)
+
+    expect(wrapper.emitted('update:drawer')).toBeTruthy()
   })
 })

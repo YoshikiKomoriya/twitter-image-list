@@ -2,16 +2,23 @@
  * メディアのダウンロードに関するクラス
  */
 
-import axios from 'axios'
+import axios, { CancelTokenSource } from 'axios'
 import { MediaDownloadError } from '~/modules/customError'
-import { addParameter } from '~/modules/query'
-import { selectHighest } from '~/modules/videoVariant'
 import {
-  originalImageUrlParameter,
-  processInterval,
-} from '~/preferences/mediaDownload'
+  getFileName as getImageFileName,
+  getOriginal,
+} from '~/modules/imageUrl'
+import { MediaDownloadQueue } from '~/modules/mediaDownloadQueue'
+import { getFileName as getVideoFileName } from '~/modules/videoUrl'
+import { selectHighest } from '~/modules/videoVariant'
+import { concurrency as concurrencySetting } from '~/preferences/mediaDownload'
 import { isPhoto } from '~/preferences/mediaType'
 import { Media, VideoInfo } from '~openapi/generated/src'
+
+/**
+ * MediaDownloaderクラスで扱われるダウンロード処理向けのメディア情報
+ */
+type MediaInformation = { url: string; name: string }
 
 /**
  * MediaDownloaderクラスで扱われるメディア情報
@@ -28,19 +35,19 @@ type ProcessCounter = { processed: number; total: number }
  */
 class MediaDownloader {
   /**
-   * 処理の実行間隔に関する設定値
+   * 同時に処理する数
    */
-  private readonly _processInterval = processInterval
+  private readonly _concurrency: number
 
   /**
    * ダウンロードをキャンセルするためのトークン
    */
-  private readonly _cancelTokenSource = axios.CancelToken.source()
+  private _cancelTokenSource: CancelTokenSource
 
   /**
    * ダウンロード先となるメディアの一覧
    */
-  private readonly _medias: Media[]
+  private _medias: MediaInformation[] = []
 
   /**
    * ダウンロード後のメディア一覧
@@ -48,55 +55,124 @@ class MediaDownloader {
   private _contents: Content[] = []
 
   /**
-   * URIからファイル名を特定するための正規表現パターン
+   * ダウンロード中に発生したエラーの一覧
    */
-  private readonly meidaUrlPattern = {
-    image: /(?<name>[a-zA-Z0-9-_]+\.[jpg|jpeg|png]+)/i,
-    video: /(?<name>[a-zA-Z0-9-_]+\.[mp4]+)/i,
-  }
+  private _errors: MediaDownloadError[] = []
 
   /**
    * コンストラクタ
+   * @param medias ダウンロード先のメディア一覧
+   * @param concurrency 同時に処理する数
+   */
+  constructor(medias?: Media[], concurrency?: number) {
+    this._cancelTokenSource = axios.CancelToken.source()
+
+    if (medias) {
+      this.setMedias(medias)
+    }
+
+    this._concurrency = concurrency || concurrencySetting
+  }
+
+  /**
    * ダウンロード先のメディアを決定する
    * @param medias ダウンロード先のメディア一覧
    */
-  constructor(medias: Media[]) {
-    this._medias = medias
+  setMedias(medias: Media[]) {
+    this._medias = this._generateMediaInfomations(medias)
+  }
+
+  /**
+   * メディア一覧から、ダウンロード処理向けにURL・ファイル名・実施状況が記されたメディア一覧を生成する
+   * @param medias メディア一覧
+   * @returns URL・ファイル名が記されたメディア一覧
+   */
+  private _generateMediaInfomations(medias: Media[]) {
+    // メディアの種別が画像以外の場合、動画情報が含まれていない可能性があるため、検証を行う
+    const filteredMedias = medias.filter((media) => {
+      if (isPhoto(media.type)) {
+        return true
+      }
+
+      if (media.video_info) {
+        return true
+      }
+
+      this._errors.push(
+        new MediaDownloadError({
+          message: '動画情報が見つかりませんでした',
+          data: media.expanded_url,
+        }),
+      )
+      return false
+    })
+
+    // メディア情報（URL・ファイル名）を取得する
+    const mediaInformations = filteredMedias.map((media) => {
+      // メディアの種別（'画像'と'それ以外（動画・GIFアニメーションの想定）'）によってダウンロード先のURLが異なる
+      return isPhoto(media.type)
+        ? this._selectImage(media.media_url_https)
+        : this._selectVideo(media.video_info!) // 前述の検証処理で存在の確認を行なっている前提
+    })
+
+    return mediaInformations
+  }
+
+  /**
+   * 画像情報から、オリジナル画像のURLとファイル名を抽出する
+   * @param url 画像URL
+   * @returns 画像のURLとファイル名
+   */
+  private _selectImage(url: string) {
+    const originalUrl = getOriginal(url) // もっとも画質が高いものを選択する
+    const name = getImageFileName(url)
+
+    return { url: originalUrl, name }
+  }
+
+  /**
+   * 動画情報の中から、もっとも画質が高いもののURLとファイル名を抽出する
+   * @param info 動画情報
+   * @returns 動画のURLとファイル名
+   */
+  private _selectVideo(info: VideoInfo) {
+    const video = selectHighest(info.variants) // もっとも画質が高いものを選択する
+    const name = getVideoFileName(video.url)
+
+    return { url: video.url, name }
   }
 
   /**
    * メディアをダウンロードする
    * @param counter 進捗状況を記録するカウンター
+   * @throws {@link MediaDownloadError} ダウンロード可能なメディアが存在しない（対象が0件）の場合
    */
   async download(counter?: ProcessCounter) {
+    if (this._medias.length === 0) {
+      throw new MediaDownloadError('ダウンロード可能なメディアが存在しません')
+    }
+
     // 進捗状況の初期化
     if (counter) {
       counter.total = this._medias.length
       counter.processed = 0
     }
 
-    // 規定件数ずつ取得処理を行う
-    for (
-      let i = 0;
-      i < this._medias.length;
-      i = i + this._processInterval.count
-    ) {
-      // 2回目以降の取得処理の場合、負荷上昇を防止するためにスリープを挟む
-      if (i > 0) {
-        await this._sleep(this._processInterval.sleep)
-      }
+    // 初期化処理
+    this._errors = []
+    const queue = new MediaDownloadQueue(this._cancelTokenSource.token)
 
+    // 規定件数ずつ取得処理を行う
+    for (let i = 0; i < this._medias.length; i = i + this._concurrency) {
       // メディアのダウンロード
-      const slicedMedias = this._medias.slice(
-        i,
-        i + this._processInterval.count,
-      )
-      const content = await this._getContents(slicedMedias)
-      this._contents = this._contents.concat(content)
+      const slicedMedias = this._medias.slice(i, i + this._concurrency)
+      const contents = await queue.download(slicedMedias)
+      this._contents.push(...contents.resolves) // ダウンロードしたメディアを記録する
+      this._errors.push(...contents.rejects) // エラー情報を記録する
 
       // 進捗状況の更新
       if (counter) {
-        this._setProcessCounter(counter, this._processInterval.count)
+        this._setProcessCounter(counter, this._concurrency)
       }
     }
   }
@@ -109,133 +185,21 @@ class MediaDownloader {
   }
 
   /**
-   * スリープ処理を実施する
-   * @param time スリープを挟む時間（ミリ秒）
-   * @returns スリープ後にresolveが返却されるPromise
+   * メディアのダウンロード処理を初期化する
    */
-  private _sleep(time: number) {
-    return new Promise((resolve) => {
-      setTimeout(resolve, time)
-    })
+  reset() {
+    this.abort()
+    this._regenerateCancelTokenSource()
+    this.setMedias([])
+    this._contents = []
+    this._errors = []
   }
 
   /**
-   * 指定のメディアをダウンロードする
-   * @param medias メディア情報
-   * @returns ダウンロードしたメディア一覧
+   * ダウンロードをキャンセルするためのトークンを再生成する
    */
-  private async _getContents(medias: Media[]) {
-    // 処理速度を速めるために、並列実行を行なっている
-    const promises = this._generatePromisesForDownload(medias)
-    const contents = await Promise.all(promises)
-
-    return contents
-  }
-
-  /**
-   * メディアのコンテンツを並列処理でダウンロードするために、Promiseを生成する
-   * @param medias メディア情報
-   * @returns ダウンロード処理が格納されたPromiseの一覧
-   */
-  private _generatePromisesForDownload(medias: Media[]) {
-    const promises = medias.map((media) => {
-      // メディアの種別によってダウンロード先のURLが異なる
-      const mediaInformation = isPhoto(media.type)
-        ? this._selectImage(media.media_url_https)
-        : this._selectVideo(media.video_info!) // 動画の場合、APIの返却値には動画情報が含まれる前提である
-
-      const promise = axios
-        .get(mediaInformation.url, {
-          responseType: 'blob',
-          cancelToken: this._cancelTokenSource.token,
-        })
-        .then((response) => {
-          if (response.status !== 200) {
-            throw new MediaDownloadError({
-              message: 'データを取得できませんでした',
-              data: mediaInformation,
-            })
-          }
-
-          const blob = new Blob([response.data], {
-            type: response.data.type,
-          })
-
-          return {
-            name: mediaInformation.name,
-            blob,
-          }
-        })
-        .catch((reason) => {
-          if (axios.isCancel(reason)) {
-            throw new MediaDownloadError({
-              message: 'キャンセルされました',
-              data: mediaInformation,
-            })
-          }
-
-          throw new MediaDownloadError({
-            message: '通信処理に失敗しました',
-            data: mediaInformation,
-          })
-        })
-
-      return promise
-    })
-
-    return promises
-  }
-
-  /**
-   * 動画情報の中から、最も画質が高いもののURLとファイル名を抽出する
-   * @param info 動画情報
-   * @returns 動画のURLとファイル名
-   */
-  private _selectVideo(info: VideoInfo) {
-    // 最も画質が高いものを選択する
-    const video = selectHighest(info.variants)
-
-    // URL・ファイル名の抽出
-    const regExpResult = this.meidaUrlPattern.video.exec(video.url)
-    const name = regExpResult?.groups?.name
-
-    if (name === undefined) {
-      throw new MediaDownloadError({
-        message: '動画のファイル名を算出できませんでした',
-        data: video.url,
-      })
-    }
-
-    return {
-      url: video.url,
-      name,
-    }
-  }
-
-  /**
-   * 画像情報から、オリジナル画像のURLとファイル名を抽出する
-   * @param url 画像URL
-   * @returns 画像のURLとファイル名
-   */
-  private _selectImage(url: string) {
-    // 最も画質が高いものを選択する
-    const originalUrl = addParameter(url, originalImageUrlParameter)
-
-    // URL・ファイル名の抽出
-    const regExpResult = this.meidaUrlPattern.image.exec(url)
-    const name = regExpResult?.groups?.name
-
-    if (name === undefined) {
-      throw new MediaDownloadError({
-        message: '画像のファイル名を算出できませんでした',
-        data: url,
-      })
-    }
-
-    return {
-      url: originalUrl,
-      name,
-    }
+  private _regenerateCancelTokenSource() {
+    this._cancelTokenSource = axios.CancelToken.source()
   }
 
   /**
@@ -259,6 +223,13 @@ class MediaDownloader {
   get contents() {
     return this._contents
   }
+
+  /**
+   * ダウンロード中に発生したエラーの一覧を取得する
+   */
+  get errors() {
+    return this._errors
+  }
 }
 
-export { Content, ProcessCounter, MediaDownloader }
+export { MediaInformation, Content, ProcessCounter, MediaDownloader }

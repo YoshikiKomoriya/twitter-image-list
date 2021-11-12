@@ -60,9 +60,7 @@ describe('型に関する検証処理（アサーション）', () => {
          */
         assertIsTwitterClient(data.value)
       } catch (e) {
-        expect(assertIsTwitterClient).toThrowError(
-          TypeError('assertion failed.'),
-        )
+        expect(assertIsTwitterClient).toThrow(TypeError('assertion failed.'))
       }
     })
   })

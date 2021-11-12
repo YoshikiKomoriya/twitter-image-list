@@ -9,8 +9,6 @@
  * @see https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Error#custom_error_types
  */
 class CustomError extends Error {
-  data?: any
-
   constructor(...params: any) {
     // Pass remaining arguments (including vendor specific ones) to parent constructor
     super(...params)
@@ -20,25 +18,36 @@ class CustomError extends Error {
       Error.captureStackTrace(this, CustomError)
     }
 
-    this.name = params.name ?? 'CustomError'
-
-    // Custom debugging information
-    this.data = params.data
+    this.name = 'CustomError'
   }
 }
 
 /**
- * メディアのダウンロードで発生する例外
+ * メディアのダウンロードで発生するエラー
+ * **リカバリー可能なエラー**として、なるべくcatchする運用にすることを推奨する
+ * （リカバリー不可能なエラーは標準で組み込まれているエラーを使う想定）
  */
 class MediaDownloadError extends CustomError {
-  constructor(...params: any) {
-    params.name = 'MediaDownloadError'
-    super(...params)
+  data: any
+
+  constructor(
+    param: string | { message: string; data: any },
+    ...params: any[]
+  ) {
+    // 第1引数にデータが指定されている場合、変数に格納する
+    if (param instanceof Object) {
+      super(param.message, ...params)
+      this.data = param.data
+    } else {
+      super(param, ...params)
+    }
 
     // Maintains proper stack trace for where our error was thrown (only available on V8)
     if (CustomError.captureStackTrace) {
       CustomError.captureStackTrace(this, MediaDownloadError)
     }
+
+    this.name = 'MediaDownloadError'
   }
 }
 

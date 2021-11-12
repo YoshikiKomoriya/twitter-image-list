@@ -1,17 +1,42 @@
 <template>
-  <alert :show="alertShow" :text="alertText" :type="alertType.error"></alert>
+  <v-sheet v-if="show">
+    <v-expand-transition>
+      <alert :type="alertType.warning">
+        <template #content>
+          <p>ダウンロードに失敗したファイルがあります</p>
+          <ul>
+            <li v-for="(text, index) in texts" :key="index">
+              {{ text }}
+            </li>
+          </ul>
+        </template>
+      </alert>
+    </v-expand-transition>
+    <v-expand-transition>
+      <expansion-field>
+        <template #button> エラー詳細を表示する </template>
+        <template #content>
+          <v-textarea :value="traces" filled></v-textarea>
+        </template>
+      </expansion-field>
+    </v-expand-transition>
+  </v-sheet>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
 import type { PropType } from 'vue'
-import alert from '~/components/feedback/Alert.vue'
+import ExpansionField from '../feedback/ExpansionField.vue'
+import Alert from '~/components/feedback/Alert.vue'
 import { alertType } from '~/preferences/alertType'
 import { MediaDownloadError } from '~/modules/customError'
 
 export default Vue.extend({
-  components: { alert },
+  components: { Alert, ExpansionField },
   props: {
+    /**
+     * ダウンロード処理中に発生したエラーの一覧
+     */
     errors: {
       type: Array as PropType<MediaDownloadError[]>,
       required: true,
@@ -24,25 +49,39 @@ export default Vue.extend({
     /**
      * アラートの表示・非表示フラグ
      */
-    alertShow: {
+    show: {
       get(): boolean {
         return this.errors.length > 0
       },
     },
     /**
      * アラートの文言
-     * propsで渡されたエラー情報をすべて文字列として展開する
+     * propsで渡されたエラー情報をエラーメッセージごとにユニーク化する
      */
-    alertText: {
-      get(): string {
-        const errorMessages = this.errors.map((error) => {
-          const data = error.data ? JSON.stringify(error.data) : undefined
-          const text = data ? `${error.message} : ${data}` : `${error.message}`
+    texts: {
+      get(): string[] {
+        const texts = this.errors.map((error) => {
+          return error.message
+        })
+        const uniqueTexts = [...new Set(texts)]
 
-          return text
+        return uniqueTexts
+      },
+    },
+    /**
+     * エラーの詳細
+     * propsで渡されたエラー情報から詳細データを抽出して、文字列として展開する
+     */
+    traces: {
+      get(): string {
+        const filteredData = this.errors.filter((error) => {
+          return error.data
+        })
+        const traces = filteredData.map((error) => {
+          return JSON.stringify(error.data)
         })
 
-        return errorMessages.join('\n')
+        return traces.join('\n')
       },
     },
   },
