@@ -1,11 +1,11 @@
 <template>
   <v-row>
     <v-col cols="12" class="text-center">
-      <alert v-if="alert.show" :type="alert.type">
+      <card-alert v-if="alert.show" :type="alert.type">
         <template #content>
           {{ alert.text }}
         </template>
-      </alert>
+      </card-alert>
       <button-primary
         v-if="moreLoadButton.show"
         block
@@ -26,7 +26,7 @@
 import Vue from 'vue'
 import type { PropType } from 'vue'
 import ButtonPrimary from '~/components/general/ButtonPrimary.vue'
-import Alert from '~/components/feedback/Alert.vue'
+import CardAlert from '~/components/feedback/CardAlert.vue'
 import {
   ResponseSearchTweets,
   SearchApi,
@@ -51,7 +51,7 @@ import { httpErrorMessage } from '~/preferences/errorMessage'
 export default Vue.extend({
   components: {
     ButtonPrimary,
-    Alert,
+    CardAlert,
   },
   props: {
     statuses: {

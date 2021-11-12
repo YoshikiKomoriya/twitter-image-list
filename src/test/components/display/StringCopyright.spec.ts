@@ -1,12 +1,12 @@
 import { Wrapper } from '@vue/test-utils'
+import StringCopyright from '~/components/display/StringCopyright.vue'
 import { shallowMount } from '~/test/util/mount'
-import Copyright from '~/components/display/Copyright.vue'
 
 describe('コピーライト', () => {
   let wrapper: Wrapper<Vue>
 
   beforeEach(() => {
-    wrapper = shallowMount(Copyright)
+    wrapper = shallowMount(StringCopyright)
   })
 
   test('表示される文言', () => {

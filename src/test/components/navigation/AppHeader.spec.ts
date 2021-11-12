@@ -1,7 +1,7 @@
 // import { shallowMount } from '~/test/util/mount'
 import { Wrapper } from '@vue/test-utils'
 import Vuetify from 'vuetify'
-import Header from '~/components/navigation/Header.vue'
+import AppHeader from '~/components/navigation/AppHeader.vue'
 import { links } from '~/preferences/links'
 import { shallowMount } from '~/test/util/mount'
 
@@ -15,7 +15,7 @@ describe('ヘッダー（PC表示）', () => {
         mobileBreakpoint: 0,
       },
     })
-    wrapper = shallowMount(Header, { vuetify })
+    wrapper = shallowMount(AppHeader, { vuetify })
   })
 
   test('リンク先の検証', () => {
@@ -47,7 +47,7 @@ describe('ヘッダー（モバイル表示）', () => {
         mobileBreakpoint: 'lg',
       },
     })
-    wrapper = shallowMount(Header, { vuetify })
+    wrapper = shallowMount(AppHeader, { vuetify })
   })
 
   test('リンクが表示されない', () => {

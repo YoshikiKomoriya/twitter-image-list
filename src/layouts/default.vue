@@ -3,7 +3,7 @@
     <!-- ナビゲーションの実際の表示領域 -->
     <navigation-drawer :drawer.sync="navigationDrawer"></navigation-drawer>
 
-    <header-component @input="setNavigationDrawer(true)"></header-component>
+    <app-header @input="setNavigationDrawer(true)"></app-header>
 
     <v-main>
       <v-container>
@@ -12,20 +12,20 @@
       </v-container>
     </v-main>
 
-    <footer-component></footer-component>
+    <app-footer></app-footer>
   </v-app>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
-import FooterComponent from '~/components/navigation/Footer.vue'
-import HeaderComponent from '~/components/navigation/Header.vue'
+import AppFooter from '~/components/navigation/AppFooter.vue'
+import AppHeader from '~/components/navigation/AppHeader.vue'
 import NavigationDrawer from '~/components/navigation/NavigationDrawer.vue'
 
 export default Vue.extend({
   components: {
-    FooterComponent,
-    HeaderComponent,
+    AppHeader,
+    AppFooter,
     NavigationDrawer,
   },
   data: () => ({

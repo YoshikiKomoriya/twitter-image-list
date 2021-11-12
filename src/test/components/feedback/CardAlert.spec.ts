@@ -1,5 +1,5 @@
 import { Wrapper } from '@vue/test-utils'
-import Alert from '~/components/feedback/Alert.vue'
+import CardAlert from '~/components/feedback/CardAlert.vue'
 import { alertType } from '~/preferences/alertType'
 import { shallowMount } from '~/test/util/mount'
 
@@ -11,7 +11,7 @@ describe('アラートコンポーネント', () => {
   }
 
   beforeEach(() => {
-    wrapper = shallowMount(Alert, { slots })
+    wrapper = shallowMount(CardAlert, { slots })
   })
 
   test('スロット（アラート文言）を指定', () => {

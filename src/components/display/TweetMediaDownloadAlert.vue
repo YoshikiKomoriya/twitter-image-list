@@ -1,7 +1,7 @@
 <template>
   <v-sheet v-if="show">
     <v-expand-transition>
-      <alert :type="alertType.warning">
+      <card-alert :type="alertType.warning">
         <template #content>
           <p>ダウンロードに失敗したファイルがあります</p>
           <ul>
@@ -10,7 +10,7 @@
             </li>
           </ul>
         </template>
-      </alert>
+      </card-alert>
     </v-expand-transition>
     <v-expand-transition>
       <expansion-field>
@@ -27,12 +27,12 @@
 import Vue from 'vue'
 import type { PropType } from 'vue'
 import ExpansionField from '../feedback/ExpansionField.vue'
-import Alert from '~/components/feedback/Alert.vue'
+import CardAlert from '~/components/feedback/CardAlert.vue'
 import { alertType } from '~/preferences/alertType'
 import { MediaDownloadError } from '~/modules/customError'
 
 export default Vue.extend({
-  components: { Alert, ExpansionField },
+  components: { CardAlert, ExpansionField },
   props: {
     /**
      * ダウンロード処理中に発生したエラーの一覧
