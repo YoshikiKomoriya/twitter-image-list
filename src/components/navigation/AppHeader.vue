@@ -5,7 +5,7 @@
         <!-- 左側 -->
         <v-col cols="auto">
           <v-toolbar-title>
-            <logo width="12rem"></logo>
+            <image-logo width="12rem"></image-logo>
           </v-toolbar-title>
         </v-col>
 
@@ -42,14 +42,14 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import Logo from '~/components/display/Logo.vue'
+import ImageLogo from '~/components/display/ImageLogo.vue'
 import { links } from '~/preferences/links'
 
 /**
  * ヘッダー向けのツールバー
  */
 export default Vue.extend({
-  components: { Logo },
+  components: { ImageLogo },
   data() {
     return {
       links,

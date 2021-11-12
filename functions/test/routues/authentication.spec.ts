@@ -1,9 +1,10 @@
-import { AccessTokenResponse, TokenResponse } from 'twitter-lite'
-import { Session } from 'express-session'
 import axios from 'axios'
+import Boom from 'boom'
+import { Session } from 'express-session'
+import { AccessTokenResponse, TokenResponse } from 'twitter-lite'
 import { env } from '~/bin/dotenv'
-import { request } from '~/test/util/supertest'
 import { authentication } from '~/routes/bin/authentication'
+import { request } from '~/test/util/supertest'
 
 describe('/authentication', () => {
   test('/', async () => {
@@ -26,61 +27,99 @@ describe('/authentication', () => {
     )
   })
 
-  describe('/callback', () => {
-    test('正常', async () => {
-      // 外部APIと通信する関数のモック化
-      const mockGetAccessToken = jest.spyOn(authentication, 'getAccessToken')
-      const value: AccessTokenResponse = {
-        oauth_token: 'test_oauth_token',
-        oauth_token_secret: 'test_oauth_token_secret',
-        user_id: 'test_user_id',
-        screen_name: 'test_screen_name',
-      }
-      mockGetAccessToken.mockResolvedValue(value)
+  test('API通信でエラーが返却される', async () => {
+    // 外部APIと通信する関数のモック化
+    const mockGetRequestToken = jest.spyOn(authentication, 'getRequestToken')
+    mockGetRequestToken.mockRejectedValue(
+      Boom.internal('通信エラーが発生しました'),
+    )
 
-      // コールバックで返却された情報をパラメータとして設定する
-      // 本来はリダイレクト時のGETパラメータで情報が返却されるが、テスト向けにモックサーバーのレスポンスボディで代用している
-      const mockServerOrigin = env.get('MOCK_SERVER_URL')
-      const token = (await axios.get(`${mockServerOrigin}/oauth/authenticate`))
-        .data
+    // リクエストの実行
+    const response = await request.get('/authentication/')
 
-      const parameter = new URLSearchParams(token)
+    // 結果の確認
+    expect(response.statusCode).toBe(500)
+  })
+})
 
-      // リクエストの実行
-      const response = await request.get(
-        `/authentication/callback?${parameter.toString()}`,
-      )
+describe('/callback', () => {
+  test('正常', async () => {
+    // 外部APIと通信する関数のモック化
+    const mockGetAccessToken = jest.spyOn(authentication, 'getAccessToken')
+    const value: AccessTokenResponse = {
+      oauth_token: 'test_oauth_token',
+      oauth_token_secret: 'test_oauth_token_secret',
+      user_id: 'test_user_id',
+      screen_name: 'test_screen_name',
+    }
+    mockGetAccessToken.mockResolvedValue(value)
 
-      // リダイレクト結果の確認
-      expect(response.statusCode).toEqual(302)
-      expect(response.header.location).toBe('/home')
-    })
+    // コールバックで返却された情報をパラメータとして設定する
+    // 本来はリダイレクト時のGETパラメータで情報が返却されるが、テスト向けにモックサーバーのレスポンスボディで代用している
+    const mockServerOrigin = env.get('MOCK_SERVER_URL')
+    const token = (await axios.get(`${mockServerOrigin}/oauth/authenticate`))
+      .data
 
-    test('パラメータが不正な場合、エラーが発生する', async () => {
-      // リクエストの実行
-      const response = await request.get(`/authentication/callback`)
-      expect(response.statusCode).toEqual(400)
-    })
+    const parameter = new URLSearchParams(token)
+
+    // リクエストの実行
+    const response = await request.get(
+      `/authentication/callback?${parameter.toString()}`,
+    )
+
+    // リダイレクト結果の確認
+    expect(response.statusCode).toEqual(302)
+    expect(response.header.location).toBe('/home')
   })
 
-  describe('/logout', () => {
-    test('正常', async () => {
-      const response = await request.get('/authentication/logout')
+  test('パラメータが存在しない場合、エラーが発生する', async () => {
+    // リクエストの実行
+    const response = await request.get(`/authentication/callback`)
+    expect(response.statusCode).toEqual(400)
+  })
 
-      expect(response.statusCode).toEqual(200)
-      expect(response.body.result).toBe('success')
-    })
+  test('API通信でエラーが返却される', async () => {
+    // 外部APIと通信する関数のモック化
+    const mockGetAccessToken = jest.spyOn(authentication, 'getAccessToken')
+    mockGetAccessToken.mockRejectedValue(
+      Boom.internal('通信エラーが発生しました'),
+    )
 
-    test('セッションが破棄でない場合、エラーが発生する', async () => {
-      // セッション破棄に関する関数をモック化して、エラーが発生するようにする
-      Session.prototype.destroy = jest
-        .fn()
-        .mockImplementation((fn) => fn(Error('failed.')))
+    // コールバックで返却された情報をパラメータとして設定する
+    // 本来はリダイレクト時のGETパラメータで情報が返却されるが、テスト向けにモックサーバーのレスポンスボディで代用している
+    const mockServerOrigin = env.get('MOCK_SERVER_URL')
+    const token = (await axios.get(`${mockServerOrigin}/oauth/authenticate`))
+      .data
 
-      const response = await request.get('/authentication/logout')
+    const parameter = new URLSearchParams(token)
 
-      expect(response.statusCode).toEqual(500)
-      expect(response.body.error).toBe('Internal Server Error')
-    })
+    // リクエストの実行
+    const response = await request.get(
+      `/authentication/callback?${parameter.toString()}`,
+    )
+
+    // 結果の確認
+    expect(response.statusCode).toEqual(500)
+  })
+})
+
+describe('/logout', () => {
+  test('正常', async () => {
+    const response = await request.get('/authentication/logout')
+
+    expect(response.statusCode).toEqual(200)
+    expect(response.body.result).toBe('success')
+  })
+
+  test('セッションが破棄できない場合、エラーが発生する', async () => {
+    // セッション破棄に関する関数をモック化して、エラーが発生するようにする
+    Session.prototype.destroy = jest
+      .fn()
+      .mockImplementation((fn) => fn(Error('failed.')))
+
+    const response = await request.get('/authentication/logout')
+
+    expect(response.statusCode).toEqual(500)
+    expect(response.body.error).toBe('Internal Server Error')
   })
 })

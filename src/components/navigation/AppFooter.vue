@@ -29,7 +29,7 @@
 
       <v-row justify="center">
         <v-col cols="auto">
-          <copyright></copyright>
+          <string-copyright></string-copyright>
         </v-col>
       </v-row>
     </v-container>
@@ -38,11 +38,11 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import Copyright from '~/components/display/Copyright.vue'
+import StringCopyright from '~/components/display/StringCopyright.vue'
 import { links } from '~/preferences/links'
 
 export default Vue.extend({
-  components: { Copyright },
+  components: { StringCopyright },
   data() {
     return {
       links,

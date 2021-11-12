@@ -1,7 +1,6 @@
 /**
  * Twitter認証に関する専門の処理
  */
-import { URL } from 'url'
 import Boom from 'boom'
 import Twitter from 'twitter-lite'
 import { env } from '~/bin/dotenv'
@@ -11,7 +10,7 @@ import { env } from '~/bin/dotenv'
  * @param client 通信用クライアントクラス
  * @param callbackUrl 許可されているコールバックURL
  * @returns 認証用トークンの情報
- * @throws {@link Error} 通信中にエラーが発生した場合
+ * @throws {@link Boom.internal} 通信中にエラーが発生した場合
  * @throws {@link Boom.badRequest} 通信には成功したが、コールバックURLが許可されていなかった場合
  */
 const getRequestToken = async (client: Twitter, callbackUrl: string) => {
@@ -19,7 +18,7 @@ const getRequestToken = async (client: Twitter, callbackUrl: string) => {
   const requestToken = await client
     .getRequestToken(callbackUrl)
     .catch((error) => {
-      throw error
+      throw Boom.internal('通信エラーが発生しました', error)
     })
 
   // リクエストが確認されたかどうか検証する
@@ -51,7 +50,7 @@ const createAuthenticationUrl = (oauthToken: string) => {
  * @param oauthVerifier 認証済みであることを示すトークン
  * @param oauthToken 認証用トークン
  * @returns アクセストークン
- * @throws {@link Error} 通信中にエラーが発生した場合
+ * @throws {@link Boom.internal} 通信中にエラーが発生した場合
  */
 const getAccessToken = async (
   client: Twitter,
@@ -65,7 +64,7 @@ const getAccessToken = async (
   const accessToken = await client
     .getAccessToken(accessTokenOptions)
     .catch((error) => {
-      throw error
+      throw Boom.internal('通信エラーが発生しました', error)
     })
 
   return accessToken

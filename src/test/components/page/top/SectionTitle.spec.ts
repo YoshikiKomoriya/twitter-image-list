@@ -1,7 +1,7 @@
 import { Wrapper } from '@vue/test-utils'
-import { shallowMount } from '~/test/util/mount'
+import ImageLogo from '~/components/display/ImageLogo.vue'
 import SectionTitle from '~/components/page/top/SectionTitle.vue'
-import Logo from '~/components/display/Logo.vue'
+import { shallowMount } from '~/test/util/mount'
 
 describe('トップページ内のタイトルブロック', () => {
   let wrapper: Wrapper<Vue>
@@ -25,10 +25,10 @@ describe('トップページ内のタイトルブロック', () => {
    */
   test('h2（ロゴ画像）の表示', () => {
     const h2 = wrapper.get('h2')
-    const logo = h2.get('logo-stub')
+    const logo = h2.get('image-logo-stub')
     expect(logo.exists()).toBe(true)
 
-    const logoComponents = wrapper.findComponent(Logo)
+    const logoComponents = wrapper.findComponent(ImageLogo)
     expect(logoComponents.exists()).toBe(true)
   })
 })

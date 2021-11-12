@@ -5,16 +5,17 @@
  * @see https://vuetifyjs.com/ja/getting-started/unit-testing/
  */
 import {
-  mount as utilsMount,
-  shallowMount as utilsShallowMount,
   createLocalVue,
-  RouterLinkStub,
   FunctionalComponentMountOptions,
+  mount as utilsMount,
+  RouterLinkStub,
+  shallowMount as utilsShallowMount,
 } from '@vue/test-utils'
 import Vue from 'vue'
+import VueRouter from 'vue-router'
 import Vuetify from 'vuetify'
-import NuxtContentMock from '~/test/util/__mocks__/NuxtContentMock.vue'
 import nuxtConfig from '~/../nuxt.config'
+import NuxtContentMock from '~/test/util/__mocks__/NuxtContentMock.vue'
 
 /**
  * 指定のオプションに'vuetify'が存在するか調べて、ない場合は追加する
@@ -27,6 +28,19 @@ const addVuetifyOption = (options: FunctionalComponentMountOptions<Vue>) => {
   }
 
   options.vuetify = new Vuetify()
+}
+
+/**
+ * 指定のオプションに'router'が存在するか調べて、ない場合は追加する
+ * @param options
+ * @returns
+ */
+const addRouterOption = (options: FunctionalComponentMountOptions<Vue>) => {
+  if (Object.keys(options).includes('router')) {
+    return
+  }
+
+  options.router = new VueRouter()
 }
 
 /**
@@ -60,6 +74,8 @@ const mount = (
   options: FunctionalComponentMountOptions<Vue> = {},
 ) => {
   const localVue = createLocalVue()
+  localVue.use(VueRouter)
+  addRouterOption(options)
   addVuetifyOption(options)
   addNuxtConfigOption(options)
 
@@ -90,6 +106,8 @@ const shallowMount = (
   options: FunctionalComponentMountOptions<Vue> = {},
 ) => {
   const localVue = createLocalVue()
+  localVue.use(VueRouter)
+  addRouterOption(options)
   addVuetifyOption(options)
   addNuxtConfigOption(options)
 

@@ -6,8 +6,19 @@
  */
 // データ量の多いものは別のファイルに分割する
 import { db as searchTweets } from '~/db/searchTweets'
+import { db as searchTweetsImage } from '~/db/searchTweetsImage'
+import { db as searchTweetsVideo } from '~/db/searchTweetsVideo'
 
 const db = {
+  // レート制限時のエラーレスポンス
+  rate_limit: {
+    errors: [
+      {
+        code: 88,
+        message: 'Rate limit exceeded',
+      },
+    ],
+  },
   oauth_request_token: {
     oauth_token: 'Z6eEdO8MOmk394WozF5oKyuAv855l4Mlqo7hhlSLik',
     oauth_token_secret: 'Kd75W4OQfb2oJTV0vzGzeXftVAwgMnEK9MumzYc',
@@ -175,6 +186,8 @@ const db = {
     ],
   },
   search_tweets: searchTweets,
+  search_tweets_image: searchTweetsImage,
+  search_tweets_video: searchTweetsVideo,
 }
 
 export { db }

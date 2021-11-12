@@ -1,13 +1,13 @@
 import { Wrapper } from '@vue/test-utils'
-import { shallowMount } from '~/test/util/mount'
-import Footer from '~/components/navigation/Footer.vue'
+import AppFooter from '~/components/navigation/AppFooter.vue'
 import { links } from '~/preferences/links'
+import { shallowMount } from '~/test/util/mount'
 
 describe('フッター', () => {
   let wrapper: Wrapper<Vue>
 
   beforeEach(() => {
-    wrapper = shallowMount(Footer)
+    wrapper = shallowMount(AppFooter)
   })
 
   test('リンク先の検証', () => {

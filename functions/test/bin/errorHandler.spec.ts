@@ -1,8 +1,8 @@
 import Boom from 'boom'
+import { HttpError } from 'express-openapi-validator/dist/framework/types'
+import { next } from 'jest-express/lib/next'
 import { Request } from 'jest-express/lib/request'
 import { Response } from 'jest-express/lib/response'
-import { next } from 'jest-express/lib/next'
-import { HttpError } from 'express-openapi-validator/dist/framework/types'
 import { errorHandler, ErrorResponse } from '~/bin/errorHandler'
 
 describe('エラーハンドリング', () => {
@@ -54,7 +54,7 @@ describe('エラーハンドリング', () => {
     expect(response.body).toStrictEqual(output)
   })
 
-  test('エラーの形式がBoomである場合、専用の処理を実施してエラーが表示される', () => {
+  test('エラーの形式がBoomである場合、専用の処理を実施してエラーが表示される（独自データの設定なし）', () => {
     const error = Boom.forbidden('test message')
 
     errorHandler(error, request, response, next)
@@ -64,8 +64,34 @@ describe('エラーハンドリング', () => {
     expect(response.statusCode).toEqual(error.output.statusCode)
 
     // レスポンスボディが指定の値になっているかどうか
-    expect(response.json).toBeCalledWith(error.output.payload)
-    expect(response.body).toBe(error.output.payload)
+    const output: ErrorResponse = {
+      statusCode: error.output.statusCode,
+      error: error.output.payload.error,
+      message: error.message,
+      data: error.output.payload,
+    }
+    expect(response.json).toBeCalledWith(output)
+    expect(response.body).toStrictEqual(output)
+  })
+
+  test('エラーの形式がBoomである場合、専用の処理を実施してエラーが表示される（独自データの設定あり）', () => {
+    const error = Boom.forbidden('test message', { data: { text: 'string' } })
+
+    errorHandler(error, request, response, next)
+
+    // ステータスコードが設定されているかどうか
+    expect(response.status).toBeCalledWith(error.output.statusCode)
+    expect(response.statusCode).toEqual(error.output.statusCode)
+
+    // レスポンスボディが指定の値になっているかどうか
+    const output: ErrorResponse = {
+      statusCode: error.output.statusCode,
+      error: error.output.payload.error,
+      message: error.message,
+      data: error.data,
+    }
+    expect(response.json).toBeCalledWith(output)
+    expect(response.body).toStrictEqual(output)
   })
 
   test('ヘッダーが未送信・エラー形式が通常の場合に、500番のエラーが返却される', () => {

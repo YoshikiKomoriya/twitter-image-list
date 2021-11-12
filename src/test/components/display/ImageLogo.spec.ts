@@ -1,12 +1,12 @@
-import { Wrapper, RouterLinkStub } from '@vue/test-utils'
+import { RouterLinkStub, Wrapper } from '@vue/test-utils'
+import ImageLogo from '~/components/display/ImageLogo.vue'
 import { shallowMount } from '~/test/util/mount'
-import Logo from '~/components/display/Logo.vue'
 
 describe('ロゴ画像', () => {
   let wrapper: Wrapper<Vue>
 
   beforeEach(() => {
-    wrapper = shallowMount(Logo)
+    wrapper = shallowMount(ImageLogo)
   })
 
   test('リンク先がトップページである', () => {
