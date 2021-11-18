@@ -16,7 +16,7 @@ const icon = 'mdi-magnify'
 const labels = {
   keyword: '検索キーワード',
   user: '検索ユーザー',
-}
+} as const
 
 /**
  * 入力する文字数の制限
@@ -34,7 +34,7 @@ const limit = {
     min: 1, // 現在のTwitterの仕様では、新規登録時に4文字以下のIDを登録することはできないが、過去に登録済みのものはそのまま使える様子
     max: 15,
   },
-}
+} as const
 
 /**
  * バリデーションで表示するエラーメッセージ
@@ -48,7 +48,7 @@ const errorMessage = {
     min: 'ユーザーIDを入力してください',
     max: `ユーザーIDが長すぎます。${limit.user.max}文字以下で入力してください`,
   },
-}
+} as const
 
 /**
  * バリデーション用関数
@@ -100,7 +100,7 @@ const rules = {
       return true
     },
   },
-}
+} as const
 
 /**
  * 画面の遷移先に指定するパス情報
@@ -108,6 +108,6 @@ const rules = {
 const pathPrefixes = {
   keyword: 'keyword',
   user: 'user',
-}
+} as const
 
 export { icon, labels, limit, errorMessage, rules, pathPrefixes }

@@ -13,6 +13,6 @@ const parameter = {
   original: {
     name: 'orig',
   },
-}
+} as const
 
 export { parameter }
