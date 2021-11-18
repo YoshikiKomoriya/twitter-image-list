@@ -75,37 +75,25 @@ describe('/search', () => {
       expect(response.body.error).toBe('Bad Request')
     })
 
-    test('取得数が正常な範囲内（1件〜100件）', () => {
+    test.each([
+      rule.count.min,
       /**
-       * 二つの間に存在する整数をランダムに取得する
-       * @param min 最小値
-       * @param max 最大値
-       * @returns 整数
-       * @see https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Math/random#getting_a_random_integer_between_two_values_inclusive
+       * 最小〜最大の間の整数
+       * @see https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Math/random#getting_a_random_integer_between_two_values
        */
-      const getRandomIntInclusive = (min: number, max: number) => {
-        min = Math.ceil(min)
-        max = Math.floor(max)
-        return Math.floor(Math.random() * (max - min + 1) + min) // The maximum is inclusive and the minimum is inclusive
-      }
+      Math.floor(
+        Math.random() * (rule.count.max - rule.count.min) + rule.count.min,
+      ),
+      rule.count.max,
+    ])('取得数が正常な範囲内（%p件）', async (count) => {
+      const parameter = new URLSearchParams({
+        q: 'test',
+        count: count.toString(),
+      }).toString()
 
-      // 最小値・最大値・サンプルとして抽出された値それぞれを用いてテストを行う
-      const counts = [
-        rule.count.min,
-        getRandomIntInclusive(rule.count.min + 1, rule.count.max - 1), // 最小値・最大値を除くランダムな値
-        rule.count.max,
-      ]
+      const response = await request.get(`/search/tweets?${parameter}`)
 
-      counts.map(async (count) => {
-        const parameter = new URLSearchParams({
-          q: 'test',
-          count: count.toString(),
-        }).toString()
-
-        const response = await request.get(`/search/tweets?${parameter}`)
-
-        expect(response.statusCode).toEqual(200)
-      })
+      expect(response.statusCode).toEqual(200)
     })
 
     test('取得数が有効な値未満', async () => {

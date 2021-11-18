@@ -1,5 +1,5 @@
 /**
- * TwitterとのAPI通信に関する設定
+ * キーワード検索
  */
 import Boom from 'boom'
 import { Request, Response, Router } from 'express'
