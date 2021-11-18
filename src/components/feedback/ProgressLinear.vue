@@ -1,6 +1,8 @@
 <template>
-  <v-progress-linear :value="progress" height="25">
-    <template #default="{ value }"> {{ value }} % </template>
+  <v-progress-linear :value="progress" height="25" color="secondary">
+    <template #default="{ value }">
+      <span class="white--text">{{ value }} %</span>
+    </template>
   </v-progress-linear>
 </template>
 

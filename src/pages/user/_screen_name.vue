@@ -6,8 +6,8 @@
         <search-bar-user :value="screenName"></search-bar-user>
       </v-col>
     </v-row>
-    <v-row v-show="existsStatus">
-      <v-col>
+    <v-row v-show="existsStatus" justify="center" class="mb-5">
+      <v-col cols="auto">
         <tweet-media-download-button
           :statuses="statuses"
         ></tweet-media-download-button>

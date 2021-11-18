@@ -2,6 +2,7 @@
   <v-dialog v-model="dialog" @click:outside="cancel">
     <template #activator="{ on }">
       <v-btn
+        color="primary"
         @click="
           toggleDialog()
           download()
@@ -19,10 +20,23 @@
           <v-col cols="12">
             <progress-linear :counter="process.counter"></progress-linear>
           </v-col>
-          <v-col cols="12">
+          <v-col v-if="downloader.errors.length > 0" cols="12">
             <tweet-media-download-alert
               :errors.sync="downloader.errors"
             ></tweet-media-download-alert>
+          </v-col>
+        </v-row>
+        <v-row justify="center">
+          <v-col cols="auto">
+            <v-btn
+              color="primary"
+              large
+              :href="file.objectUrl"
+              :download="`${file.name}.zip`"
+              :loading="process.processing"
+            >
+              ダウンロード
+            </v-btn>
           </v-col>
         </v-row>
       </v-card-text>
@@ -35,13 +49,6 @@
           >キャンセル</v-btn
         >
         <v-spacer></v-spacer>
-        <v-btn
-          :href="file.objectUrl"
-          :download="`${file.name}.zip`"
-          :loading="process.processing"
-        >
-          ダウンロード
-        </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
