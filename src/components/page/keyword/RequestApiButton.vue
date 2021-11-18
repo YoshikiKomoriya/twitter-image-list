@@ -41,7 +41,7 @@ import {
 } from '~/preferences/searchCondition'
 import { filterTweetsToExistMedia } from '~/modules/mediaFilter'
 import { getParameter } from '~/modules/query'
-import { httpErrorMessage } from '~/preferences/errorMessage'
+import { getFromStatusCode } from '~/modules/errorMessage'
 
 /**
  * キーワード検索で使うAPIリクエスト用のボタン
@@ -148,12 +148,7 @@ export default Vue.extend({
      * API通信のエラーハンドリングを行う
      */
     errorHandler(error: any) {
-      // ステータスコードの指定がある場合、専用のエラー文言に変更する
-      this.alert.text =
-        error.error === 429
-          ? httpErrorMessage.tooManyRequests
-          : httpErrorMessage.default
-
+      this.alert.text = getFromStatusCode(error.status)
       this.alert.show = true
       this.moreLoadButton.show = false
     },
