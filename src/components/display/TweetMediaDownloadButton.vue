@@ -34,6 +34,7 @@
               :href="file.objectUrl"
               :download="`${file.name}.zip`"
               :loading="process.processing"
+              class="download"
             >
               ダウンロード
             </v-btn>
@@ -42,12 +43,14 @@
       </v-card-text>
       <v-card-actions>
         <v-btn
+          class="cancel"
           @click="
             toggleDialog()
             cancel()
           "
-          >キャンセル</v-btn
         >
+          キャンセル
+        </v-btn>
         <v-spacer></v-spacer>
       </v-card-actions>
     </v-card>
