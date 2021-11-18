@@ -60,7 +60,7 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-// ユーザー情報を表示するaタグについて、通常の文字列と同じ見た目になるよう制御する
+// ユーザー情報を表示するaタグについて、通常の文字列と同じ見た目になるよう下線の表示を制御する
 a {
   text-decoration: none;
 }
