@@ -10,11 +10,6 @@ import { HttpError } from 'express-openapi-validator/dist/framework/types'
  */
 interface ErrorResponse {
   /**
-   * HTTPステータスコード
-   */
-  statusCode: number
-
-  /**
    * HTTPステータスのメッセージ
    * e.g. 'Bad Request'
    */
@@ -61,13 +56,12 @@ const errorHandler = (
   // エラーがopen-api-validatorのものである場合、専用の処理を実施してエラーを出力する
   if (error instanceof HttpError) {
     const output: ErrorResponse = {
-      statusCode: error.status,
       error: error.name,
       message: error.message,
       data: error.errors,
     }
 
-    response.status(output.statusCode)
+    response.status(error.status)
     response.json(output)
     return
   }
@@ -75,14 +69,15 @@ const errorHandler = (
   // エラーがBoomの形式である場合、専用の処理を実施してエラーを出力する
   if (error instanceof Boom) {
     const output: ErrorResponse = {
-      statusCode: error.output.statusCode,
       error: error.output.payload.error,
       message: error.message,
     }
     // 独自のデータが設定されている場合、それも出力対象とする
-    output.data = error.data ? error.data : error.output.payload
+    if (error.data) {
+      output.data = error.data
+    }
 
-    response.status(output.statusCode)
+    response.status(error.output.statusCode)
     response.json(output)
     return
   }

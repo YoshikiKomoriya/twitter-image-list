@@ -2,15 +2,15 @@
  * メニューに表示するリンク先一覧
  */
 type Link = {
-  title: string
-  path: string
-  icon: string
+  readonly title: string
+  readonly path: string
+  readonly icon: string
 }
 
 /**
  * リンクに設定するページの情報
  */
-const links: Link[] = [
+const links: readonly Link[] = [
   {
     title: 'ホーム',
     path: '/',

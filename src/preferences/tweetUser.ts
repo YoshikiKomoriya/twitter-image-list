@@ -15,7 +15,7 @@ const profileImageUrlSuffix = {
     suffix: '_normal.gif',
     replacement: '.gif',
   },
-}
+} as const
 
 /**
  * 文字列について、**末尾の文字**を対象に置換処理を行う

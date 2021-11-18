@@ -28,19 +28,12 @@ import type { PropType } from 'vue'
 import ButtonPrimary from '~/components/general/ButtonPrimary.vue'
 import CardAlert from '~/components/feedback/CardAlert.vue'
 import {
-  ResponseSearchTweets,
-  SearchApi,
-  SearchMetadata,
-  SearchTweetRequest,
+  StatusesApi,
+  StatusesUserTimelineRequest,
   Tweet,
 } from '~openapi/generated/src'
 import { alertType } from '~/preferences/alertType'
-import {
-  searchCondition,
-  addSearchCondition,
-} from '~/preferences/searchCondition'
 import { filterTweetsToExistMedia } from '~/modules/mediaFilter'
-import { getParameter } from '~/modules/query'
 import { getFromStatusCode } from '~/modules/errorMessage'
 
 /**
@@ -58,19 +51,16 @@ export default Vue.extend({
       type: Array as PropType<Tweet[]>,
       required: true,
     },
-    keyword: {
+    screenName: {
       type: String,
       required: true,
     },
   },
   data() {
-    const requestParameter: SearchTweetRequest = {
-      q: addSearchCondition(
-        this.keyword,
-        searchCondition.exclude.retweets,
-        searchCondition.filter.media,
-      ),
-      count: 100,
+    const requestParameter: StatusesUserTimelineRequest = {
+      screen_name: this.screenName,
+      count: 200,
+      include_rts: false,
     }
     const moreLoadButton = {
       show: true,
@@ -105,15 +95,15 @@ export default Vue.extend({
       this.moreLoadButton.loading = false
     },
     /**
-     * 検索APIのリクエストを実行する
+     * タイムライン取得APIのリクエストを実行する
      */
     async request() {
-      const api = new SearchApi()
+      const api = new StatusesApi()
 
-      let response: ResponseSearchTweets
+      let response: Tweet[]
 
       try {
-        response = await api.searchTweet(this.requestParameter)
+        response = await api.statusesUserTimeline(this.requestParameter)
       } catch (reason) {
         // エラーが発生した場合、アラートに表示する
         return this.errorHandler(reason)
@@ -121,28 +111,34 @@ export default Vue.extend({
 
       // メディア情報が存在するツイートのみ保持する
       // 一部のツイートにはメディアに関する情報が含まれておらず、メディアのURLを割り出せないため、表示の対象としない
-      const statuses = filterTweetsToExistMedia(response.statuses)
+      const statuses = filterTweetsToExistMedia(response)
 
       this.concat(statuses)
-      this.checkNextResult(response.search_metadata)
+      this.checkNextResult(response)
     },
     /**
-     * 検索APIのツイート群を既存データと結合する
+     * タイムライン取得APIのツイート群を既存データと結合する
      */
     concat(statuses: Tweet[]) {
       this.$emit('update:statuses', this.statuses.concat(statuses))
     },
     /**
-     * 検索APIの結果をもとに、コンポーネントのデータを更新する
+     * タイムライン取得APIの結果をもとに、コンポーネントのデータを更新する
      */
-    checkNextResult(metadata: SearchMetadata) {
-      if (metadata.next_results === undefined) {
+    checkNextResult(tweets: Tweet[]) {
+      if (tweets.length === 0) {
         this.moreLoadButton.show = false
         return
       }
 
-      const nextResults = decodeURIComponent(metadata.next_results)
-      this.requestParameter.max_id = getParameter(nextResults, 'max_id')
+      const lastTweet = tweets.pop()
+      if (lastTweet === undefined) {
+        this.moreLoadButton.show = false
+        return
+      }
+
+      const maxId = BigInt(lastTweet.id_str) - 1n // IDの値はNumber型で扱える数値を超えることがあるため（lastTweet.idも数値が丸め込まれている）、生成・減算共にBigIntを利用している
+      this.requestParameter.max_id = maxId.toString()
     },
     /**
      * API通信のエラーハンドリングを行う

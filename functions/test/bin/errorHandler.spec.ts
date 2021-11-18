@@ -45,7 +45,6 @@ describe('エラーハンドリング', () => {
 
     // レスポンスボディが指定の値になっているかどうか
     const output: ErrorResponse = {
-      statusCode: error.status,
       error: error.name,
       message: error.message,
       data: error.errors,
@@ -65,10 +64,8 @@ describe('エラーハンドリング', () => {
 
     // レスポンスボディが指定の値になっているかどうか
     const output: ErrorResponse = {
-      statusCode: error.output.statusCode,
       error: error.output.payload.error,
       message: error.message,
-      data: error.output.payload,
     }
     expect(response.json).toBeCalledWith(output)
     expect(response.body).toStrictEqual(output)
@@ -85,7 +82,6 @@ describe('エラーハンドリング', () => {
 
     // レスポンスボディが指定の値になっているかどうか
     const output: ErrorResponse = {
-      statusCode: error.output.statusCode,
       error: error.output.payload.error,
       message: error.message,
       data: error.data,

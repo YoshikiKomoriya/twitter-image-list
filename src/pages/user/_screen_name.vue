@@ -2,8 +2,8 @@
   <article>
     <v-row>
       <v-col>
-        <h1 class="text-center">{{ keyword }} の検索結果</h1>
-        <search-bar-keyword :value="keyword"></search-bar-keyword>
+        <h1 class="text-center">{{ screenName }} の検索結果</h1>
+        <search-bar-user :value="screenName"></search-bar-user>
       </v-col>
     </v-row>
     <v-row v-show="existsStatus" justify="center" class="mb-5">
@@ -18,32 +18,31 @@
     </section>
     <request-api-button
       :statuses.sync="statuses"
-      :keyword="keyword"
+      :screen-name="screenName"
     ></request-api-button>
   </article>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
-import SearchBarKeyword from '~/components/form/SearchBarKeyword.vue'
+import SearchBarUser from '~/components/form/SearchBarUser.vue'
 import TweetWrapper from '~/components/display/TweetWrapper.vue'
 import TweetMediaDownloadButton from '~/components/display/TweetMediaDownloadButton.vue'
-import RequestApiButton from '~/components/page/keyword/RequestApiButton.vue'
-import { convertPlusToSpace } from '~/modules/query'
+import RequestApiButton from '~/components/page/user/RequestApiButton.vue'
 import { Tweet } from '~openapi/generated/src'
 
 export default Vue.extend({
   components: {
-    SearchBarKeyword,
+    SearchBarUser,
     TweetWrapper,
     TweetMediaDownloadButton,
     RequestApiButton,
   },
   data() {
-    const keyword = convertPlusToSpace(this.$route.params.keyword)
+    const screenName = this.$route.params.screen_name
     const statuses: Tweet[] = []
 
-    return { keyword, statuses }
+    return { screenName, statuses }
   },
   computed: {
     /**

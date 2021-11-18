@@ -71,11 +71,10 @@ describe('メディアダウンロードボタン', () => {
     test('ダイアログにアラート表示用スペースが存在する', async () => {
       await wrapper.setData({ dialog: true })
 
+      // 初期状態（表示なし）の検証
       const dialog = wrapper.find('v-dialog-stub')
       const alert = dialog.find('tweet-media-download-alert-stub')
-
-      expect(alert.exists()).toBe(true)
-      expect(alert.attributes('errors')).toBe('')
+      expect(alert.exists()).toBe(false)
 
       // エラー情報の追加
       await wrapper.setData({
@@ -87,27 +86,24 @@ describe('メディアダウンロードボタン', () => {
           ],
         },
       })
-      expect(alert.attributes('errors')).toBe(
+      const addedAlert = dialog.find('tweet-media-download-alert-stub')
+      expect(addedAlert.attributes('errors')).toBe(
         'MediaDownloadError: test,MediaDownloadError: test2',
       )
+      expect(addedAlert.exists()).toBe(true)
     })
 
     test('ダイアログにキャンセルボタン・ダウンロードボタンが表示される', async () => {
       await wrapper.setData({ dialog: true })
       const dialog = wrapper.find('v-dialog-stub')
-      const actions = dialog.findAll('v-btn-stub, v-spacer-stub')
 
       // 初期状態の検証
       // キャンセルボタン
-      const cancelButton = actions.at(0)
+      const cancelButton = dialog.find('v-btn-stub.cancel')
       expect(cancelButton.text()).toBe('キャンセル')
 
-      // スペーサー
-      const spacer = actions.at(1)
-      expect(spacer.exists()).toBe(true)
-
       // ダウンロードボタン
-      const downloadButton = actions.at(2)
+      const downloadButton = dialog.find('v-btn-stub.download')
       expect(downloadButton.text()).toBe('ダウンロード')
       expect(downloadButton.attributes('href')).toBe('')
       expect(downloadButton.attributes('download')).toBe('medias.zip')

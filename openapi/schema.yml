@@ -122,6 +122,56 @@ paths:
         '429':
           $ref: '#/components/responses/TooManyRequestError'
 
+  /statuses/user_timeline:
+    get:
+      summary: ユーザーのタイムライン取得
+      description: ユーザーのタイムラインを取得する
+      operationId: statusesUserTimeline
+      tags:
+        - statuses
+      parameters:
+        - name: screen_name
+          in: query
+          description: ユーザーのスクリーンネーム
+          example: twitterjp
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 15
+          required: true
+        - name: count
+          in: query
+          description: 取得件数
+          example: 20
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 200
+          required: false
+        - name: max_id
+          in: query
+          description: 取得対象となる範囲の指定（指定のIDより過去を対象とする）
+          schema:
+            type: string
+          required: false
+        - name: include_rts
+          in: query
+          description: リツイートを含めるかどうか
+          schema:
+            type: boolean
+          required: false
+      responses:
+        '200':
+          description: ユーザーのタイムラインの取得
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseStatusesUserTimeline'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '429':
+          $ref: '#/components/responses/TooManyRequestError'
+
   /lists/ownerships:
     get:
       summary: リスト一覧
@@ -187,6 +237,12 @@ components:
           description: ツイート群
         search_metadata:
           $ref: '#/components/schemas/SearchMetadata'
+
+    ResponseStatusesUserTimeline:
+      type: array
+      items:
+        $ref: '#/components/schemas/Tweet'
+      description: ツイート群
 
     ResponseListsOwnerships:
       type: object

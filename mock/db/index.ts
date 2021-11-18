@@ -8,6 +8,7 @@
 import { db as searchTweets } from '~/db/searchTweets'
 import { db as searchTweetsImage } from '~/db/searchTweetsImage'
 import { db as searchTweetsVideo } from '~/db/searchTweetsVideo'
+import { db as statusesUserTimeline } from '~/db/statusesUserTimeline'
 
 const db = {
   // レート制限時のエラーレスポンス
@@ -188,6 +189,7 @@ const db = {
   search_tweets: searchTweets,
   search_tweets_image: searchTweetsImage,
   search_tweets_video: searchTweetsVideo,
+  statuses_user_timeline: statusesUserTimeline,
 }
 
 export { db }
