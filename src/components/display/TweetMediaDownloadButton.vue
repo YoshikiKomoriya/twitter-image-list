@@ -1,5 +1,11 @@
 <template>
-  <v-dialog v-model="dialog" @click:outside="cancel">
+  <v-dialog
+    v-model="dialog"
+    @click:outside="
+      toggleDialog()
+      cancel()
+    "
+  >
     <template #activator="{ on }">
       <v-btn
         color="primary"
@@ -20,11 +26,13 @@
           <v-col cols="12">
             <progress-linear :counter="process.counter"></progress-linear>
           </v-col>
-          <v-col v-if="downloader.errors.length > 0" cols="12">
-            <tweet-media-download-alert
-              :errors.sync="downloader.errors"
-            ></tweet-media-download-alert>
-          </v-col>
+          <v-expand-transition>
+            <v-col v-show="errors.length > 0" cols="12">
+              <tweet-media-download-alert
+                :errors="errors"
+              ></tweet-media-download-alert>
+            </v-col>
+          </v-expand-transition>
         </v-row>
         <v-row justify="center">
           <v-col cols="auto">
@@ -34,7 +42,6 @@
               :href="file.objectUrl"
               :download="`${file.name}.zip`"
               :loading="process.processing"
-              class="download"
             >
               ダウンロード
             </v-btn>
@@ -42,15 +49,8 @@
         </v-row>
       </v-card-text>
       <v-card-actions>
-        <v-btn
-          class="cancel"
-          @click="
-            toggleDialog()
-            cancel()
-          "
-        >
-          キャンセル
-        </v-btn>
+        <v-btn v-if="process.processing" @click="cancel()"> キャンセル </v-btn>
+        <v-btn v-else @click="toggleDialog()"> 閉じる </v-btn>
         <v-spacer></v-spacer>
       </v-card-actions>
     </v-card>
@@ -94,16 +94,13 @@ export default Vue.extend({
       },
     }
 
-    // ダウンロード用クラスはコンポーネント内でグローバルなオブジェクトとして扱いたいため、データ内であらかじめ定義する
-    const downloader: {
-      instance: MediaDownloader
-      errors: MediaDownloadError[]
-    } = {
-      instance: new MediaDownloader([]),
-      errors: [], // エラーをまとめて表示するため、配列に格納する
-    }
+    // エラーをまとめて表示するため、配列に格納する
+    const errors: MediaDownloadError[] = []
 
-    return { dialog, file, process, downloader }
+    // ダウンロード用クラスはコンポーネント内でグローバルなオブジェクトとして扱いたいため、データ内であらかじめ定義する
+    const downloader = new MediaDownloader()
+
+    return { dialog, file, process, errors, downloader }
   },
   computed: {
     /**
@@ -129,17 +126,8 @@ export default Vue.extend({
     async download() {
       this.process.processing = true
 
-      await this.downloadMedia().catch((error) => {
-        this.recordError(error)
-        this.cancel()
-        throw error
-      })
-      const generatedFile = await this.generateZipFile().catch((error) => {
-        this.recordError(error)
-        this.cancel()
-        throw error
-      })
-      this.file = generatedFile.file
+      await this.downloadMedia()
+      await this.generateZipFile()
 
       this.process.processing = false
     },
@@ -147,34 +135,51 @@ export default Vue.extend({
      * メディアのダウンロード処理を実施する
      */
     async downloadMedia() {
-      this.downloader.instance.setMedias(this.medias)
-      await this.downloader.instance.download(this.process.counter)
+      this.downloader.setMedias(this.medias)
+      await this.downloader.download(this.process.counter)
 
       // エラーが発生している場合、記録する
-      if (this.downloader.instance.errors.length > 0) {
-        this.recordErrors(this.downloader.instance.errors)
+      if (this.downloader.errors.length > 0) {
+        this.recordErrors(this.downloader.errors)
       }
     },
     /**
      * ダウンロード用のZIPファイルを生成する
      */
     async generateZipFile() {
-      const generator = new MediaZipGenerator(this.downloader.instance.contents)
-      await generator.generate()
+      const generator = new MediaZipGenerator(this.downloader.contents)
+      try {
+        await generator.generate()
+        this.file = generator.file
+      } catch (error) {
+        // 想定されうるエラーかそうでないかによって、エラー文言を変更する
+        if (error instanceof MediaDownloadError) {
+          this.recordError(error)
+        } else {
+          this.recordError(
+            new MediaDownloadError({
+              message: '想定外のエラーが発生しました',
+              data: error,
+            }),
+          )
+        }
 
-      return generator
+        // エラーが発生した場合、ダウンロードが不可能（ZIPファイルが生成できない）と想定されるため、キャンセル処理を実施する
+        this.cancel()
+      }
     },
     /**
      * モーダルの表示・非表示を切り替える
      */
     toggleDialog() {
+      this.errors = [] // エラー表示の初期化
       this.dialog = !this.dialog
     },
     /**
      * キャンセル処理を行う
      */
     cancel() {
-      this.downloader.instance.reset()
+      this.downloader.reset()
       window.URL.revokeObjectURL(this.file.objectUrl)
       this.process.processing = false
     },
@@ -183,14 +188,14 @@ export default Vue.extend({
      * エラー情報を記録する
      */
     recordError(error: MediaDownloadError) {
-      this.downloader.errors.push(error)
+      this.errors.push(error)
     },
     /**
      * メディアダウンロードに関するエラーハンドリング
      * 複数のエラー情報を記録する
      */
     recordErrors(errors: MediaDownloadError[]) {
-      this.downloader.errors.push(...errors)
+      this.errors.push(...errors)
     },
   },
 })

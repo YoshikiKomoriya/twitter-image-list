@@ -3,6 +3,7 @@
  */
 
 import JSZip from 'jszip'
+import { MediaDownloadError } from '~/modules/customError'
 import { Content } from '~/modules/mediaDownloader'
 
 /**
@@ -26,7 +27,7 @@ class MediaZipGenerator {
   }
 
   /**
-   * メディアのダウンロード処理を行うクラス
+   * ZIPファイルに格納するメディアファイルの一覧
    */
   private readonly _contents: Content[]
 
@@ -40,7 +41,7 @@ class MediaZipGenerator {
   }
 
   /**
-   * メディアをダウンロードして、ZIPファイルのURLを生成する
+   * ZIPファイルのURLを生成する
    */
   async generate() {
     // ZIPファイルの作成
@@ -53,18 +54,17 @@ class MediaZipGenerator {
    * @param contents コンテンツ情報
    * @param name ZIPファイル名
    * @returns ZIPファイルのデータ
-   * @throws {@link Error} ZIPファイルの作成に失敗した場合
+   * @throws {@link MediaDownloadError} ZIPファイルの作成に失敗した場合
    */
   private async _generateZipBlob(contents: Content[], name: string) {
     const zip = new JSZip()
     const folder = zip.folder(name)
 
     if (folder === null) {
-      throw new TypeError('フォルダの作成に失敗しました')
+      throw new MediaDownloadError('ZIPファイルの作成に失敗しました')
     }
 
     for (const content of contents) {
-      // folder.file(content.name, content.blob)
       folder.file(content.name, content.blob)
     }
 
