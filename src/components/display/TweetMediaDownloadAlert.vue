@@ -1,25 +1,21 @@
 <template>
-  <v-sheet v-if="show">
-    <v-expand-transition>
-      <card-alert :type="alertType.warning">
-        <template #content>
-          <p>ダウンロードに失敗したファイルがあります</p>
-          <ul>
-            <li v-for="(text, index) in texts" :key="index">
-              {{ text }}
-            </li>
-          </ul>
-        </template>
-      </card-alert>
-    </v-expand-transition>
-    <v-expand-transition>
-      <expansion-field>
-        <template #button> エラー詳細を表示する </template>
-        <template #content>
-          <v-textarea :value="traces" filled></v-textarea>
-        </template>
-      </expansion-field>
-    </v-expand-transition>
+  <v-sheet>
+    <card-alert :type="alertType.warning">
+      <template #content>
+        <p>ダウンロードに失敗したファイルがあります</p>
+        <ul>
+          <li v-for="(text, index) in texts" :key="index">
+            {{ text }}
+          </li>
+        </ul>
+      </template>
+    </card-alert>
+    <expansion-field>
+      <template #button> エラー詳細を表示する </template>
+      <template #content>
+        <v-textarea :value="traces" filled></v-textarea>
+      </template>
+    </expansion-field>
   </v-sheet>
 </template>
 

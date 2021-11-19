@@ -71,39 +71,34 @@ describe('メディアダウンロードボタン', () => {
     test('ダイアログにアラート表示用スペースが存在する', async () => {
       await wrapper.setData({ dialog: true })
 
-      // 初期状態（表示なし）の検証
       const dialog = wrapper.find('v-dialog-stub')
       const alert = dialog.find('tweet-media-download-alert-stub')
-      expect(alert.exists()).toBe(false)
+      expect(alert.attributes('errors')).toBe('')
 
       // エラー情報の追加
       await wrapper.setData({
-        downloader: {
-          instance: new MediaDownloader([]),
-          errors: [
-            new MediaDownloadError('test'),
-            new MediaDownloadError('test2'),
-          ],
-        },
+        errors: [
+          new MediaDownloadError('test'),
+          new MediaDownloadError('test2'),
+        ],
       })
       const addedAlert = dialog.find('tweet-media-download-alert-stub')
       expect(addedAlert.attributes('errors')).toBe(
         'MediaDownloadError: test,MediaDownloadError: test2',
       )
-      expect(addedAlert.exists()).toBe(true)
     })
 
-    test('ダイアログにキャンセルボタン・ダウンロードボタンが表示される', async () => {
+    test('ダイアログにキャンセルボタン（閉じるボタン）・ダウンロードボタンが表示される', async () => {
       await wrapper.setData({ dialog: true })
       const dialog = wrapper.find('v-dialog-stub')
 
       // 初期状態の検証
       // キャンセルボタン
-      const cancelButton = dialog.find('v-btn-stub.cancel')
+      const cancelButton = dialog.find('v-card-actions-stub v-btn-stub')
       expect(cancelButton.text()).toBe('キャンセル')
 
       // ダウンロードボタン
-      const downloadButton = dialog.find('v-btn-stub.download')
+      const downloadButton = dialog.find('v-card-text-stub v-btn-stub')
       expect(downloadButton.text()).toBe('ダウンロード')
       expect(downloadButton.attributes('href')).toBe('')
       expect(downloadButton.attributes('download')).toBe('medias.zip')
@@ -127,6 +122,10 @@ describe('メディアダウンロードボタン', () => {
       expect(downloadButton.attributes('href')).toBe(file.objectUrl)
       expect(downloadButton.attributes('download')).toBe(`${file.name}.zip`)
       expect(downloadButton.attributes('loaoding')).toBeUndefined() // falseの場合は未定義となる
+
+      // 閉じるボタン（キャンセルボタンと入れ替わりで表示される）
+      const closeButton = dialog.find('v-card-actions-stub v-btn-stub')
+      expect(closeButton.text()).toBe('閉じる')
     })
   })
 
@@ -143,7 +142,7 @@ describe('メディアダウンロードボタン', () => {
       await button.trigger('click')
 
       expect(mountedWrapper.find('div.v-dialog--active').exists()).toBe(true)
-      expect(mountedWrapper.vm.$data.downloader.instance.download).toBeCalled()
+      expect(mountedWrapper.vm.$data.downloader.download).toBeCalled()
     })
 
     test('キャンセルボタンを押すと、キャンセル処理が行われる', async () => {
