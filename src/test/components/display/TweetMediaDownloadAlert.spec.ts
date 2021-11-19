@@ -9,10 +9,12 @@ describe('メディアダウンロード用アラート表示', () => {
   }
   type Props = typeof props
 
-  test('エラー情報が追加されると、アラートが表示される', async () => {
-    // v-ifによる表示の変化を確認したいため、スタブ化を行わないmount()を使う
+  test('エラー情報が追加されると、アラートに反映される', async () => {
     const mountedWrapper = mount(TweetMediaDownloadAlert, { propsData: props })
-    expect(mountedWrapper.find('div.v-alert').exists()).toBe(false) // v-ifで制御しているため、要素自体が描画されないことを検証する
+
+    // 初期表示の検証
+    const alert = mountedWrapper.find('div.v-alert')
+    expect(alert.text()).toContain('')
 
     // エラーの追加
     const propsData: Props = JSON.parse(JSON.stringify(props))
@@ -22,20 +24,20 @@ describe('メディアダウンロード用アラート表示', () => {
     await mountedWrapper.setProps(propsData)
 
     // 値の検証
-    const alert = mountedWrapper.find('div.v-alert')
-    expect(alert.text()).toContain(
+    const addedAlert = mountedWrapper.find('div.v-alert')
+    expect(addedAlert.text()).toContain(
       'メディアのダウンロード中にエラーが発生しました',
     )
-    expect(alert.isVisible()).toBe(true)
   })
 
-  test('エラー情報が追加されると、エラー詳細が表示される', async () => {
-    // v-ifによる表示の変化を確認したいため、スタブ化を行わないmount()を使う
+  test('エラー情報が追加されると、エラー詳細に反映される', async () => {
     const mountedWrapper = mount(TweetMediaDownloadAlert, { propsData: props })
-    expect(mountedWrapper.find('div.expansion-field').exists()).toBe(false) // v-ifで制御しているため、要素自体が描画されないことを検証する
 
     // エラーの追加
     const propsData: Props = JSON.parse(JSON.stringify(props))
+    propsData.errors.push(
+      new MediaDownloadError('メディアのダウンロード中にエラーが発生しました'),
+    )
     propsData.errors.push(
       new MediaDownloadError({
         message: 'メディアが見つかりませんでした',
@@ -50,10 +52,6 @@ describe('メディアダウンロード用アラート表示', () => {
     )
     await mountedWrapper.setProps(propsData)
 
-    // 表示枠の検証
-    const field = mountedWrapper.find('div.expansion-field')
-    expect(field.isVisible()).toBe(true)
-
     // 値の検証
     // 検証用の値を用意する
     const filteredData = propsData.errors.filter((error) => {
@@ -65,6 +63,7 @@ describe('メディアダウンロード用アラート表示', () => {
     const traces = mappedData.join('\n')
 
     // エラー詳細の値を検証する
+    const field = mountedWrapper.find('div.expansion-field')
     await field.find('.button').trigger('click') // 表示ボタンを押して、内容をHTML内に展開する
     const textarea = field.find('textarea')
     assertIsTextArea(textarea.element) // テキストエリアの値を取得するために、専用の型であることを保証する（valueプロパティが存在する型へ変換する）
