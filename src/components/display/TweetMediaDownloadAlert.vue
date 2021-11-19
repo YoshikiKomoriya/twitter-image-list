@@ -43,14 +43,6 @@ export default Vue.extend({
   },
   computed: {
     /**
-     * アラートの表示・非表示フラグ
-     */
-    show: {
-      get(): boolean {
-        return this.errors.length > 0
-      },
-    },
-    /**
      * アラートの文言
      * propsで渡されたエラー情報をエラーメッセージごとにユニーク化する
      */
