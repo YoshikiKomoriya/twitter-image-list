@@ -1,7 +1,7 @@
 import { Wrapper } from '@vue/test-utils'
-import { shallowMount } from '~/test/util/mount'
-import SectionSearch from '~/components/page/top/SectionSearch.vue'
 import SearchBarKeyword from '~/components/form/SearchBarKeyword.vue'
+import SectionSearch from '~/components/page/top/SectionSearch.vue'
+import { shallowMount } from '~/test/util/mount'
 
 describe('トップページ内のキーワード検索ブロック', () => {
   let wrapper: Wrapper<Vue>

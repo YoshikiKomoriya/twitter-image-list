@@ -38,11 +38,11 @@
 import Vue from 'vue'
 import type { PropType } from 'vue'
 import TweetCard from '~/components/display/TweetCard.vue'
-import TweetCardText from '~/components/display/TweetCardText.vue'
 import TweetCardActions from '~/components/display/TweetCardActions.vue'
+import TweetCardText from '~/components/display/TweetCardText.vue'
 import VideoPlayer from '~/components/general/VideoPlayer.vue'
-import { Media, Tweet } from '~openapi/generated/src'
 import { selectHighestAndLowest } from '~/modules/videoVariant'
+import { Media, Tweet } from '~openapi/generated/src'
 
 export default Vue.extend({
   components: { TweetCard, TweetCardText, TweetCardActions, VideoPlayer },

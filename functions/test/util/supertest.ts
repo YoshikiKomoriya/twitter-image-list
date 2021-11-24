@@ -1,8 +1,8 @@
 /**
  * ライブラリ'supertest'のインスタンス生成処理をモジュール化したもの
  */
-import supertest from 'supertest'
 import express from 'express'
+import supertest from 'supertest'
 import { session } from '~/bin/session'
 import app from '~/index'
 

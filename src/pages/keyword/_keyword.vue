@@ -25,9 +25,9 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import SearchBarKeyword from '~/components/form/SearchBarKeyword.vue'
-import TweetWrapper from '~/components/display/TweetWrapper.vue'
 import TweetMediaDownloadButton from '~/components/display/TweetMediaDownloadButton.vue'
+import TweetWrapper from '~/components/display/TweetWrapper.vue'
+import SearchBarKeyword from '~/components/form/SearchBarKeyword.vue'
 import RequestApiButton from '~/components/page/keyword/RequestApiButton.vue'
 import { convertPlusToSpace } from '~/modules/query'
 import { Tweet } from '~openapi/generated/src'

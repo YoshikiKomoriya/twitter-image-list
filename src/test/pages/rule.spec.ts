@@ -1,6 +1,6 @@
 import { Wrapper } from '@vue/test-utils'
-import { mount } from '~/test/util/mount'
 import rule from '~/pages/rule.vue'
+import { mount } from '~/test/util/mount'
 
 describe('ご利用上の注意', () => {
   let wrapper: Wrapper<Vue>

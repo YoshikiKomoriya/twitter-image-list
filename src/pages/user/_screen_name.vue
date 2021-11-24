@@ -25,9 +25,9 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import SearchBarUser from '~/components/form/SearchBarUser.vue'
-import TweetWrapper from '~/components/display/TweetWrapper.vue'
 import TweetMediaDownloadButton from '~/components/display/TweetMediaDownloadButton.vue'
+import TweetWrapper from '~/components/display/TweetWrapper.vue'
+import SearchBarUser from '~/components/form/SearchBarUser.vue'
 import RequestApiButton from '~/components/page/user/RequestApiButton.vue'
 import { Tweet } from '~openapi/generated/src'
 

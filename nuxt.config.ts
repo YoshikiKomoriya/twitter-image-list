@@ -1,7 +1,7 @@
-import path from 'path'
 import fs from 'fs'
-import colors from 'vuetify/es5/util/colors'
+import path from 'path'
 import { NuxtConfig } from '@nuxt/types'
+import colors from 'vuetify/es5/util/colors'
 
 const config: NuxtConfig = {
   // Target: https://go.nuxtjs.dev/config-target

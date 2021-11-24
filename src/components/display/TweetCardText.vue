@@ -23,9 +23,9 @@
 <script lang="ts">
 import Vue from 'vue'
 import type { PropType } from 'vue'
-import { User } from '~openapi/generated/src'
-import { getOriginalProfileImageUrl } from '~/preferences/tweetUser'
 import { pathPrefixes } from '~/preferences/searchBar'
+import { getOriginalProfileImageUrl } from '~/preferences/tweetUser'
+import { User } from '~openapi/generated/src'
 
 export default Vue.extend({
   props: {

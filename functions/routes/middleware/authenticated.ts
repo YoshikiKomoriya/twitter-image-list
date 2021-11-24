@@ -1,8 +1,8 @@
 /**
  * Twitterの認証が済んでいるかどうかをチェックするミドルウェア
  */
-import { Request, Response, NextFunction } from 'express'
 import Boom from 'boom'
+import { Request, Response, NextFunction } from 'express'
 
 /**
  * Twitterの認証が済んでいるか検証する

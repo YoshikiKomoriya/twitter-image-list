@@ -1,8 +1,8 @@
 import './bin/moduleAlias'
 import { NextFunction, Request, Response } from 'express'
 import jsonServer from 'json-server'
-import { route as customRoute } from '~/route'
 import { db } from '~/db/index'
+import { route as customRoute } from '~/route'
 
 const app = jsonServer.create()
 const middlewares = jsonServer.defaults()

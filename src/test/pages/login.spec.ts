@@ -1,7 +1,7 @@
 import { Wrapper } from '@vue/test-utils'
-import { mount } from '~/test/util/mount'
-import login from '~/pages/login.vue'
 import ButtonLogin from '~/components/general/ButtonLogin.vue'
+import login from '~/pages/login.vue'
+import { mount } from '~/test/util/mount'
 
 describe('ご利用上の注意', () => {
   let wrapper: Wrapper<Vue>

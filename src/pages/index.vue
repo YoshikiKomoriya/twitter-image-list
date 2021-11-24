@@ -16,11 +16,11 @@
 <script lang="ts">
 import Vue from 'vue'
 
-import SectionTitle from '~/components/page/top/SectionTitle.vue'
-import SectionTrend from '~/components/page/top/SectionTrend.vue'
 import SectionInformation from '~/components/page/top/SectionInformation.vue'
 import SectionNotice from '~/components/page/top/SectionNotice.vue'
 import SectionSearch from '~/components/page/top/SectionSearch.vue'
+import SectionTitle from '~/components/page/top/SectionTitle.vue'
+import SectionTrend from '~/components/page/top/SectionTrend.vue'
 
 export default Vue.extend({
   components: {

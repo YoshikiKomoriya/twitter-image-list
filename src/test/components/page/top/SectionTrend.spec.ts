@@ -1,7 +1,7 @@
 import { Wrapper } from '@vue/test-utils'
-import { shallowMount } from '~/test/util/mount'
 import SectionTrend from '~/components/page/top/SectionTrend.vue'
 import { encodeQuery } from '~/modules/query'
+import { shallowMount } from '~/test/util/mount'
 
 describe('トップページ内のトレンドブロック', () => {
   let wrapper: Wrapper<Vue>
