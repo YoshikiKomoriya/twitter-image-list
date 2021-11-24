@@ -1,9 +1,10 @@
 import { Wrapper } from '@vue/test-utils'
 import axios from 'axios'
-import { env } from '~/bin/dotenv'
+
 import TweetCardVideo from '~/components/display/TweetCardVideo.vue'
 import { filterTweetsToExistMedia } from '~/modules/mediaFilter'
 import { selectHighestAndLowest } from '~/modules/videoVariant'
+import { env } from '~/test/util/dotenv'
 import { mount, shallowMount } from '~/test/util/mount'
 import { Media, Tweet } from '~openapi/generated/src'
 
