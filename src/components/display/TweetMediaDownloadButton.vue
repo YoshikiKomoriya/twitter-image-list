@@ -62,11 +62,11 @@ import Vue from 'vue'
 import type { PropType } from 'vue'
 import TweetMediaDownloadAlert from '~/components/display/TweetMediaDownloadAlert.vue'
 import ProgressLinear from '~/components/feedback/ProgressLinear.vue'
-import { Media, Tweet } from '~openapi/generated/src'
-import { FileInformation, MediaZipGenerator } from '~/modules/mediaZipGenerator'
+import { MediaDownloadError } from '~/modules/customError'
 import { MediaDownloader, ProcessCounter } from '~/modules/mediaDownloader'
 import { mapMediasByTweets } from '~/modules/mediaFilter'
-import { MediaDownloadError } from '~/modules/customError'
+import { FileInformation, MediaZipGenerator } from '~/modules/mediaZipGenerator'
+import { Media, Tweet } from '~openapi/generated/src'
 
 export default Vue.extend({
   components: { ProgressLinear, TweetMediaDownloadAlert },

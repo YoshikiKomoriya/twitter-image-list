@@ -1,9 +1,9 @@
 import { Wrapper } from '@vue/test-utils'
 import axios from 'axios'
-import { env } from '~/bin/dotenv'
 import TweetCardImage from '~/components/display/TweetCardImage.vue'
 import { filterTweetsToExistMedia } from '~/modules/mediaFilter'
 import { parameter } from '~/preferences/tweetImage'
+import { env } from '~/test/util/dotenv'
 import { mount, shallowMount } from '~/test/util/mount'
 import { Media, Tweet } from '~openapi/generated/src'
 

@@ -1,5 +1,5 @@
-import { shallowMount } from '~/test/util/mount'
 import SectionNotice from '~/components/page/top/SectionNotice.vue'
+import { shallowMount } from '~/test/util/mount'
 
 describe('トップページ内のアプリ説明ブロック', () => {
   test('h2タグの表示', () => {

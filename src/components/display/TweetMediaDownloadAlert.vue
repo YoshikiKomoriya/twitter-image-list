@@ -24,8 +24,8 @@ import Vue from 'vue'
 import type { PropType } from 'vue'
 import ExpansionField from '../feedback/ExpansionField.vue'
 import CardAlert from '~/components/feedback/CardAlert.vue'
-import { alertType } from '~/preferences/alertType'
 import { MediaDownloadError } from '~/modules/customError'
+import { alertType } from '~/preferences/alertType'
 
 export default Vue.extend({
   components: { CardAlert, ExpansionField },

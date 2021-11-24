@@ -41,10 +41,10 @@
 import Vue from 'vue'
 import type { PropType } from 'vue'
 import TweetCard from '~/components/display/TweetCard.vue'
-import TweetCardText from '~/components/display/TweetCardText.vue'
 import TweetCardActions from '~/components/display/TweetCardActions.vue'
-import { Media, Tweet } from '~openapi/generated/src'
+import TweetCardText from '~/components/display/TweetCardText.vue'
 import { getSmall, getOriginal } from '~/modules/imageUrl'
+import { Media, Tweet } from '~openapi/generated/src'
 
 export default Vue.extend({
   components: { TweetCard, TweetCardText, TweetCardActions },
