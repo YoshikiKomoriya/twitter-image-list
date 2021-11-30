@@ -24,6 +24,7 @@ export interface SearchTweetRequest {
     q: string;
     count?: number;
     max_id?: string;
+    tweet_mode?: string;
 }
 
 /**
@@ -52,6 +53,10 @@ export class SearchApi extends runtime.BaseAPI {
 
         if (requestParameters.max_id !== undefined) {
             queryParameters['max_id'] = requestParameters.max_id;
+        }
+
+        if (requestParameters.tweet_mode !== undefined) {
+            queryParameters['tweet_mode'] = requestParameters.tweet_mode;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};

@@ -110,6 +110,12 @@ paths:
           schema:
             type: string
           required: false
+        - name: tweet_mode
+          in: query
+          description: ツイートの取得形式。'extended'を指定すると、本文の合計が140文字を超える場合に省略されなくなる
+          schema:
+            type: string
+          required: false
       responses:
         '200':
           description: 検索結果の取得
@@ -154,9 +160,21 @@ paths:
           schema:
             type: string
           required: false
+        - name: tweet_mode
+          in: query
+          description: ツイートの取得形式。'extended'を指定すると、本文の合計が140文字を超える場合に省略されなくなる
+          schema:
+            type: string
+          required: false
         - name: include_rts
           in: query
           description: リツイートを含めるかどうか
+          schema:
+            type: boolean
+          required: false
+        - name: include_ext_alt_text
+          in: query
+          description: メディアのaltテキストを含めるかどうか
           schema:
             type: boolean
           required: false
@@ -275,12 +293,20 @@ components:
           type: string
         text:
           type: string
+        full_text:
+          type: string
         truncated:
           type: boolean
+        display_text_range:
+          type: array
+          items:
+            type: integer
         entities:
           $ref: '#/components/schemas/Entities'
         extended_entities:
           $ref: '#/components/schemas/ExtendedEntities'
+        metadata:
+          $ref: '#/components/schemas/Metadata'
         source:
           type: string
         in_reply_to_status_id:
@@ -320,6 +346,8 @@ components:
           type: integer
         quoted_status_id_str:
           type: string
+        quoted_status_permalink:
+          $ref: '#/components/schemas/QuotedStatusPermalink'
         quoted_status:
           $ref: '#/components/schemas/Tweet'
         retweet_count:
@@ -340,7 +368,6 @@ components:
         - created_at
         - id
         - id_str
-        - text
         - truncated
         - entities
         - source
@@ -672,6 +699,9 @@ components:
           type: string
         video_info:
           $ref: '#/components/schemas/VideoInfo'
+        ext_alt_text:
+          type: string
+          nullable: true
         additional_media_info:
           type: object
           properties:
@@ -786,6 +816,26 @@ components:
         - options
         - end_datetime
         - duration_millis
+
+    Metadata:
+      type: object
+      description: 検索用の付随情報（ツイート単体）
+      properties:
+        iso_language_code:
+          type: string
+        result_type:
+          type: string
+
+    QuotedStatusPermalink:
+      type: object
+      description: 引用リツイートのリンク情報
+      properties:
+        url:
+          type: string
+        expanded:
+          type: string
+        display:
+          type: string
 
     SearchMetadata:
       type: object
