@@ -4,7 +4,6 @@ import {
   selectLowest,
   selectHighestAndLowest,
 } from '~/modules/videoVariant'
-import * as videoVariant from '~/modules/videoVariant'
 import { VideoInfoVariants } from '~openapi/generated/src'
 
 // テスト用データを生成する
