@@ -5,7 +5,7 @@
         :src="smallImageUrl"
         contain
         :aspect-ratio="1"
-        :alt="status.text"
+        :alt="media.ext_alt_text || status.full_text"
         max-width="100vw"
         @click="toggleShow"
       >
@@ -21,7 +21,7 @@
       <v-expand-transition>
         <v-card-text v-show="show">
           <tweet-card-text
-            :text="status.text"
+            :text="status.full_text"
             :user="status.user"
           ></tweet-card-text>
         </v-card-text>

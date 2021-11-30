@@ -61,6 +61,7 @@ export default Vue.extend({
       screen_name: this.screenName,
       count: 200,
       include_rts: false,
+      tweet_mode: 'extended',
     }
     const moreLoadButton = {
       show: true,

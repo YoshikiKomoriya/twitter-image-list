@@ -71,6 +71,7 @@ export default Vue.extend({
         searchCondition.filter.media,
       ),
       count: 100,
+      tweet_mode: 'extended',
     }
     const moreLoadButton = {
       show: true,

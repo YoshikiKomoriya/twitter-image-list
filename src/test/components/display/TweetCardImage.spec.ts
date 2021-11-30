@@ -47,7 +47,8 @@ describe('ツイート画像表示用ブロック', () => {
     const image = wrapper.find('v-img-stub')
 
     // 画像の基本設定
-    expect(image.attributes('alt')).toBe(props.status.text)
+    const alt = props.media.ext_alt_text || props.status.full_text
+    expect(image.attributes('alt')).toBe(alt)
     expect(image.attributes('src')).toBe(
       `${props.media.media_url_https}?name=${parameter.small.name}`,
     )

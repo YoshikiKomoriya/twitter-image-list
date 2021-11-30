@@ -9,9 +9,6 @@ import { Tweet } from '~openapi/generated/src'
  * 与えられたツイート群について、メディア情報が存在するもののみを抽出する
  * @param statuses ツイート群
  * @returns 抽出されたツイート群
- * @note
- * Twitter Search APIの出力結果は、**メディアが含まれるツイートのみを対象にしても**、'media'や'extended_entities'の項目が含まれていないツイートが存在する
- * メディア情報が不明なツイートは、処理上のノイズ（表示・ダウンロードに特別な処理が必要となる）となってしまうため、こちらを用いて取り除くことが推奨される
  */
 const filterTweetsToExistMedia = (statuses: Tweet[]) => {
   return statuses.filter((status) => {
