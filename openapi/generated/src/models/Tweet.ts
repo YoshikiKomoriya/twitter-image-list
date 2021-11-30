@@ -22,6 +22,14 @@ import {
     ExtendedEntitiesFromJSON,
     ExtendedEntitiesFromJSONTyped,
     ExtendedEntitiesToJSON,
+    Metadata,
+    MetadataFromJSON,
+    MetadataFromJSONTyped,
+    MetadataToJSON,
+    QuotedStatusPermalink,
+    QuotedStatusPermalinkFromJSON,
+    QuotedStatusPermalinkFromJSONTyped,
+    QuotedStatusPermalinkToJSON,
     User,
     UserFromJSON,
     UserFromJSONTyped,
@@ -57,13 +65,25 @@ export interface Tweet {
      * @type {string}
      * @memberof Tweet
      */
-    text: string;
+    text?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Tweet
+     */
+    full_text?: string;
     /**
      * 
      * @type {boolean}
      * @memberof Tweet
      */
     truncated: boolean;
+    /**
+     * 
+     * @type {Array<number>}
+     * @memberof Tweet
+     */
+    display_text_range?: Array<number>;
     /**
      * 
      * @type {Entities}
@@ -76,6 +96,12 @@ export interface Tweet {
      * @memberof Tweet
      */
     extended_entities?: ExtendedEntities;
+    /**
+     * 
+     * @type {Metadata}
+     * @memberof Tweet
+     */
+    metadata?: Metadata;
     /**
      * 
      * @type {string}
@@ -168,6 +194,12 @@ export interface Tweet {
     quoted_status_id_str?: string;
     /**
      * 
+     * @type {QuotedStatusPermalink}
+     * @memberof Tweet
+     */
+    quoted_status_permalink?: QuotedStatusPermalink;
+    /**
+     * 
      * @type {Tweet}
      * @memberof Tweet
      */
@@ -229,10 +261,13 @@ export function TweetFromJSONTyped(json: any, ignoreDiscriminator: boolean): Twe
         'created_at': json['created_at'],
         'id': json['id'],
         'id_str': json['id_str'],
-        'text': json['text'],
+        'text': !exists(json, 'text') ? undefined : json['text'],
+        'full_text': !exists(json, 'full_text') ? undefined : json['full_text'],
         'truncated': json['truncated'],
+        'display_text_range': !exists(json, 'display_text_range') ? undefined : json['display_text_range'],
         'entities': EntitiesFromJSON(json['entities']),
         'extended_entities': !exists(json, 'extended_entities') ? undefined : ExtendedEntitiesFromJSON(json['extended_entities']),
+        'metadata': !exists(json, 'metadata') ? undefined : MetadataFromJSON(json['metadata']),
         'source': json['source'],
         'in_reply_to_status_id': json['in_reply_to_status_id'],
         'in_reply_to_status_id_str': json['in_reply_to_status_id_str'],
@@ -248,6 +283,7 @@ export function TweetFromJSONTyped(json: any, ignoreDiscriminator: boolean): Twe
         'is_quote_status': json['is_quote_status'],
         'quoted_status_id': !exists(json, 'quoted_status_id') ? undefined : json['quoted_status_id'],
         'quoted_status_id_str': !exists(json, 'quoted_status_id_str') ? undefined : json['quoted_status_id_str'],
+        'quoted_status_permalink': !exists(json, 'quoted_status_permalink') ? undefined : QuotedStatusPermalinkFromJSON(json['quoted_status_permalink']),
         'quoted_status': !exists(json, 'quoted_status') ? undefined : TweetFromJSON(json['quoted_status']),
         'retweet_count': json['retweet_count'],
         'favorite_count': json['favorite_count'],
@@ -272,9 +308,12 @@ export function TweetToJSON(value?: Tweet | null): any {
         'id': value.id,
         'id_str': value.id_str,
         'text': value.text,
+        'full_text': value.full_text,
         'truncated': value.truncated,
+        'display_text_range': value.display_text_range,
         'entities': EntitiesToJSON(value.entities),
         'extended_entities': ExtendedEntitiesToJSON(value.extended_entities),
+        'metadata': MetadataToJSON(value.metadata),
         'source': value.source,
         'in_reply_to_status_id': value.in_reply_to_status_id,
         'in_reply_to_status_id_str': value.in_reply_to_status_id_str,
@@ -290,6 +329,7 @@ export function TweetToJSON(value?: Tweet | null): any {
         'is_quote_status': value.is_quote_status,
         'quoted_status_id': value.quoted_status_id,
         'quoted_status_id_str': value.quoted_status_id_str,
+        'quoted_status_permalink': QuotedStatusPermalinkToJSON(value.quoted_status_permalink),
         'quoted_status': TweetToJSON(value.quoted_status),
         'retweet_count': value.retweet_count,
         'favorite_count': value.favorite_count,

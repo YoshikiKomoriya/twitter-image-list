@@ -1,7 +1,7 @@
 <template>
   <tweet-card>
     <template #content>
-      <video-player :src="variants.lowest.url">
+      <video-player :src="variants.lowest.url" :alt="media.ext_alt_text">
         <!-- 読み込み中に表示するアニメーション -->
         <template #placeholder>
           <v-row justify="center" align="center" class="fill-height">
@@ -18,7 +18,7 @@
       <v-expand-transition>
         <v-card-text v-show="show">
           <tweet-card-text
-            :text="status.text"
+            :text="status.full_text"
             :user="status.user"
           ></tweet-card-text>
         </v-card-text>

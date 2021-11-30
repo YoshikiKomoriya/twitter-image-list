@@ -24,7 +24,9 @@ export interface StatusesUserTimelineRequest {
     screen_name: string;
     count?: number;
     max_id?: string;
+    tweet_mode?: string;
     include_rts?: boolean;
+    include_ext_alt_text?: boolean;
 }
 
 /**
@@ -55,8 +57,16 @@ export class StatusesApi extends runtime.BaseAPI {
             queryParameters['max_id'] = requestParameters.max_id;
         }
 
+        if (requestParameters.tweet_mode !== undefined) {
+            queryParameters['tweet_mode'] = requestParameters.tweet_mode;
+        }
+
         if (requestParameters.include_rts !== undefined) {
             queryParameters['include_rts'] = requestParameters.include_rts;
+        }
+
+        if (requestParameters.include_ext_alt_text !== undefined) {
+            queryParameters['include_ext_alt_text'] = requestParameters.include_ext_alt_text;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};

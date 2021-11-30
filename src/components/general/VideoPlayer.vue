@@ -7,7 +7,9 @@
         controls
         :class="videoDisplay"
         @canplay="canPlay = true"
-      ></video>
+      >
+        {{ alt }}
+      </video>
     </v-lazy>
   </v-responsive>
 </template>
@@ -20,6 +22,12 @@ export default Vue.extend({
     src: {
       type: String,
       required: true,
+    },
+    alt: {
+      type: String,
+      default:
+        'このブラウザは動画に対応していません。対応ブラウザでご利用ください。',
+      required: false,
     },
   },
   data() {

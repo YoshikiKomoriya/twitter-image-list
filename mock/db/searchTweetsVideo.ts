@@ -4,7 +4,8 @@ const db = {
       created_at: 'Mon Oct 25 22:48:40 +0000 2021',
       id: '1452769106722164739',
       id_str: '1452769106722164739',
-      text: "It's launch week for our latest @Commercial_Crew mission to the @Space_Station!\n\n#Crew3 is set to lift off in the w… https://t.co/iOksw06wgF",
+      full_text:
+        "It's launch week for our latest @Commercial_Crew mission to the @Space_Station!\n\n#Crew3 is set to lift off in the w… https://t.co/iOksw06wgF",
       truncated: true,
       entities: {
         hashtags: [
@@ -131,7 +132,8 @@ const db = {
       created_at: 'Mon Oct 25 15:41:06 +0000 2021',
       id: '1452661504864669709',
       id_str: '1452661504864669709',
-      text: '🎯 Can you change the path of an asteroid? Engineer and martial artist Elena Adams of @JHUAPL leads a team that will… https://t.co/rbU2PL56eS',
+      full_text:
+        '🎯 Can you change the path of an asteroid? Engineer and martial artist Elena Adams of @JHUAPL leads a team that will… https://t.co/rbU2PL56eS',
       truncated: true,
       entities: {
         hashtags: [],
@@ -246,7 +248,8 @@ const db = {
       created_at: 'Sun Oct 24 16:43:00 +0000 2021',
       id: '1452314693398249472',
       id_str: '1452314693398249472',
-      text: "We're crashing a spacecraft into an asteroid… on purpose! Our #DARTmission is a #PlanetaryDefense test to change th… https://t.co/f6LTZdIebX",
+      full_text:
+        "We're crashing a spacecraft into an asteroid… on purpose! Our #DARTmission is a #PlanetaryDefense test to change th… https://t.co/f6LTZdIebX",
       truncated: true,
       entities: {
         hashtags: [
@@ -362,7 +365,8 @@ const db = {
       created_at: 'Sat Oct 23 16:10:49 +0000 2021',
       id: '1451944208835784712',
       id_str: '1451944208835784712',
-      text: '• Stacked: Our mega-Moon rocket for @NASAArtemis I\n• Selected: A new space telescope to study the galaxy\n• Released… https://t.co/rsMOyGqvsg',
+      full_text:
+        '• Stacked: Our mega-Moon rocket for @NASAArtemis I\n• Selected: A new space telescope to study the galaxy\n• Released… https://t.co/rsMOyGqvsg',
       truncated: true,
       entities: {
         hashtags: [],
@@ -476,7 +480,8 @@ const db = {
       created_at: 'Fri Oct 22 23:21:23 +0000 2021',
       id: '1451690173331382274',
       id_str: '1451690173331382274',
-      text: 'Heading into the weekend like an autonomous rover on Mars.\n\nhttps://t.co/cLIxFOhLza https://t.co/O7uPeC9NNb',
+      full_text:
+        'Heading into the weekend like an autonomous rover on Mars.\n\nhttps://t.co/cLIxFOhLza https://t.co/O7uPeC9NNb',
       truncated: false,
       entities: {
         hashtags: [],
@@ -695,7 +700,8 @@ const db = {
       created_at: 'Fri Oct 22 15:15:35 +0000 2021',
       id: '1451567919192854530',
       id_str: '1451567919192854530',
-      text: '🌶️ It’s almost harvest season aboard the @Space_Station! This week, the crew prepared for a chili pepper haul and b… https://t.co/WUOsTFx2hQ',
+      full_text:
+        '🌶️ It’s almost harvest season aboard the @Space_Station! This week, the crew prepared for a chili pepper haul and b… https://t.co/WUOsTFx2hQ',
       truncated: true,
       entities: {
         hashtags: [],
@@ -809,7 +815,8 @@ const db = {
       created_at: 'Thu Oct 21 16:45:25 +0000 2021',
       id: '1451228139900841984',
       id_str: '1451228139900841984',
-      text: 'He has led teams who design tech concepts for robotic space exploration. An alum of the University of Puerto Rico,… https://t.co/hNkyFjMISi',
+      full_text:
+        'He has led teams who design tech concepts for robotic space exploration. An alum of the University of Puerto Rico,… https://t.co/hNkyFjMISi',
       truncated: true,
       entities: {
         hashtags: [],
@@ -915,7 +922,8 @@ const db = {
       created_at: 'Wed Oct 20 17:22:55 +0000 2021',
       id: '1450875187436658698',
       id_str: '1450875187436658698',
-      text: 'What if an asteroid were going to hit Earth? ☄️\n\nThere are no known threats, but asteroid expert Dr. Kelly Fast of… https://t.co/ItAZFT5ByV',
+      full_text:
+        'What if an asteroid were going to hit Earth? ☄️\n\nThere are no known threats, but asteroid expert Dr. Kelly Fast of… https://t.co/ItAZFT5ByV',
       truncated: true,
       entities: {
         hashtags: [],
@@ -1022,7 +1030,8 @@ const db = {
       created_at: 'Wed Oct 20 15:49:23 +0000 2021',
       id: '1450851649816236038',
       id_str: '1450851649816236038',
-      text: '🧳 Vacation on Venus. Kayak on Titan. Sail above a sea of lava. Where will you explore?\n\nTour some of the most extre… https://t.co/feWpCr6FPH',
+      full_text:
+        '🧳 Vacation on Venus. Kayak on Titan. Sail above a sea of lava. Where will you explore?\n\nTour some of the most extre… https://t.co/feWpCr6FPH',
       truncated: true,
       entities: {
         hashtags: [],
@@ -1129,7 +1138,8 @@ const db = {
       created_at: 'Tue Oct 19 16:53:45 +0000 2021',
       id: '1450505458406543361',
       id_str: '1450505458406543361',
-      text: '📢 Sing? Paint? Dance? If you create art, we want to see it!\n\nJoin our #UnfoldTheUniverse Art Challenge with… https://t.co/HegTyKVif2',
+      full_text:
+        '📢 Sing? Paint? Dance? If you create art, we want to see it!\n\nJoin our #UnfoldTheUniverse Art Challenge with… https://t.co/HegTyKVif2',
       truncated: true,
       entities: {
         hashtags: [
@@ -1240,7 +1250,8 @@ const db = {
       created_at: 'Tue Oct 19 14:45:00 +0000 2021',
       id: '1450473059199062016',
       id_str: '1450473059199062016',
-      text: 'What do Martian wind gusts sound like? What about the crunching of rover wheels on Martian gravel? 🤔\n\nThanks to two… https://t.co/lFCfwpI7xx',
+      full_text:
+        'What do Martian wind gusts sound like? What about the crunching of rover wheels on Martian gravel? 🤔\n\nThanks to two… https://t.co/lFCfwpI7xx',
       truncated: true,
       entities: {
         hashtags: [],
@@ -1347,7 +1358,8 @@ const db = {
       created_at: 'Mon Oct 18 22:40:08 +0000 2021',
       id: '1450230240907825155',
       id_str: '1450230240907825155',
-      text: 'Our Laser Communications Relay Demonstration could revolutionize the way we send &amp; receive data from space, with th… https://t.co/NzVKkQvNCI',
+      full_text:
+        'Our Laser Communications Relay Demonstration could revolutionize the way we send &amp; receive data from space, with th… https://t.co/NzVKkQvNCI',
       truncated: true,
       entities: {
         hashtags: [],
@@ -1453,7 +1465,8 @@ const db = {
       created_at: 'Mon Oct 18 17:02:51 +0000 2021',
       id: '1450145364057763849',
       id_str: '1450145364057763849',
-      text: 'We’ve never done any of this before.\n\nFor the 29 days after liftoff, our @NASAWebb Space Telescope will unfold like… https://t.co/aICT31WapA',
+      full_text:
+        'We’ve never done any of this before.\n\nFor the 29 days after liftoff, our @NASAWebb Space Telescope will unfold like… https://t.co/aICT31WapA',
       truncated: true,
       entities: {
         hashtags: [],

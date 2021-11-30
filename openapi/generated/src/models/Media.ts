@@ -126,6 +126,12 @@ export interface Media {
     video_info?: VideoInfo;
     /**
      * 
+     * @type {string}
+     * @memberof Media
+     */
+    ext_alt_text?: string | null;
+    /**
+     * 
      * @type {MediaAdditionalMediaInfo}
      * @memberof Media
      */
@@ -157,6 +163,7 @@ export function MediaFromJSONTyped(json: any, ignoreDiscriminator: boolean): Med
         'source_user_id': !exists(json, 'source_user_id') ? undefined : json['source_user_id'],
         'source_user_id_str': !exists(json, 'source_user_id_str') ? undefined : json['source_user_id_str'],
         'video_info': !exists(json, 'video_info') ? undefined : VideoInfoFromJSON(json['video_info']),
+        'ext_alt_text': !exists(json, 'ext_alt_text') ? undefined : json['ext_alt_text'],
         'additional_media_info': !exists(json, 'additional_media_info') ? undefined : MediaAdditionalMediaInfoFromJSON(json['additional_media_info']),
     };
 }
@@ -185,6 +192,7 @@ export function MediaToJSON(value?: Media | null): any {
         'source_user_id': value.source_user_id,
         'source_user_id_str': value.source_user_id_str,
         'video_info': VideoInfoToJSON(value.video_info),
+        'ext_alt_text': value.ext_alt_text,
         'additional_media_info': MediaAdditionalMediaInfoToJSON(value.additional_media_info),
     };
 }
