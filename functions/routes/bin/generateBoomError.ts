@@ -74,4 +74,4 @@ const isNotAuthorized = (error: any) => {
   return true
 }
 
-export { generateBoomError }
+export { ErrorResponse, isIncludeErrorCode, generateBoomError }
