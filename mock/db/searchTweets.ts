@@ -10,7 +10,7 @@ const db = {
        */
       id: '1459379912213622795',
       id_str: '1459379912213622795',
-      text: '秋ですね☺️🍁 https://t.co/BbjFiTGF8v',
+      full_text: '秋ですね☺️🍁 https://t.co/BbjFiTGF8v',
       truncated: false,
       entities: {
         hashtags: [],
@@ -183,7 +183,8 @@ const db = {
       created_at: 'Fri Oct 22 09:06:02 +0000 2021',
       id: '1451474917262704641',
       id_str: '1451474917262704641',
-      text: '半分こ、とか可愛いこと言ってすいませんでした！秒で一個平らげました☺️ https://t.co/kEK0v1uuRE',
+      full_text:
+        '半分こ、とか可愛いこと言ってすいませんでした！秒で一個平らげました☺️ https://t.co/kEK0v1uuRE',
       truncated: false,
       entities: {
         hashtags: [],
@@ -356,7 +357,8 @@ const db = {
       created_at: 'Wed Oct 13 03:21:09 +0000 2021',
       id: '1448126633915920392',
       id_str: '1448126633915920392',
-      text: 'そこで2018年7月から2021年7月の間、Twitter上でもっとも会話された韓国ドラマTOP20を紹介します✨\n\nみなさんは何作品、完走してる？👀 #BeyondKpop https://t.co/qDqhWbTV0o',
+      full_text:
+        'そこで2018年7月から2021年7月の間、Twitter上でもっとも会話された韓国ドラマTOP20を紹介します✨\n\nみなさんは何作品、完走してる？👀 #BeyondKpop https://t.co/qDqhWbTV0o',
       truncated: false,
       entities: {
         hashtags: [
@@ -529,7 +531,8 @@ const db = {
       created_at: 'Fri Oct 01 03:06:26 +0000 2021',
       id: '1443774278499897353',
       id_str: '1443774278499897353',
-      text: 'そして、Twitter上で盛り上がった場面と放映中にもっとも多く使われた絵文字上位5位を紹介します！ 観たみなさんは放映中にツイートしましたか？🔥 #鬼滅の刃 https://t.co/jyiqukTlK3',
+      full_text:
+        'そして、Twitter上で盛り上がった場面と放映中にもっとも多く使われた絵文字上位5位を紹介します！ 観たみなさんは放映中にツイートしましたか？🔥 #鬼滅の刃 https://t.co/jyiqukTlK3',
       truncated: false,
       entities: {
         hashtags: [
@@ -737,7 +740,8 @@ const db = {
       created_at: 'Fri Oct 01 03:06:26 +0000 2021',
       id: '1443774275677163532',
       id_str: '1443774275677163532',
-      text: '先週土曜日にテレビで放映された『劇場版「#鬼滅の刃」無限列車編』🚂 Twitter上では放映当日の20:00から26:00までの間、同作品に関する会話は390万ツイートがありました🔥 https://t.co/pYbnBelDuE',
+      full_text:
+        '先週土曜日にテレビで放映された『劇場版「#鬼滅の刃」無限列車編』🚂 Twitter上では放映当日の20:00から26:00までの間、同作品に関する会話は390万ツイートがありました🔥 https://t.co/pYbnBelDuE',
       truncated: false,
       entities: {
         hashtags: [
@@ -925,7 +929,7 @@ const db = {
       created_at: 'Tue Sep 28 03:50:39 +0000 2021',
       id: '1442698242953814018',
       id_str: '1442698242953814018',
-      text: 'なんかいる https://t.co/qXvLR1iPyr',
+      full_text: 'なんかいる https://t.co/qXvLR1iPyr',
       truncated: false,
       entities: {
         hashtags: [],
