@@ -7,6 +7,10 @@ import { authentication } from '~/routes/bin/authentication'
 import { request } from '~/test/util/supertest'
 
 describe('/authentication', () => {
+  afterEach(() => {
+    jest.restoreAllMocks()
+  })
+
   test('/', async () => {
     // 外部APIと通信する関数のモック化
     const mockGetRequestToken = jest.spyOn(authentication, 'getRequestToken')

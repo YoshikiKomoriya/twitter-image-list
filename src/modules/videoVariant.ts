@@ -105,4 +105,4 @@ const selectHighestAndLowest = (variants: VideoInfoVariants[]) => {
   }
 }
 
-export { selectHighest, selectLowest, selectHighestAndLowest }
+export { sortByQuality, selectHighest, selectLowest, selectHighestAndLowest }

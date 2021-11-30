@@ -56,7 +56,7 @@ const errorMessage = {
 const rules = {
   keyword: {
     /**
-     * 文字数を数えて、規定数以上の場合はエラーを表示する
+     * 文字数を数えて、規定数の範囲を超える場合はエラーを表示する
      * @param value 入力されたキーワード
      * @returns エラーがない場合はtrue, エラーがある場合はその文言
      */
@@ -79,7 +79,7 @@ const rules = {
   },
   user: {
     /**
-     * 文字数を数えて、規定数以上の場合はエラーを表示する
+     * 文字数を数えて、規定数の範囲を超える場合はエラーを表示する
      * @param value 入力されたユーザーID
      * @returns エラーがない場合はtrue, エラーがある場合はその文言
      */
@@ -89,11 +89,11 @@ const rules = {
         return true
       }
 
-      if (value.length < limit.keyword.min) {
+      if (value.length < limit.user.min) {
         return errorMessage.user.min
       }
 
-      if (value.length > limit.keyword.max) {
+      if (value.length > limit.user.max) {
         return errorMessage.user.max
       }
 

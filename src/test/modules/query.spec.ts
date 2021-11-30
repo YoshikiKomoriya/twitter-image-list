@@ -84,4 +84,11 @@ describe('クエリ文字に関する処理', () => {
     expect(getParameter(query, 'foo')).toBe(parameters[0][1])
     expect(getParameter(query, 'hoge')).toBe(parameters[1][1])
   })
+
+  test('クエリ文字に指定のパラメータが存在しない場合、undefinedが返却される', () => {
+    const parameters = [['foo', 'bar']]
+    const query = new URLSearchParams(parameters).toString()
+
+    expect(getParameter(query, 'hoge')).toBeUndefined()
+  })
 })

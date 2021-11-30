@@ -44,6 +44,10 @@ describe('ツイート動画表示用ブロック', () => {
     })
   })
 
+  afterEach(() => {
+    jest.restoreAllMocks()
+  })
+
   test('動画が表示される', () => {
     // 動画情報の取得
     if (props.media.video_info === undefined) {
@@ -108,8 +112,6 @@ describe('ツイート動画表示用ブロック', () => {
     expect(() => {
       shallowMount(TweetCardVideo, { propsData: testProps })
     }).toThrow(TypeError('メディアに動画情報が含まれていません'))
-
-    jest.clearAllMocks()
   })
 
   test('ツイート情報表示用モデルを変更する関数のテスト', () => {

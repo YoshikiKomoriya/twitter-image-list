@@ -1,13 +1,26 @@
 import { Wrapper } from '@vue/test-utils'
+import axios from 'axios'
 import TweetWrapper from '~/components/display/TweetWrapper.vue'
+import { env } from '~/test/util/dotenv'
 import { shallowMount } from '~/test/util/mount'
+import { ResponseSearchTweets, Tweet } from '~openapi/generated/src'
 
 describe('メディアダウンロードボタン', () => {
   let wrapper: Wrapper<Vue>
-  const props = { statuses: [] }
+
+  // モックサーバーに接続して、ダウンロード対象のメディアを取得する
+  const mockServerOrigin = env.get('MOCK_SERVER_URL')
+  let tweets: Tweet[]
+
+  beforeEach(async () => {
+    const response: ResponseSearchTweets = (
+      await axios.get(`${mockServerOrigin}/search/tweets/image`)
+    ).data
+    tweets = response.statuses
+  })
 
   beforeEach(() => {
-    wrapper = shallowMount(TweetWrapper, { propsData: props })
+    wrapper = shallowMount(TweetWrapper, { propsData: { statuses: tweets } })
   })
 
   describe('関数の検証', () => {

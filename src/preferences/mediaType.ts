@@ -25,22 +25,4 @@ const isPhoto = (type: string) => {
   return type === mediaType.photo
 }
 
-/**
- * メディアの種別が動画であることを判定する
- * @param type メディアの種別
- * @returns 判定結果
- */
-const isVideo = (type: string) => {
-  return type === mediaType.video
-}
-
-/**
- * メディアの種別がGIFアニメーションであることを判定する
- * @param type メディアの種別
- * @returns 判定結果
- */
-const isGifAnimation = (type: string) => {
-  return type === mediaType.animatedGif
-}
-
-export { mediaType, MediaType, isPhoto, isVideo, isGifAnimation }
+export { mediaType, MediaType, isPhoto }

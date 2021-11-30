@@ -4,7 +4,6 @@
 
 /**
  * 独自のエラークラス
- * エラーメッセージの他に、独自のデータを扱う
  *
  * @see https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Error#custom_error_types
  */
@@ -24,6 +23,7 @@ class CustomError extends Error {
 
 /**
  * メディアのダウンロードで発生するエラー
+ * エラーメッセージの他に、独自のデータを扱う
  * **リカバリー可能なエラー**として、なるべくcatchする運用にすることを推奨する
  * （リカバリー不可能なエラーは標準で組み込まれているエラーを使う想定）
  */

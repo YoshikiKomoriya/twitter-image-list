@@ -13,6 +13,10 @@ describe('/list', () => {
     mockGet = jest.spyOn(Twitter.prototype, 'get')
   })
 
+  afterEach(() => {
+    jest.restoreAllMocks()
+  })
+
   test('自身が所有するリストの取得', async () => {
     // モックサーバーに接続して、レスポンス内容を取得するように設定する
     const value = (await axios.get(`${mockServerOrigin}/lists/ownerships`)).data
