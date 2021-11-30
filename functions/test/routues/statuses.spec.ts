@@ -32,6 +32,10 @@ describe('/statuses', () => {
     mockGet.mockResolvedValue(value)
   })
 
+  afterEach(() => {
+    jest.restoreAllMocks()
+  })
+
   describe('/statuses/user_timeline', () => {
     test('正常なリクエスト（スクリーンネームのみ指定）', async () => {
       const parameter = new URLSearchParams({ screen_name: 'test' }).toString()

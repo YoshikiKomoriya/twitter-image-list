@@ -28,6 +28,10 @@ describe('/search', () => {
     mockGet.mockResolvedValue(value)
   })
 
+  afterEach(() => {
+    jest.restoreAllMocks()
+  })
+
   describe('/search/tweets', () => {
     test('正常なリクエスト（キーワードのみ指定）', async () => {
       const parameter = new URLSearchParams({ q: 'test' }).toString()
