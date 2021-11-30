@@ -18,7 +18,7 @@ const profileImageUrlSuffix = {
 } as const
 
 /**
- * 文字列について、**末尾の文字**を対象に置換処理を行う
+ * 文字列について、**末尾に完全一致する文字**を対象に置換処理を行う
  * @param string 置換したい文字列
  * @param pattern 置き換え対象となる文字列
  * @param replacement 置き換える文字列
@@ -55,4 +55,4 @@ const getOriginalProfileImageUrl = (url: string) => {
   )
 }
 
-export { getOriginalProfileImageUrl }
+export { profileImageUrlSuffix, replaceSuffix, getOriginalProfileImageUrl }
