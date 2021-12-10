@@ -11,6 +11,8 @@ module.exports = {
       '<rootDir>/functions/$1',
       '<rootDir>/mock/$1',
     ],
+    '^@openapi/(.*)$': ['<rootDir>/openapi/$1'],
+    '^~openapi/(.*)$': ['<rootDir>/openapi/$1'],
     '^vue$': 'vue/dist/vue.common.js',
   },
   moduleFileExtensions: ['ts', 'js', 'vue', 'json'],

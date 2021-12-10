@@ -14,6 +14,7 @@ const route = {
   '/search/tweets/video': '/search_tweets_video',
   '/statuses/user_timeline': '/statuses_user_timeline',
   '/statuses/user_timeline[0-9a-zA-Z?=]+': '/statuses_user_timeline',
+  '/trends/place': '/trends_place',
 }
 
 export { route }
