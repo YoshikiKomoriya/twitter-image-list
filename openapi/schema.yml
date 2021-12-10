@@ -209,6 +209,33 @@ paths:
         '429':
           $ref: '#/components/responses/TooManyRequestError'
 
+  /trends/place:
+    get:
+      summary: トレンド取得
+      description: 特定の地域のトレンドを取得する
+      operationId: trendsPlace
+      tags:
+        - trends
+      parameters:
+        - name: id
+          in: query
+          description: 地域を指定するID
+          example: 1
+          schema:
+            type: number
+          required: true
+      responses:
+        '200':
+          description: トレンド一覧
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseTrendsPlace'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '429':
+          $ref: '#/components/responses/TooManyRequestError'
+
 components:
   schemas:
     # エラーレスポンスで使用する共通パラメータ
@@ -279,6 +306,12 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/List'
+
+    ResponseTrendsPlace:
+      type: array
+      items:
+        $ref: '#/components/schemas/Trends'
+      description: トレンド一覧
 
     # Twitter APIの返却値用の型情報
     Tweet:
@@ -915,6 +948,63 @@ components:
         - created_at
         - following
         - user
+
+    Trends:
+      type: object
+      description: トレンド一覧
+      properties:
+        trends:
+          type: array
+          items:
+            $ref: '#/components/schemas/Trend'
+        as_of:
+          type: string
+        created_at:
+          type: string
+        locations:
+          type: array
+          items:
+            $ref: '#/components/schemas/Location'
+      required:
+        - trends
+        - as_of
+        - created_at
+        - locations
+
+    Trend:
+      type: object
+      description: トレンド情報
+      properties:
+        name:
+          type: string
+        url:
+          type: string
+        promoted_content:
+          type: string
+          nullable: true
+        query:
+          type: string
+        tweet_volume:
+          type: integer
+          nullable: true
+      required:
+        - name
+        - url
+        - promoted_content
+        - query
+        - tweet_volume
+
+    Location:
+      type: object
+      description: 位置情報（トレンド向け）
+      properties:
+        name:
+          type: string
+        woeid:
+          type: integer
+      required:
+        - name
+        - woeid
 
   responses:
     BadRequestError:

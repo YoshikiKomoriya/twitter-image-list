@@ -212,6 +212,10 @@ font-style: italic;
   <ul>
   <li><a href="#statusesUserTimeline"><code><span class="http-method">get</span> /statuses/user_timeline</code></a></li>
   </ul>
+  <h4><a href="#Trends">Trends</a></h4>
+  <ul>
+  <li><a href="#trendsPlace"><code><span class="http-method">get</span> /trends/place</code></a></li>
+  </ul>
 
   <h1><a name="Authentication">Authentication</a></h1>
   <div class="method"><a name="authentication"/>
@@ -2694,6 +2698,80 @@ font-style: italic;
         <a href="#Error">Error</a>
   </div> <!-- method -->
   <hr/>
+  <h1><a name="Trends">Trends</a></h1>
+  <div class="method"><a name="trendsPlace"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /trends/place</code></pre></div>
+    <div class="method-summary">トレンド取得 (<span class="nickname">trendsPlace</span>)</div>
+    <div class="method-notes">特定の地域のトレンドを取得する</div>
+
+
+
+
+
+    <h3 class="field-label">Query parameters</h3>
+    <div class="field-items">
+      <div class="param">id (required)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; 地域を指定するID default: null </div>
+    </div>  <!-- field-items -->
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      array[<a href="#Trends">Trends</a>]
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "as_of" : "as_of",
+  "created_at" : "created_at",
+  "locations" : [ {
+    "name" : "name",
+    "woeid" : 6
+  }, {
+    "name" : "name",
+    "woeid" : 6
+  } ],
+  "trends" : [ {
+    "promoted_content" : "promoted_content",
+    "tweet_volume" : 0,
+    "query" : "query",
+    "name" : "name",
+    "url" : "url"
+  }, {
+    "promoted_content" : "promoted_content",
+    "tweet_volume" : 0,
+    "query" : "query",
+    "name" : "name",
+    "url" : "url"
+  } ]
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    トレンド一覧
+        
+    <h4 class="field-label">400</h4>
+    不正なリクエストエラー
+        <a href="#Error">Error</a>
+    <h4 class="field-label">429</h4>
+    リクエスト数エラー
+        <a href="#Error">Error</a>
+  </div> <!-- method -->
+  <hr/>
 
   <h2><a name="__Models">Models</a></h2>
   [ Jump to <a href="#__Methods">Methods</a> ]
@@ -2705,6 +2783,7 @@ font-style: italic;
     <li><a href="#ExtendedEntities"><code>ExtendedEntities</code> - </a></li>
     <li><a href="#Hashtag"><code>Hashtag</code> - </a></li>
     <li><a href="#List"><code>List</code> - </a></li>
+    <li><a href="#Location"><code>Location</code> - </a></li>
     <li><a href="#Media"><code>Media</code> - </a></li>
     <li><a href="#MediaSize"><code>MediaSize</code> - </a></li>
     <li><a href="#MediaSizes"><code>MediaSizes</code> - </a></li>
@@ -2718,6 +2797,8 @@ font-style: italic;
     <li><a href="#ResponseSearchTweets"><code>ResponseSearchTweets</code> - </a></li>
     <li><a href="#SearchMetadata"><code>SearchMetadata</code> - </a></li>
     <li><a href="#Symbol"><code>Symbol</code> - </a></li>
+    <li><a href="#Trend"><code>Trend</code> - </a></li>
+    <li><a href="#Trends"><code>Trends</code> - </a></li>
     <li><a href="#Tweet"><code>Tweet</code> - </a></li>
     <li><a href="#Url"><code>Url</code> - </a></li>
     <li><a href="#User"><code>User</code> - </a></li>
@@ -2782,6 +2863,14 @@ font-style: italic;
 <div class="param">created_at </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
 <div class="param">following </div><div class="param-desc"><span class="param-type"><a href="#boolean">Boolean</a></span>  </div>
 <div class="param">user </div><div class="param-desc"><span class="param-type"><a href="#User">User</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="Location"><code>Location</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'>位置情報（トレンド向け）</div>
+    <div class="field-items">
+      <div class="param">name </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">woeid </div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  </div>
     </div>  <!-- field-items -->
   </div>
   <div class="model">
@@ -2915,6 +3004,27 @@ font-style: italic;
     <div class="field-items">
       <div class="param">text </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
 <div class="param">indices </div><div class="param-desc"><span class="param-type"><a href="#integer">array[Integer]</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="Trend"><code>Trend</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'>トレンド情報</div>
+    <div class="field-items">
+      <div class="param">name </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">url </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">promoted_content </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">query </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">tweet_volume </div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="Trends"><code>Trends</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'>トレンド一覧</div>
+    <div class="field-items">
+      <div class="param">trends </div><div class="param-desc"><span class="param-type"><a href="#Trend">array[Trend]</a></span>  </div>
+<div class="param">as_of </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">created_at </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">locations </div><div class="param-desc"><span class="param-type"><a href="#Location">array[Location]</a></span>  </div>
     </div>  <!-- field-items -->
   </div>
   <div class="model">
