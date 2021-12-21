@@ -44,26 +44,6 @@ const addRouterOption = (options: FunctionalComponentMountOptions<Vue>) => {
 }
 
 /**
- * 指定のオプションのプロパティにNuxt向けの設定が存在するか調べて、ない場合は追加する
- */
-const addNuxtConfigOption = (options: FunctionalComponentMountOptions<Vue>) => {
-  const $config = nuxtConfig.publicRuntimeConfig
-
-  if ($config === undefined) {
-    throw new Error('Nuxtの設定ファイルが読み込めませんでした')
-  }
-
-  if (typeof options.mocks !== 'object') {
-    // オプションが存在しない場合、プロパティを作成する
-    options.mocks = { $config }
-    return
-  }
-
-  // オプションが存在する場合、プロパティを追加する
-  Object.defineProperty(options.mocks, '$config', $config)
-}
-
-/**
  * コンポーネントのマウントを行う
  * @param component コンポーネント
  * @param options オプション
@@ -77,7 +57,6 @@ const mount = (
   localVue.use(VueRouter)
   addRouterOption(options)
   addVuetifyOption(options)
-  addNuxtConfigOption(options)
 
   const wrapper = utilsMount(component, {
     localVue,
@@ -109,7 +88,6 @@ const shallowMount = (
   localVue.use(VueRouter)
   addRouterOption(options)
   addVuetifyOption(options)
-  addNuxtConfigOption(options)
 
   const wrapper = utilsShallowMount(component, {
     localVue,
