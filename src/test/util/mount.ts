@@ -14,7 +14,6 @@ import {
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Vuetify from 'vuetify'
-import nuxtConfig from '~/../nuxt.config'
 import NuxtContentMock from '~/test/util/__mocks__/NuxtContentMock.vue'
 
 /**
