@@ -2,7 +2,7 @@
   <section>
     <v-row justify="center">
       <v-col cols="12">
-        <h2 class="text-center">{{ $config.appTitle }}について</h2>
+        <h2 class="text-center">TWISTTER（ツイスター）について</h2>
       </v-col>
       <v-col cols="12" md="8">
         <!-- nuxt-contentはページコンポーネントでしか動作しない様子なので、実際の内容は親コンポーネントで定義する -->
