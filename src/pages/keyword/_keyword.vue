@@ -45,6 +45,11 @@ export default Vue.extend({
 
     return { keyword, statuses }
   },
+  head() {
+    return {
+      title: `${convertPlusToSpace(this.$route.params.keyword)} の検索結果`,
+    }
+  },
   computed: {
     /**
      * ツイート群が存在するかどうか

@@ -35,5 +35,11 @@ export default Vue.extend({
 
     return { aboutService }
   },
+  head() {
+    return {
+      title: 'TWISTTER（ツイスター） | Twitter画像検索&ダウンロード',
+      titleTemplate: '%s',
+    }
+  },
 })
 </script>

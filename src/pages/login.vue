@@ -48,6 +48,11 @@ export default Vue.extend({
       size: buttonSize.xLarge,
     }
   },
+  head() {
+    return {
+      title: 'アカウントサービス',
+    }
+  },
 })
 </script>
 

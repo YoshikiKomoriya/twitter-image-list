@@ -18,7 +18,7 @@ const config: NuxtConfig = {
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    titleTemplate: `%s`,
+    titleTemplate: `%s | TWISTTER（ツイスター） | Twitter画像検索&ダウンロード`,
     title: process.env.APP_TITLE,
     meta: [
       { charset: 'utf-8' },
