@@ -13,5 +13,10 @@ import SearchBarKeyword from '~/components/form/SearchBarKeyword.vue'
 
 export default Vue.extend({
   components: { SearchBarKeyword },
+  head() {
+    return {
+      title: 'キーワード検索',
+    }
+  },
 })
 </script>

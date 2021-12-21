@@ -13,5 +13,10 @@ import SearchBarUser from '~/components/form/SearchBarUser.vue'
 
 export default Vue.extend({
   components: { SearchBarUser },
+  head() {
+    return {
+      title: 'ユーザー検索',
+    }
+  },
 })
 </script>

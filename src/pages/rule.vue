@@ -34,6 +34,11 @@ export default Vue.extend({
 
     return { termOfService, privacyPolicy }
   },
+  head() {
+    return {
+      title: 'ご利用上の注意',
+    }
+  },
 })
 </script>
 

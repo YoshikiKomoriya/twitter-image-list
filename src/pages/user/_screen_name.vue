@@ -44,6 +44,11 @@ export default Vue.extend({
 
     return { screenName, statuses }
   },
+  head() {
+    return {
+      title: `${this.$route.params.screen_name} の検索結果`,
+    }
+  },
   computed: {
     /**
      * ツイート群が存在するかどうか
