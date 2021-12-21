@@ -39,6 +39,7 @@ describe('/search', () => {
       const response = await request.get(`/search/tweets?${parameter}`)
 
       expect(response.statusCode).toEqual(200)
+      expect(response.header['cache-control']).toBe('public, max-age=30')
     })
 
     test('正常なリクエスト（すべてのオプションを指定）', async () => {
@@ -51,6 +52,7 @@ describe('/search', () => {
       const response = await request.get(`/search/tweets?${parameter}`)
 
       expect(response.statusCode).toEqual(200)
+      expect(response.header['cache-control']).toBe('public, max-age=30')
     })
 
     test('キーワードの指定がない', async () => {
@@ -136,6 +138,7 @@ describe('/search', () => {
       const response = await request.get(`/search/tweets?${parameter}`)
 
       expect(response.statusCode).toEqual(200)
+      expect(response.header['cache-control']).toBe('public, max-age=30')
     })
 
     test('max_idがオブジェクトとしてパースされる文字列で指定されている', async () => {

@@ -28,11 +28,6 @@ const config: NuxtConfig = {
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
   },
 
-  // フロントエンドに公開される環境変数
-  publicRuntimeConfig: {
-    appTitle: process.env.APP_TITLE,
-  },
-
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [],
 

@@ -5,6 +5,7 @@ import Boom from 'boom'
 import { Request, Response, Router } from 'express'
 import { assertIsTwitterClient } from '~/routes/bin/assert'
 import { generateBoomError } from '~/routes/bin/generateBoomError'
+import { setCacheControlForPublic } from '~/routes/bin/header'
 import { addApplicationClient } from '~/routes/middleware/client'
 import {
   ResponseSearchTweets,
@@ -39,6 +40,7 @@ router.get(
       return next(result)
     }
 
+    setCacheControlForPublic(response)
     response.json(result)
   },
 )

@@ -6,7 +6,7 @@ describe('トップページ内のアプリ説明ブロック', () => {
     const wrapper = shallowMount(SectionNotice)
 
     const h2 = wrapper.get('h2')
-    expect(h2.text()).toBe(`${process.env.APP_TITLE}について`)
+    expect(h2.text()).toBe('TWISTTER（ツイスター）について')
   })
 
   test('スロットを指定', () => {
