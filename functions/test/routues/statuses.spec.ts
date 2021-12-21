@@ -43,6 +43,7 @@ describe('/statuses', () => {
       const response = await request.get(`/statuses/user_timeline?${parameter}`)
 
       expect(response.statusCode).toEqual(200)
+      expect(response.header['cache-control']).toBe('public, max-age=30')
     })
 
     test('正常なリクエスト（すべてのオプションを指定）', async () => {
@@ -56,6 +57,7 @@ describe('/statuses', () => {
       const response = await request.get(`/statuses/user_timeline?${parameter}`)
 
       expect(response.statusCode).toEqual(200)
+      expect(response.header['cache-control']).toBe('public, max-age=30')
     })
 
     test('スクリーンネームの指定がない', async () => {
@@ -103,6 +105,7 @@ describe('/statuses', () => {
       const response = await request.get(`/statuses/user_timeline?${parameter}`)
 
       expect(response.statusCode).toEqual(200)
+      expect(response.header['cache-control']).toBe('public, max-age=30')
     })
 
     test('取得数が有効な値未満', async () => {
@@ -141,6 +144,7 @@ describe('/statuses', () => {
       const response = await request.get(`/statuses/user_timeline?${parameter}`)
 
       expect(response.statusCode).toEqual(200)
+      expect(response.header['cache-control']).toBe('public, max-age=30')
     })
 
     test('max_idがオブジェクトとしてパースされる文字列で指定されている', async () => {
