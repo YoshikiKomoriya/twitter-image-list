@@ -11,11 +11,11 @@
       </a>
     </v-col>
     <v-col>
-      <nuxt-link :to="profilePageUrl">
+      <a :href="profilePageUrl" target="_blank" rel="noopener noreferrer">
         <span>{{ user.name }}</span>
         <br />
         <span>@{{ user.screen_name }}</span>
-      </nuxt-link>
+      </a>
     </v-col>
   </v-row>
 </template>
