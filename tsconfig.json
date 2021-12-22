@@ -22,6 +22,7 @@
       "@nuxt/content",
       "@nuxtjs/axios",
       "@nuxtjs/vuetify",
+      "@nuxtjs/firebase",
       "@types/node",
       "@types/jest"
     ]
