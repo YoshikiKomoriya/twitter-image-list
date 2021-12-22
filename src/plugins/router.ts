@@ -2,7 +2,7 @@
  * ページ遷移（vue-router）向けの拡張設定
  */
 
-import { Context } from '@nuxt/types/app'
+import { Context } from '@nuxt/types'
 import { convertPlusToSpace } from '~/modules/query'
 
 export default ({ app, $fire }: Context) => {
