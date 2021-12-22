@@ -1,6 +1,8 @@
 import fs from 'fs'
 import path from 'path'
 import { NuxtConfig } from '@nuxt/types'
+import { FirebaseConfiguration } from '@nuxtjs/firebase'
+import consola from 'consola'
 import colors from 'vuetify/es5/util/colors'
 
 const config: NuxtConfig = {
@@ -45,26 +47,9 @@ const config: NuxtConfig = {
     '@nuxtjs/stylelint-module',
     // https://go.nuxtjs.dev/vuetify
     '@nuxtjs/vuetify',
+    // https://firebase.nuxtjs.org
+    '@nuxtjs/firebase',
   ],
-
-  // Modules: https://go.nuxtjs.dev/config-modules
-  modules: [
-    // https://go.nuxtjs.dev/axios
-    '@nuxtjs/axios',
-    // https://go.nuxtjs.dev/content
-    '@nuxt/content',
-  ],
-
-  /**
-   * Axiosの設定
-   * https://go.nuxtjs.dev/config-axios
-   */
-  axios: {},
-
-  // Content module configuration: https://go.nuxtjs.dev/config-content
-  content: {
-    liveEdit: false,
-  },
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
   vuetify: {
@@ -98,6 +83,36 @@ const config: NuxtConfig = {
     },
   },
 
+  firebase: {
+    config: getFirebaseConfig(),
+    services: {
+      functions: true,
+      analytics: {
+        collectionEnabled: process.env.NODE_ENV === 'production',
+      },
+    },
+    onFirebaseHosting: true,
+  },
+
+  // Modules: https://go.nuxtjs.dev/config-modules
+  modules: [
+    // https://go.nuxtjs.dev/axios
+    '@nuxtjs/axios',
+    // https://go.nuxtjs.dev/content
+    '@nuxt/content',
+  ],
+
+  /**
+   * Axiosの設定
+   * https://go.nuxtjs.dev/config-axios
+   */
+  axios: {},
+
+  // Content module configuration: https://go.nuxtjs.dev/config-content
+  content: {
+    liveEdit: false,
+  },
+
   // サーバーミドルウェア（Expressサーバー）の設定
   serverMiddleware: ['../functions'],
 
@@ -124,6 +139,67 @@ const config: NuxtConfig = {
       }
     },
   },
+}
+
+/**
+ * 環境変数からFirebaseの設定を取得する
+ */
+function getFirebaseConfig() {
+  /**
+   * 独自処理のアサーションで利用される型
+   * アサーションでは明示的に型を宣言する必要があるため、予め定義している
+   *
+   * @note 型を宣言していなかった場合に出てくるエラー
+   * > アサーションでは、呼び出し先のすべての名前が明示的な型の注釈で宣言されている必要があります。ts(2775)
+   * > assert.ts(28, 7): 'assertIsString' には、明示的な型の注釈が必要です。
+   */
+  type assertGenericsType<T> = (value: any) => asserts value is T
+
+  /**
+   * ジェネリクスを利用したアサーション処理
+   * @param value 検証対象となる値
+   * @param validator 検証処理
+   * @throws {@link TypeError} 検証の結果、適切でない値と判断された場合
+   * @see https://github.com/microsoft/TypeScript/issues/41047#issuecomment-706761663 参考にしたコード
+   */
+  const assertGenerics: <T>(
+    value: any,
+    validator: (value: any) => boolean,
+  ) => asserts value is T = (value, validator) => {
+    if (validator(value) === false) {
+      consola.error('環境変数が設定されていません')
+      process.exit(1)
+    }
+  }
+
+  /**
+   * 文字列であることを検証する
+   * @param value 検証したい値
+   */
+  const assertIsString: assertGenericsType<String> = (value: any) =>
+    assertGenerics<String>(value, (value) => typeof value === 'string')
+
+  // 環境変数が定義されていることを確認する
+  assertIsString(process.env.API_KEY)
+  assertIsString(process.env.AUTH_DOMAIN)
+  assertIsString(process.env.PROJECT_ID)
+  assertIsString(process.env.STORAGE_BUCKET)
+  assertIsString(process.env.MESSAGING_SENDER_ID)
+  assertIsString(process.env.APP_ID)
+  assertIsString(process.env.MEASUREMENT_ID)
+
+  // Firebaseの設定を組み立てる
+  const config: FirebaseConfiguration = {
+    apiKey: process.env.API_KEY,
+    authDomain: process.env.AUTH_DOMAIN,
+    projectId: process.env.PROJECT_ID,
+    storageBucket: process.env.STORAGE_BUCKET,
+    messagingSenderId: process.env.MESSAGING_SENDER_ID,
+    appId: process.env.APP_ID,
+    measurementId: process.env.MEASUREMENT_ID,
+  }
+
+  return config
 }
 
 export default config
