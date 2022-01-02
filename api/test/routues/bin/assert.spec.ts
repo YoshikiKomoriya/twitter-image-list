@@ -1,5 +1,5 @@
-import { assertIsTwitterClient } from 'api/routes/bin/assert'
 import Twitter from 'twitter-lite'
+import { assertIsTwitterClient } from '~/routes/bin/assert'
 
 // テストデータ用の型情報
 type Data = {

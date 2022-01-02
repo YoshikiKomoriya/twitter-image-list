@@ -3,8 +3,8 @@
  * express-seessionのヘルパー
  */
 
-import { env } from 'api/bin/dotenv'
 import expressSession from 'express-session'
+import { env } from '~/bin/dotenv'
 
 /**
  * express-sessionの初期化処理に関するヘルパー関数

@@ -1,7 +1,7 @@
-import { env } from 'api/bin/dotenv'
-import { request } from 'api/test/util/supertest'
 import axios from 'axios'
 import Twitter from 'twitter-lite'
+import { env } from '~/bin/dotenv'
+import { request } from '~/test/util/supertest'
 
 describe('/trends', () => {
   // すべてのテストで利用する変数

@@ -10,12 +10,12 @@ import express from 'express'
 
 // 各種設定の読み込み
 import './bin/moduleAlias'
-import { env } from 'api/bin/dotenv'
-import { errorHandler } from 'api/bin/errorHandler'
-import { session } from 'api/bin/session'
-import { router } from 'api/routes'
 import * as OpenApiValidator from 'express-openapi-validator'
 import helmet from 'helmet'
+import { env } from '~/bin/dotenv'
+import { errorHandler } from '~/bin/errorHandler'
+import { session } from '~/bin/session'
+import { router } from '~/routes'
 
 // 環境変数の読み込み
 env.config()

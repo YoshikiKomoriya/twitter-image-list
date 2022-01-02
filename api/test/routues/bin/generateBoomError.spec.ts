@@ -1,9 +1,9 @@
+import Boom from 'boom'
 import {
   ErrorResponse,
   isIncludeErrorCode,
   generateBoomError,
-} from 'api/routes/bin/generateBoomError'
-import Boom from 'boom'
+} from '~/routes/bin/generateBoomError'
 
 describe('Twitter APIのエラーハンドリング', () => {
   describe('エラーコードの記載の有無を判定する', () => {

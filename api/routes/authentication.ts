@@ -1,8 +1,8 @@
-import { env } from 'api/bin/dotenv'
-import { authentication } from 'api/routes/bin/authentication'
-import { createApplicationClient } from 'api/routes/bin/client'
 import Boom from 'boom'
 import { Request, Response, Router } from 'express'
+import { env } from '~/bin/dotenv'
+import { authentication } from '~/routes/bin/authentication'
+import { createApplicationClient } from '~/routes/bin/client'
 import {
   CallbackRequest,
   ResponseAuthenticationLogout,

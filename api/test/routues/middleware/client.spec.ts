@@ -1,12 +1,9 @@
-import {
-  addApplicationClient,
-  addUserClient,
-} from 'api/routes/middleware/client'
-import { RequestWithSession } from 'api/test/util/jest-express'
 import Boom from 'boom'
 import { next } from 'jest-express/lib/next'
 import { Response } from 'jest-express/lib/response'
 import Twitter, { AccessTokenResponse } from 'twitter-lite'
+import { addApplicationClient, addUserClient } from '~/routes/middleware/client'
+import { RequestWithSession } from '~/test/util/jest-express'
 
 describe('API通信用クライアントクラスの生成', () => {
   /**

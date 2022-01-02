@@ -1,10 +1,10 @@
-import { env } from 'api/bin/dotenv'
-import { authentication } from 'api/routes/bin/authentication'
-import { request } from 'api/test/util/supertest'
 import axios from 'axios'
 import Boom from 'boom'
 import { Session } from 'express-session'
 import { AccessTokenResponse, TokenResponse } from 'twitter-lite'
+import { env } from '~/bin/dotenv'
+import { authentication } from '~/routes/bin/authentication'
+import { request } from '~/test/util/supertest'
 
 describe('/authentication', () => {
   afterEach(() => {

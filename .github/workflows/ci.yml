@@ -33,7 +33,7 @@ jobs:
 
       - name: Install backend dependencies
         run: yarn
-        working-directory: ./functions
+        working-directory: ./api
 
       - name: Install mock dependencies
         run: yarn

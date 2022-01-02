@@ -1,8 +1,5 @@
-import {
-  createApplicationClient,
-  createUserClient,
-} from 'api/routes/bin/client'
 import Twitter from 'twitter-lite'
+import { createApplicationClient, createUserClient } from '~/routes/bin/client'
 
 describe('コンシューマーキーを使用したアプリケーション用クライアントクラス', () => {
   test('クライアントクラスが生成される', () => {

@@ -1,5 +1,5 @@
-import { setCacheControlForPublic } from 'api/routes/bin/header'
 import { Response } from 'jest-express/lib/response'
+import { setCacheControlForPublic } from '~/routes/bin/header'
 
 describe('ヘッダーに関する設定', () => {
   describe('レスポンス', () => {

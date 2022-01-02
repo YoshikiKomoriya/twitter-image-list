@@ -1,12 +1,12 @@
 /**
  * TwitterとのAPI通信に関する設定
  */
-import { assertIsTwitterClient } from 'api/routes/bin/assert'
-import { generateBoomError } from 'api/routes/bin/generateBoomError'
-import { verifyAuthentication } from 'api/routes/middleware/authenticated'
-import { addUserClient } from 'api/routes/middleware/client'
 import Boom from 'boom'
 import { Request, Response, Router } from 'express'
+import { assertIsTwitterClient } from '~/routes/bin/assert'
+import { generateBoomError } from '~/routes/bin/generateBoomError'
+import { verifyAuthentication } from '~/routes/middleware/authenticated'
+import { addUserClient } from '~/routes/middleware/client'
 import { ResponseListsOwnerships } from '~openapi/generated/src'
 
 const router = Router()

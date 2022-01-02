@@ -1,9 +1,9 @@
 /**
  * TwitterとのAPI通信に関する設定
  */
-import { verifyAuthentication } from 'api/routes/middleware/authenticated'
-import { addUserClient } from 'api/routes/middleware/client'
 import { Router } from 'express'
+import { verifyAuthentication } from '~/routes/middleware/authenticated'
+import { addUserClient } from '~/routes/middleware/client'
 
 const router = Router()
 

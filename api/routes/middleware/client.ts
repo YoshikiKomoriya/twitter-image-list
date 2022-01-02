@@ -1,13 +1,10 @@
 /**
  * TwitterとAPI通信を行うクライアントクラスを生成するミドルウェア
  */
-import { env } from 'api/bin/dotenv'
-import {
-  createApplicationClient,
-  createUserClient,
-} from 'api/routes/bin/client'
 import Boom from 'boom'
 import { Request, Response, NextFunction } from 'express'
+import { env } from '~/bin/dotenv'
+import { createApplicationClient, createUserClient } from '~/routes/bin/client'
 
 /**
  * TwitterとのAPI通信を行うアプリケーション向けクライアントクラスを生成して、リクエスト情報に付与する

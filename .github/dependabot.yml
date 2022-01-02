@@ -19,7 +19,7 @@ updates:
 
   # バックエンド（APIサーバー）のパッケージ
   - package-ecosystem: npm
-    directory: '/functions'
+    directory: '/api'
     schedule:
       interval: weekly
       time: '11:00'

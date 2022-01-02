@@ -1,9 +1,9 @@
-import { errorHandler, ErrorResponse } from 'api/bin/errorHandler'
 import Boom from 'boom'
 import { HttpError } from 'express-openapi-validator/dist/framework/types'
 import { next } from 'jest-express/lib/next'
 import { Request } from 'jest-express/lib/request'
 import { Response } from 'jest-express/lib/response'
+import { errorHandler, ErrorResponse } from '~/bin/errorHandler'
 
 describe('エラーハンドリング', () => {
   // 値の変動がない共通のパラメータ

@@ -1,10 +1,10 @@
 /**
  * ライブラリ'supertest'のインスタンス生成処理をモジュール化したもの
  */
-import { session } from 'api/bin/session'
-import app from 'api/index'
 import express from 'express'
 import supertest from 'supertest'
+import { session } from '~/bin/session'
+import app from '~/index'
 
 const request = supertest(app.handler)
 

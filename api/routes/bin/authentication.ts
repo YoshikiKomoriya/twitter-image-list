@@ -1,9 +1,9 @@
 /**
  * Twitter認証に関する専門の処理
  */
-import { env } from 'api/bin/dotenv'
 import Boom from 'boom'
 import Twitter from 'twitter-lite'
+import { env } from '~/bin/dotenv'
 
 /**
  * Twitterに認証用トークンを発行するように依頼する

@@ -1,9 +1,9 @@
-import { router as authentication } from 'api/routes/authentication'
-import { router as lists } from 'api/routes/lists'
-import { router as search } from 'api/routes/search'
-import { router as statuses } from 'api/routes/statuses'
-import { router as trends } from 'api/routes/trends'
 import { Router } from 'express'
+import { router as authentication } from '~/routes/authentication'
+import { router as lists } from '~/routes/lists'
+import { router as search } from '~/routes/search'
+import { router as statuses } from '~/routes/statuses'
+import { router as trends } from '~/routes/trends'
 
 const router = Router()
 

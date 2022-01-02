@@ -1,5 +1,5 @@
-import { env } from 'api/bin/dotenv'
 import dotenv from 'dotenv'
+import { env } from '~/bin/dotenv'
 
 describe('.envファイル', () => {
   test('.envファイルが読み込めない場合に、エラーが発生する', () => {

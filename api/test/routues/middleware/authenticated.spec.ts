@@ -1,9 +1,9 @@
-import { verifyAuthentication } from 'api/routes/middleware/authenticated'
-import { RequestWithSession } from 'api/test/util/jest-express'
 import Boom from 'boom'
 import { next } from 'jest-express/lib/next'
 import { Response } from 'jest-express/lib/response'
 import { AccessTokenResponse } from 'twitter-lite'
+import { verifyAuthentication } from '~/routes/middleware/authenticated'
+import { RequestWithSession } from '~/test/util/jest-express'
 
 describe('認証済みであるかどうか', () => {
   /**

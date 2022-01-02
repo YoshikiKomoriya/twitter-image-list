@@ -1,12 +1,12 @@
 /**
  * トレンド
  */
-import { assertIsTwitterClient } from 'api/routes/bin/assert'
-import { generateBoomError } from 'api/routes/bin/generateBoomError'
-import { setCacheControlForPublic } from 'api/routes/bin/header'
-import { addApplicationClient } from 'api/routes/middleware/client'
 import Boom from 'boom'
 import { Request, Response, Router } from 'express'
+import { assertIsTwitterClient } from '~/routes/bin/assert'
+import { generateBoomError } from '~/routes/bin/generateBoomError'
+import { setCacheControlForPublic } from '~/routes/bin/header'
+import { addApplicationClient } from '~/routes/middleware/client'
 import { Trends, TrendsPlaceRequest } from '~openapi/generated/src'
 
 const router = Router()

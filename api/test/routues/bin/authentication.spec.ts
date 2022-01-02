@@ -1,8 +1,8 @@
-import { env } from 'api/bin/dotenv'
-import { authentication } from 'api/routes/bin/authentication'
 import axios from 'axios'
 import Boom from 'boom'
 import Twitter, { AccessTokenResponse, TokenResponse } from 'twitter-lite'
+import { env } from '~/bin/dotenv'
+import { authentication } from '~/routes/bin/authentication'
 
 describe('認証用トークンの発行', () => {
   // すべてのテストで利用する変数

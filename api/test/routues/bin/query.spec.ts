@@ -1,4 +1,4 @@
-import { encodeQuery } from 'api/routes/bin/query'
+import { encodeQuery } from '~/routes/bin/query'
 
 /**
  * 指定の文字列をエンコードする
