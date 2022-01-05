@@ -14,7 +14,6 @@ import * as OpenApiValidator from 'express-openapi-validator'
 import helmet from 'helmet'
 import { env } from '~/bin/dotenv'
 import { errorHandler } from '~/bin/errorHandler'
-import { session } from '~/bin/session'
 import { router } from '~/routes'
 
 // 環境変数の読み込み
@@ -35,9 +34,6 @@ app.use(express.json())
 // リクエストのバリデーション設定
 const schema = path.resolve(__dirname, '../openapi/schema.yml')
 app.use(OpenApiValidator.middleware({ apiSpec: schema }))
-
-// セッションの設定
-app.use(session())
 
 // ルーティングの設定
 app.use(router)
