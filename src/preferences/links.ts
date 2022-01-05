@@ -31,11 +31,6 @@ const links: readonly Link[] = [
     path: '/user',
     icon: 'mdi-account-search',
   },
-  {
-    title: 'アカウントサービス',
-    path: '/login',
-    icon: 'mdi-account',
-  },
 ]
 
 export { links }
