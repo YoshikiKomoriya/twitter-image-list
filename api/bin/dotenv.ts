@@ -16,7 +16,7 @@ import dotenv from 'dotenv'
 const config = () => {
   // .envファイルを読み込む
   const option = {
-    path: path.resolve(__dirname, '../../.env'),
+    path: path.resolve(__dirname, '../.env'),
   }
   const parsedConfig = dotenv.config(option).parsed
   // ファイルが読み込めなかった場合、エラーを発生させる
