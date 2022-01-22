@@ -12,7 +12,7 @@
       "request": "launch",
       "runtimeExecutable": "yarn",
       "runtimeArgs": ["run", "debug"],
-      "cwd": "${workspaceFolder}",
+      "cwd": "${workspaceFolder}/nuxt",
       "port": 9229,
       "sourceMaps": true,
       "console": "internalConsole",
@@ -32,21 +32,32 @@
       "pathMappings": [
         {
           "url": "webpack:///app",
-          "path": "${workspaceFolder}/app"
+          "path": "${workspaceFolder}/nuxt/app"
         }
       ]
     },
     // Jest向けのデバッガーの設定
     {
       "type": "node",
-      "name": "vscode-jest-tests",
+      "name": "Front Test",
       "request": "launch",
       "runtimeExecutable": "yarn",
       "args": ["jest", "--runInBand", "--watchAll=false", "--coverage=false"],
       "console": "integratedTerminal",
       "internalConsoleOptions": "openOnFirstSessionStart",
       "disableOptimisticBPs": true,
-      "cwd": "${workspaceFolder}"
+      "cwd": "${workspaceFolder}/nuxt"
+    },
+    {
+      "type": "node",
+      "name": "API Test",
+      "request": "launch",
+      "runtimeExecutable": "yarn",
+      "args": ["jest", "--runInBand", "--watchAll=false", "--coverage=false"],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "openOnFirstSessionStart",
+      "disableOptimisticBPs": true,
+      "cwd": "${workspaceFolder}/api"
     }
   ],
   "compounds": [
@@ -54,7 +65,7 @@
     // @see https://qiita.com/mamo3gr/items/57e243df0f2e34709856
     {
       "name": "Browser Debug",
-      "configurations": ["Launch via yarn", "Launch Firefox"]
+      "configurations": ["Launch Nuxt", "Launch Firefox"]
     }
   ]
 }
