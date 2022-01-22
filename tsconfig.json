@@ -9,8 +9,8 @@
     "module": "ESNext",
     "moduleResolution": "Node",
     "paths": {
-      "~/*": ["./src/*", "./functions/*", "./mock/*"],
-      "@/*": ["./src/*", "./functions/*", "./mock/*"],
+      "~/*": ["./src/*", "./api/*", "./mock/*"],
+      "@/*": ["./src/*", "./api/*", "./mock/*"],
       "~openapi/*": ["./openapi/*"],
       "@openapi/*": ["./openapi/*"]
     },

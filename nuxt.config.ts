@@ -114,7 +114,7 @@ const config: NuxtConfig = {
   },
 
   // サーバーミドルウェア（Expressサーバー）の設定
-  serverMiddleware: ['../functions'],
+  serverMiddleware: ['../api'],
 
   // サーバーの設定
   server: {
