@@ -1,22 +1,21 @@
 {
   "compilerOptions": {
-    "allowJs": true,
-    "baseUrl": "./",
-    "esModuleInterop": true,
-    "experimentalDecorators": true,
-    "forceConsistentCasingInFileNames": true,
-    "lib": ["ESNext", "ESNext.AsyncIterable", "DOM"],
+    "target": "ESNext",
     "module": "ESNext",
     "moduleResolution": "Node",
+    "lib": ["ESNext", "ESNext.AsyncIterable", "DOM"],
+    "esModuleInterop": true,
+    "allowJs": true,
+    "sourceMap": true,
+    "strict": true,
+    "noEmit": true,
+    "baseUrl": "./",
     "paths": {
       "~/*": ["./src/*", "./api/*", "./mock/*"],
       "@/*": ["./src/*", "./api/*", "./mock/*"],
       "~openapi/*": ["./openapi/*"],
       "@openapi/*": ["./openapi/*"]
     },
-    "sourceMap": true,
-    "strict": true,
-    "target": "ESNext",
     "types": [
       "@nuxt/types",
       "@nuxt/content",
@@ -27,5 +26,8 @@
       "@types/jest"
     ]
   },
+  "outDir": "lib",
+  "files": ["index.ts"],
+  "include": [],
   "exclude": ["node_modules", ".nuxt", "dist"]
 }

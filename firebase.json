@@ -1,6 +1,6 @@
 {
   "functions": {
-    "source": "functions",
+    "source": "./",
     "predeploy": []
   },
   "hosting": {
@@ -9,7 +9,7 @@
     "rewrites": [
       {
         "source": "**",
-        "destination": "ssr"
+        "destination": "nuxtServer"
       }
     ]
   }
