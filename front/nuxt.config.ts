@@ -9,13 +9,13 @@ const config: NuxtConfig = {
   // Target: https://go.nuxtjs.dev/config-target
   target: 'server',
 
-  // ソースディレクトリをROOT/src/配下に変更する
+  // ソースディレクトリをROOT/nuxt/src/配下に変更する
   srcDir: 'src/',
 
   // エイリアスの設定
   alias: {
-    '~openapi': path.resolve(__dirname, '/openapi'),
-    '@openapi': path.resolve(__dirname, '/openapi'),
+    '~openapi': path.resolve(__dirname, '../openapi'),
+    '@openapi': path.resolve(__dirname, '../openapi'),
   },
 
   // Global page headers: https://go.nuxtjs.dev/config-head
@@ -114,16 +114,18 @@ const config: NuxtConfig = {
   },
 
   // サーバーミドルウェア（Expressサーバー）の設定
-  serverMiddleware: ['../api'],
+  serverMiddleware: ['../../api'],
 
   // サーバーの設定
   server: {
     // ローカル開発環境のHTTPS化対応
     https: {
       key: fs.readFileSync(
-        path.resolve(__dirname, 'cert/', 'localhost-key.pem'),
+        path.resolve(__dirname, '../cert/', 'localhost-key.pem'),
       ),
-      cert: fs.readFileSync(path.resolve(__dirname, 'cert/', 'localhost.pem')),
+      cert: fs.readFileSync(
+        path.resolve(__dirname, '../cert/', 'localhost.pem'),
+      ),
     },
   },
 

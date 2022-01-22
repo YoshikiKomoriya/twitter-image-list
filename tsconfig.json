@@ -1,31 +1,18 @@
 {
   "compilerOptions": {
-    "allowJs": true,
-    "baseUrl": "./",
-    "esModuleInterop": true,
-    "experimentalDecorators": true,
-    "forceConsistentCasingInFileNames": true,
-    "lib": ["ESNext", "ESNext.AsyncIterable", "DOM"],
     "module": "ESNext",
-    "moduleResolution": "Node",
-    "paths": {
-      "~/*": ["./src/*", "./api/*", "./mock/*"],
-      "@/*": ["./src/*", "./api/*", "./mock/*"],
-      "~openapi/*": ["./openapi/*"],
-      "@openapi/*": ["./openapi/*"]
-    },
-    "sourceMap": true,
-    "strict": true,
     "target": "ESNext",
-    "types": [
-      "@nuxt/types",
-      "@nuxt/content",
-      "@nuxtjs/axios",
-      "@nuxtjs/vuetify",
-      "@nuxtjs/firebase",
-      "@types/node",
-      "@types/jest"
-    ]
-  },
-  "exclude": ["node_modules", ".nuxt", "dist"]
+
+    "allowJs": true,
+    "sourceMap": true,
+    "removeComments": true,
+    "experimentalDecorators": true,
+
+    "strict": true,
+
+    "moduleResolution": "Node",
+    "esModuleInterop": true,
+
+    "forceConsistentCasingInFileNames": true
+  }
 }

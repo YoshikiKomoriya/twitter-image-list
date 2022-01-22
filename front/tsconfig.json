@@ -1,0 +1,26 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "lib": ["ESNext", "ESNext.AsyncIterable", "DOM"],
+    "types": [
+      "@nuxt/types",
+      "@nuxt/content",
+      "@nuxtjs/axios",
+      "@nuxtjs/vuetify",
+      "@nuxtjs/firebase",
+      "@types/node",
+      "@types/jest"
+    ],
+
+    "baseUrl": "./",
+    "paths": {
+      "~/*": ["src/*"],
+      "@/*": ["src/*"],
+      "~openapi/*": ["../openapi/*"],
+      "@openapi/*": ["../openapi/*"]
+    }
+  },
+  "exclude": ["node_modules", ".nuxt", "dist"]
+}
