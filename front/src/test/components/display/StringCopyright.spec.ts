@@ -1,6 +1,6 @@
-import { Wrapper } from '@vue/test-utils'
+import { Wrapper, shallowMount } from '@vue/test-utils'
 import StringCopyright from '~/components/display/StringCopyright.vue'
-import { shallowMount } from '~/test/util/mount'
+// import { shallowMount } from '~/test/util/mount'
 
 describe('コピーライト', () => {
   let wrapper: Wrapper<Vue>
