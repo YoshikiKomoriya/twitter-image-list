@@ -5,6 +5,16 @@
   "repository": "https://github.com/YoshikiKomoriya/twitter-image-list.git",
   "author": "YoshikiKomoriya <yoshiki.komoriya@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "lint:root": "eslint . --ext \".js,.ts,.vue\"",
+    "lint:front": "yarn --cwd front lint",
+    "lint:api": "yarn --cwd api lint",
+    "lint": "yarn lint:root && yarn lint:front && yarn lint:api",
+    "test:front": "yarn --cwd front test",
+    "test:api": "yarn --cwd api test",
+    "test": "yarn test:front && yarn test:api",
+    "mock": "yarn --cwd mock start"
+  },
   "devDependencies": {
     "eslint": "^8.7.0",
     "eslint-config-prettier": "^8.3.0",

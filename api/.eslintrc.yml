@@ -1,0 +1,30 @@
+root: true
+extends:
+  - eslint:recommended
+  - plugin:prettier/recommended
+  - plugin:@typescript-eslint/recommended
+  - plugin:@typescript-eslint/recommended-requiring-type-checking
+  - prettier
+  - plugin:import/errors
+  - plugin:import/warnings
+  - plugin:import/typescript
+plugins:
+  - '@typescript-eslint'
+  - prettier
+  - import # eslint-plugin-importを用いて、モジュールのimport順を制御する
+rules:
+  import/no-unresolved: off # importの絶対パスの強制を無効化
+  # データ検証系のルールを一部無効化
+  ## クリティカルでない・ライブラリに原因がある等で暫定的に見送っているものたち
+  ## 本来なら修正すべきものであるため、そのうち対応すること
+  '@typescript-eslint/no-explicit-any': off
+  '@typescript-eslint/no-unsafe-assignment': off
+  '@typescript-eslint/no-unsafe-argument': off
+  '@typescript-eslint/no-unsafe-member-access': off
+  '@typescript-eslint/no-unsafe-call': off
+  '@typescript-eslint/no-misused-promises': off
+  '@typescript-eslint/no-floating-promises': off
+parser: '@typescript-eslint/parser'
+parserOptions:
+  project:
+    - tsconfig.json
