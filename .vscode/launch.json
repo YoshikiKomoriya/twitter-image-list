@@ -12,7 +12,7 @@
       "request": "launch",
       "runtimeExecutable": "yarn",
       "runtimeArgs": ["run", "debug"],
-      "cwd": "${workspaceFolder}/nuxt",
+      "cwd": "${workspaceFolder}/frontend",
       "port": 9229,
       "sourceMaps": true,
       "console": "internalConsole",
@@ -32,7 +32,7 @@
       "pathMappings": [
         {
           "url": "webpack:///app",
-          "path": "${workspaceFolder}/nuxt/app"
+          "path": "${workspaceFolder}/frontend/app"
         }
       ]
     },
@@ -46,7 +46,7 @@
       "console": "integratedTerminal",
       "internalConsoleOptions": "openOnFirstSessionStart",
       "disableOptimisticBPs": true,
-      "cwd": "${workspaceFolder}/nuxt"
+      "cwd": "${workspaceFolder}/frontend"
     },
     {
       "type": "node",
