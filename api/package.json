@@ -7,7 +7,7 @@
     "jest": "jest --passWithNoTests",
     "lint": "eslint --ext \".js,.ts\" --ignore-path .gitignore .",
     "mock": "'../mock/node_modules/ts-node-dev/lib/bin.js' --project '../mock/tsconfig.json' '../mock/index.ts'",
-    "mock:stop": "kill -9 `pgrep -f 'yarn|mock'`",
+    "mock:stop": "kill -9 `pgrep -f 'mock'`",
     "test": "yarn mock & sleep 5 && yarn jest ; yarn mock:stop"
   },
   "dependencies": {

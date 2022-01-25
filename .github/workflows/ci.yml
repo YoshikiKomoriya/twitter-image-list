@@ -33,7 +33,7 @@ jobs:
 
       - name: Install front dependencies
         run: yarn
-        working-directory: ./front
+        working-directory: ./frontend
 
       - name: Install backend dependencies
         run: yarn
@@ -48,7 +48,7 @@ jobs:
           touch .env
           echo "APP_TITLE=${{ secrets.APP_TITLE }}" >> .env
           echo "MOCK_SERVER_URL=${{ secrets.MOCK_SERVER_URL }}" >> .env
-        working-directory: ./front
+        working-directory: ./frontend
 
       - name: Create api .env file
         run: |
@@ -69,4 +69,4 @@ jobs:
         run: yarn lint
 
       - name: Run tests
-        run: yarn test
+        run: yarn test:ci

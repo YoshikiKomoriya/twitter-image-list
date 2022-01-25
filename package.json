@@ -7,12 +7,13 @@
   "license": "MIT",
   "scripts": {
     "lint:root": "eslint . --ext \".js,.ts,.vue\"",
-    "lint:front": "yarn --cwd front lint",
+    "lint:frontend": "yarn --cwd frontend lint",
     "lint:api": "yarn --cwd api lint",
-    "lint": "yarn lint:root && yarn lint:front && yarn lint:api",
-    "test:front": "yarn --cwd front test",
+    "lint": "yarn lint:root && yarn lint:frontend && yarn lint:api",
+    "test:frontend": "yarn --cwd frontend test",
     "test:api": "yarn --cwd api test",
-    "test": "yarn test:front && yarn test:api",
+    "test": "yarn test:frontend && yarn test:api",
+    "test:ci": "yarn mock & sleep 8 && yarn --cwd frontend jest && yarn --cwd api jest",
     "mock": "yarn --cwd mock start"
   },
   "devDependencies": {
