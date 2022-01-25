@@ -4,7 +4,7 @@ import { assertIsTwitterClient } from '~/routes/bin/assert'
 // テストデータ用の型情報
 type Data = {
   type: string // 型
-  value: any // 実際の値
+  value: unknown // 実際の値
 }
 
 describe('型に関する検証処理（アサーション）', () => {
@@ -21,7 +21,9 @@ describe('型に関する検証処理（アサーション）', () => {
       undefined, // 未定義
       { test: 'test' }, // オブジェクト
       ['test'], // 配列（型はオブジェクトとして判定される点に注意する）
-      () => {}, // 関数
+      () => {
+        return true
+      }, // 関数
 
       // アプリケーション上で利用する独自のクラス
       new Twitter({ consumer_key: 'test', consumer_secret: 'test' }), // Twitter通信用クライアント

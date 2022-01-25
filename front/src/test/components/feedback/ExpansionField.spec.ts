@@ -24,12 +24,15 @@ describe('エラー詳細コンポーネント', () => {
     // v-ifによる表示の変化を確認したいため、スタブ化を行わないmount()を使う
     const mountedWrapper = mount(ExpansionField, { slots })
 
-    // 毎回必ず切り替わる（複数回切り替えても規定の動作を繰り返し続ける）ことを検証する
-    const button = mountedWrapper.find('.button')
-    for (let i = 0; i > 10; i++) {
-      expect(mountedWrapper.find('.content').exists()).toBe(false)
-      await button.trigger('click')
-      expect(mountedWrapper.find('.content').text()).toContain(slots.content)
-    }
+    // 初期表示の検証
+    expect(mountedWrapper.find('.content').exists()).toBe(false)
+
+    // ボタンを押すとテキストが記される
+    await mountedWrapper.find('.button').trigger('click')
+    expect(mountedWrapper.find('.content').text()).toContain(slots.content)
+
+    // もう一度ボタンを押すとテキストエリアが閉じる
+    await mountedWrapper.find('.button').trigger('click')
+    expect(mountedWrapper.find('.content').exists()).toBe(false)
   })
 })

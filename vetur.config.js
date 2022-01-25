@@ -1,9 +1,7 @@
-module.exports = {
-  projects: [
-    {
-      root: './nuxt',
-      package: './package.json',
-      tsconfig: './tsconfig.json',
-    },
-  ],
-}
+export const projects = [
+  {
+    root: './nuxt',
+    package: './package.json',
+    tsconfig: './tsconfig.json',
+  },
+]

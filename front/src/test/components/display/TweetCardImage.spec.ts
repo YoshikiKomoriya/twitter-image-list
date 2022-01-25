@@ -71,7 +71,7 @@ describe('ツイート画像表示用ブロック', () => {
     const thumbnail = mountedWrapper.find('div.v-image[role="img"]')
 
     // 毎回必ず切り替わる（複数回切り替えても規定の動作を繰り返し続ける）ことを検証する
-    for (let i = 0; i > 10; i++) {
+    for (let i = 0; i < 10; i++) {
       const target = i % 2 === 0 // 偶数の場合にtrue, そうでない場合にfalse
 
       await thumbnail.trigger('click')

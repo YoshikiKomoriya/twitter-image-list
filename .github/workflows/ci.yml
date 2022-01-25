@@ -28,8 +28,12 @@ jobs:
           cache: 'yarn'
           cache-dependency-path: '**/yarn.lock'
 
+      - name: Install root dependencies
+        run: yarn
+
       - name: Install front dependencies
         run: yarn
+        working-directory: ./front
 
       - name: Install backend dependencies
         run: yarn
@@ -39,19 +43,21 @@ jobs:
         run: yarn
         working-directory: ./mock
 
-      - name: Create .env file
+      - name: Create front .env file
         run: |
           touch .env
+          echo "APP_TITLE=${{ secrets.APP_TITLE }}" >> .env
           echo "MOCK_SERVER_URL=${{ secrets.MOCK_SERVER_URL }}" >> .env
-          echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> .env
-          echo "SESSION_COOKIE_MAX_AGE_BY_HOUR=${{ secrets.SESSION_COOKIE_MAX_AGE_BY_HOUR }}" >> .env
+        working-directory: ./front
+
+      - name: Create api .env file
+        run: |
+          touch .env
           echo "CONSUMER_KEY=${{ secrets.CONSUMER_KEY }}" >> .env
           echo "CONSUMER_SECRET=${{ secrets.CONSUMER_SECRET }}" >> .env
           echo "BEARER_TOKEN=${{ secrets.BEARER_TOKEN }}" >> .env
-          echo "AUTHENTICATION_URL=${{ secrets.AUTHENTICATION_URL }}" >> .env
-          echo "CALLBACK_URL=${{ secrets.CALLBACK_URL }}" >> .env
-          echo "APP_TITLE=${{ secrets.APP_TITLE }}" >> .env
-          echo "APP_HOST=${{ secrets.APP_HOST }}" >> .env
+          echo "MOCK_SERVER_URL=${{ secrets.MOCK_SERVER_URL }}" >> .env
+        working-directory: ./api
 
       - name: Create pem file
         run: |
@@ -63,4 +69,4 @@ jobs:
         run: yarn lint
 
       - name: Run tests
-        run: yarn test:ci
+        run: yarn test

@@ -1,6 +1,5 @@
 import { Wrapper } from '@vue/test-utils'
 import axios from 'axios'
-
 import TweetCardVideo from '~/components/display/TweetCardVideo.vue'
 import { filterTweetsToExistMedia } from '~/modules/mediaFilter'
 import { selectHighestAndLowest } from '~/modules/videoVariant'
@@ -72,7 +71,7 @@ describe('ツイート動画表示用ブロック', () => {
     const button = mountedWrapper.find('button.v-btn i.mdi-information')
 
     // 毎回必ず切り替わる（複数回切り替えても規定の動作を繰り返し続ける）ことを検証する
-    for (let i = 0; i > 10; i++) {
+    for (let i = 0; i < 10; i++) {
       const target = i % 2 === 0 // 偶数の場合にtrue, そうでない場合にfalse
 
       await button.trigger('click')

@@ -5,9 +5,10 @@
   "scripts": {
     "start": "ts-node-dev --files server.ts",
     "jest": "jest --passWithNoTests",
+    "lint": "eslint --ext \".js,.ts\" --ignore-path .gitignore .",
     "mock": "'../mock/node_modules/ts-node-dev/lib/bin.js' --project '../mock/tsconfig.json' '../mock/index.ts'",
-    "test:ci": "yarn mock & sleep 5 && yarn jest",
-    "test": "yarn mock & sleep 5 && yarn jest ; kill -9 `pgrep -f 'yarn|mock'`"
+    "mock:stop": "kill -9 `pgrep -f 'yarn|mock'`",
+    "test": "yarn mock & sleep 5 && yarn jest ; yarn mock:stop"
   },
   "dependencies": {
     "axios": "^0.24.0",
@@ -26,6 +27,8 @@
     "@types/jest": "^27.4.0",
     "@types/module-alias": "^2.0.1",
     "@types/supertest": "^2.0.11",
+    "@typescript-eslint/eslint-plugin": "^5.10.0",
+    "@typescript-eslint/parser": "^5.10.0",
     "babel-core": "^6.26.3",
     "babel-eslint": "^10.1.0",
     "babel-jest": "^27.4.6",
