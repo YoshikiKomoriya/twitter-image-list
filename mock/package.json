@@ -13,6 +13,6 @@
     "@types/json-server": "^0.14.4",
     "@types/module-alias": "^2.0.1",
     "ts-node-dev": "^1.1.8",
-    "typescript": "^4.5.5"
+    "typescript": "^4.9.3"
   }
 }
