@@ -15,7 +15,7 @@
     "boom": "^7.3.0",
     "debug": "~4.3.3",
     "dotenv": "^10.0.0",
-    "express": "~4.17.2",
+    "express": "~4.17.3",
     "express-openapi-validator": "^4.13.4",
     "helmet": "^4.6.0",
     "module-alias": "^2.2.2",
